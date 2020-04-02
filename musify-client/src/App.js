@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import SignIn from './pages/login.page';
+import LandingPage from './pages/landing.page';
 
 const theme = createMuiTheme({
   palette: {
@@ -10,7 +10,7 @@ const theme = createMuiTheme({
     },
     contrastText: 'white',
     secondary: {
-      main: '#86b72a'
+      main: '#000000'
     }
   }
 });
@@ -18,7 +18,7 @@ const theme = createMuiTheme({
 function App() {
   return (
     <MuiThemeProvider theme={theme}>
-      <SignIn />
+      <LandingPage />
     </MuiThemeProvider>
   );
 }
