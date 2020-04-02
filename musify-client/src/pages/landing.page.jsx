@@ -3,7 +3,8 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import BackgroundImage from '../assets/turntable1.jpg';
-import Signup from '../components/signup.component';
+import SignIn from '../components/signin.component'; 
+import SignUp from '../components/signup.component'; 
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -28,7 +29,8 @@ export default function LandingPage() {
     <Grid container component='main' className={classes.root}>
       <CssBaseline />
       <Grid item xs={false} sm={4} md={7} className={classes.image} />
-      <Signup />
+      <SignUp />
     </Grid>
   );
 }
+ 
