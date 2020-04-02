@@ -3,8 +3,9 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import BackgroundImage from '../assets/turntable1.jpg';
-import SignIn from '../components/signin.component'; 
-import SignUp from '../components/signup.component'; 
+import SignIn from '../components/signin.component';
+import SignUp from '../components/signup.component';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -24,13 +25,13 @@ const useStyles = makeStyles(theme => ({
 
 export default function LandingPage() {
   const classes = useStyles();
+  let history = useHistory();
 
   return (
     <Grid container component='main' className={classes.root}>
       <CssBaseline />
       <Grid item xs={false} sm={4} md={7} className={classes.image} />
-      <SignUp />
+      {history.location.pathname === '/' ? <SignIn /> : <SignUp />}
     </Grid>
   );
 }
- 
