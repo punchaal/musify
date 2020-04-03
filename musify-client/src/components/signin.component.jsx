@@ -89,7 +89,7 @@ export default function SignIn() {
           <Grid container>
             <Grid item xs>
               <Link
-                href='#'
+                to='/'
                 variant='body2'
                 className='classes.link'
                 color='inherit'
