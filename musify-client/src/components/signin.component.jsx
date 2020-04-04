@@ -140,7 +140,7 @@ export default function SignIn() {
               </Link>
             </Grid>
             <Grid item>
-              <Link to='/sign-up'>{"Don't have an account? Sign Up"}</Link>
+              <Link to='/signup'>{"Don't have an account? Sign Up"}</Link>
             </Grid>
           </Grid>
           <Box mt={5}></Box>
