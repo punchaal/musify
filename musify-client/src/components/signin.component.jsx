@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { Link, useHistory } from 'react-router-dom';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -10,7 +11,7 @@ import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import QueueMusicIcon from '@material-ui/icons/QueueMusic';
 import Typography from '@material-ui/core/Typography';
-import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -38,6 +39,43 @@ const useStyles = makeStyles(theme => ({
 
 export default function SignIn() {
   const classes = useStyles();
+  let history = useHistory();
+
+  const [formData, setFormData] = useState({
+    email: '',
+    password: ''
+  });
+
+  const { email, password } = formData;
+
+  const onChange = e =>
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+
+  const onSubmit = async e => {
+    e.preventDefault();
+    try {
+      const config = {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      };
+      const loginUser = {
+        email,
+        password
+      };
+      const body = JSON.stringify(loginUser);
+
+      const res = await axios.post(
+        'http://localhost:8000/api/auth',
+        body,
+        config
+      );
+      console.log(res);
+      history.push('/profile-page');
+    } catch (err) {
+      console.error(err.response.data);
+    }
+  };
 
   return (
     <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
@@ -48,7 +86,7 @@ export default function SignIn() {
         <Typography component='h1' variant='h5'>
           Sign in
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={classes.form} noValidate onSubmit={e => onSubmit(e)}>
           <TextField
             variant='outlined'
             margin='normal'
@@ -60,6 +98,8 @@ export default function SignIn() {
             autoComplete='email'
             autoFocus
             color='secondary'
+            value={email}
+            onChange={e => onChange(e)}
           />
           <TextField
             variant='outlined'
@@ -72,6 +112,8 @@ export default function SignIn() {
             id='password'
             autoComplete='current-password'
             color='secondary'
+            value={password}
+            onChange={e => onChange(e)}
           />
           <FormControlLabel
             control={<Checkbox value='remember' color='primary' />}

@@ -1,7 +1,10 @@
 import React from 'react';
+import { Switch, Route } from 'react-router-dom';
 import './App.css';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import LandingPage from './pages/landing.page';
+import ProfilePage from './pages/profile.page';
+import SignUp from './components/signup.component';
 
 const theme = createMuiTheme({
   palette: {
@@ -18,7 +21,17 @@ const theme = createMuiTheme({
 function App() {
   return (
     <MuiThemeProvider theme={theme}>
-      <LandingPage />
+      <Switch>
+        <Route exact path='/'>
+          <LandingPage />
+        </Route>
+        <Route path='/profile-page'>
+          <ProfilePage />
+        </Route>
+        <Route path='/sign-up'>
+          <SignUp />
+        </Route>
+      </Switch>
     </MuiThemeProvider>
   );
 }

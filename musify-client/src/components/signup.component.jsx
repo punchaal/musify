@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -9,6 +9,7 @@ import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import Typography from '@material-ui/core/Typography';
+import axios from 'axios';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -36,6 +37,51 @@ const useStyles = makeStyles(theme => ({
 
 export default function SignUp() {
   const classes = useStyles();
+  const [formData, setFormData] = useState({
+    first_name: '',
+    last_name: '',
+    email: '',
+    password: '',
+    password2: ''
+  });
+
+  const { first_name, last_name, email, password, password2 } = formData;
+
+  const onChange = e =>
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+
+  const onSubmit = async e => {
+    e.preventDefault();
+    if (password !== password2) {
+      console.log('Passwords do not match');
+    } else {
+      const newUser = {
+        first_name,
+        last_name,
+        email,
+        password
+      };
+
+      try {
+        const config = {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        };
+
+        const body = JSON.stringify(newUser);
+
+        const res = await axios.post(
+          'http://localhost:8000/api/users',
+          body,
+          config
+        );
+        console.log(res.data);
+      } catch (err) {
+        console.error(err.response.data);
+      }
+    }
+  };
 
   return (
     <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
@@ -46,7 +92,7 @@ export default function SignUp() {
         <Typography component='h1' variant='h5'>
           Sign Up
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={classes.form} noValidate onSubmit={e => onSubmit(e)}>
           <Grid container spacing={1}>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -56,10 +102,12 @@ export default function SignUp() {
                 fullWidth
                 id='fname'
                 label='First Name'
-                name='fname'
+                name='first_name'
                 autoComplete='First Name'
                 autoFocus
                 color='secondary'
+                value={first_name}
+                onChange={e => onChange(e)}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -70,10 +118,12 @@ export default function SignUp() {
                 fullWidth
                 id='lname'
                 label='Last Name'
-                name='lname'
+                name='last_name'
                 autoComplete='Last Name'
                 autoFocus
                 color='secondary'
+                value={last_name}
+                onChange={e => onChange(e)}
               />
             </Grid>
           </Grid>
@@ -88,6 +138,8 @@ export default function SignUp() {
             autoComplete='email'
             autoFocus
             color='secondary'
+            value={email}
+            onChange={e => onChange(e)}
           />
           <Grid container spacing={1}>
             <Grid item xs={12} sm={6}>
@@ -102,6 +154,8 @@ export default function SignUp() {
                 id='password'
                 autoComplete='current-password'
                 color='secondary'
+                value={password}
+                onChange={e => onChange(e)}
               />
             </Grid>
 
@@ -111,12 +165,14 @@ export default function SignUp() {
                 margin='normal'
                 required
                 fullWidth
-                name='confirmPassword'
+                name='password2'
                 label='Confirm Password'
                 type='password'
-                id='confirmPassword'
+                id='password2'
                 autoComplete='confirm-password'
                 color='secondary'
+                value={password2}
+                onChange={e => onChange(e)}
               />
             </Grid>
           </Grid>
