@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
+import GradientButton from './gradient-button.component'
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { makeStyles } from '@material-ui/core/styles';
@@ -119,7 +119,7 @@ export default function SignIn() {
             control={<Checkbox value='remember' color='primary' />}
             label='Remember me'
           />
-          <Button
+          <GradientButton
             type='submit'
             fullWidth
             variant='contained'
@@ -127,7 +127,7 @@ export default function SignIn() {
             className={classes.submit}
           >
             Sign In
-          </Button>
+          </GradientButton>
           <Grid container>
             <Grid item xs>
               <Link

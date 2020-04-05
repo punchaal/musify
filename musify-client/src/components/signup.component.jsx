@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
+import GradientButton from './gradient-button.component'
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import { Link , useHistory} from 'react-router-dom';
@@ -178,7 +178,7 @@ export default function SignUp() {
               />
             </Grid>
           </Grid>
-          <Button
+          <GradientButton
             type='submit'
             fullWidth
             variant='contained'
@@ -186,7 +186,7 @@ export default function SignUp() {
             className={classes.submit}
           >
             Sign Up
-          </Button>
+          </GradientButton>
           <Grid container>
             <Grid item>
               <Link to='/'>{'Already have an account? Sign In'}</Link>

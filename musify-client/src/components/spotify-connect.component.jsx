@@ -1,15 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
+import GradientButton from './gradient-button.component'
 import { makeStyles } from '@material-ui/core/styles';
-import { Link } from 'react-router-dom';
 import Paper from '@material-ui/core/Paper';
-import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import CheckCircleRoundedIcon from '@material-ui/icons/CheckCircleRounded';
 import Typography from '@material-ui/core/Typography';
-import axios from 'axios';
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -51,12 +47,12 @@ const useStyles = makeStyles(theme => ({
         <Typography variant="body1" align="center" gutterBottom>
         Congratulations on your new Musify account. We are glad to have you with us. In order to use our app, you will need to sign in with your Spotify account.
       </Typography>
-      <Button
+      <GradientButton
          type='submit'
          fullWidth
          variant='contained'
          color='primary'
-         className={classes.submit}> Connect with Spotify </Button>
+         className={classes.submit}> Connect with Spotify </GradientButton>
         </div>
         </Grid>
         </Grid>
