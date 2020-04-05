@@ -26,10 +26,9 @@ function App() {
   return (
     <MuiThemeProvider theme={theme}>
       <Switch>
-        <Route exact path={["/", "/signup", "/spotify-connect"]}>
+        <Route exact path={['/', '/signup', '/spotify-connect']}>
           <LandingPage />
         </Route>
-
         <Route path='/profile-page'>
           <ProfilePage />
         </Route>

@@ -32,7 +32,9 @@ const useStyles = makeStyles(theme => ({
   }));
   export default function SpotifyConnect() {
     const classes = useStyles();
-  
+    const onClick = (e) => {
+      window.location = 'http://localhost:8000/api/spotify-login';
+    };
   return(
      
 <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
@@ -52,10 +54,10 @@ const useStyles = makeStyles(theme => ({
          fullWidth
          variant='contained'
          color='primary'
-         className={classes.submit}> Connect with Spotify </GradientButton>
+         className={classes.submit}  onClick={(e) => onClick()}> Connect with Spotify </GradientButton>
+ 
         </div>
-        </Grid>
-        </Grid>
-       
+      </Grid>
+    </Grid>
   );
-  }
+}
