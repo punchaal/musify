@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import BackgroundImage from '../assets/turntable1.jpg';
 import SignIn from '../components/signin.component';
 import SignUp from '../components/signup.component';
+import SpotifyConnect from '../components/spotify-connect.component';
 import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
@@ -31,7 +32,7 @@ export default function LandingPage() {
     <Grid container component='main' className={classes.root}>
       <CssBaseline />
       <Grid item xs={false} sm={4} md={7} className={classes.image} />
-      { history.location.pathname === '/signup' ?<SignUp />: <SignIn />}
+      { history.location.pathname === '/signup' ?<SignUp />:history.location.pathname === '/spotify-connect' ?<SpotifyConnect /> : <SignIn />}
     </Grid>
   );
 }

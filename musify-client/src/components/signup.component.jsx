@@ -3,7 +3,7 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
-import { Link } from 'react-router-dom';
+import { Link , useHistory} from 'react-router-dom';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
@@ -37,6 +37,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function SignUp() {
   const classes = useStyles();
+  let history = useHistory();
   const [formData, setFormData] = useState({
     first_name: '',
     last_name: '',
@@ -77,6 +78,7 @@ export default function SignUp() {
           config
         );
         console.log(res.data);
+        history.push('/spotify-connect');
       } catch (err) {
         console.error(err.response.data);
       }

@@ -4,6 +4,7 @@ import './App.css';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import LandingPage from './pages/landing.page';
 import ProfilePage from './pages/profile.page';
+import SpotifyConnect from './components/spotify-connect.component';
 
 const theme = createMuiTheme({
   palette: {
@@ -21,13 +22,10 @@ function App() {
   return (
     <MuiThemeProvider theme={theme}>
       <Switch>
-        <Route exact path='/'>
+        <Route exact path={["/", "/signup", "/spotify-connect"]}>
           <LandingPage />
         </Route>
-       
-        <Route exact path='/signup'>
-          <LandingPage />
-        </Route>
+        
         <Route path='/profile-page'>
           <ProfilePage />
         </Route>
