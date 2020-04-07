@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
-var request = require('request'); // "Request" library
+var axios = require('axios');
 var querystring = require('querystring');
 require('dotenv').config();
+const User = require('../../models/User');
 
 var client_id = process.env.CLIENT_ID;
 var client_secret = process.env.CLIENT_SECRET;
@@ -71,7 +72,7 @@ router.get('/callback', function (req, res) {
       json: true,
     };
 
-    request.post(authOptions, function (error, response, body) {
+    axios.post(authOptions, function (error, response, body) {
       if (!error && response.statusCode === 200) {
         var access_token = body.access_token,
           refresh_token = body.refresh_token;
@@ -83,7 +84,7 @@ router.get('/callback', function (req, res) {
         };
 
         // use the access token to access the Spotify Web API
-        request.get(options, function (error, response, body) {
+        axios.get(options, function (error, response, body) {
           console.log(body);
         });
       }
@@ -108,7 +109,7 @@ router.get('/refresh_token', function (req, res) {
     json: true,
   };
 
-  request.post(authOptions, function (error, response, body) {
+  axios.post(authOptions, function (error, response, body) {
     if (!error && response.statusCode === 200) {
       var access_token = body.access_token;
       res.send({

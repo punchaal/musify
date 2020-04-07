@@ -1,57 +1,60 @@
 import React, { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
-import GradientButton from './gradient-button.component'
+import GradientButton from './gradient-button.component';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
-import { Link , useHistory} from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import Typography from '@material-ui/core/Typography';
 import axios from 'axios';
+import config from '../config';
+import TokenService from '../services/token-service';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   paper: {
     margin: theme.spacing(8, 4),
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: theme.palette.primary.main
+    backgroundColor: theme.palette.primary.main,
   },
   form: {
     width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(1)
+    marginTop: theme.spacing(1),
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
-    color: theme.palette.contrastText
+    color: theme.palette.contrastText,
   },
   link: {
-    color: theme.palette.primary.dark
-  }
+    color: theme.palette.primary.dark,
+  },
 }));
 
 export default function SignUp() {
   const classes = useStyles();
-  let history = useHistory();
+  const history = useHistory();
+  const endpoint = config.API_ENDPOINT;
   const [formData, setFormData] = useState({
     first_name: '',
     last_name: '',
     email: '',
     password: '',
-    password2: ''
+    password2: '',
   });
 
   const { first_name, last_name, email, password, password2 } = formData;
 
-  const onChange = e =>
+  const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
-  const onSubmit = async e => {
+  const onSubmit = async (e) => {
     e.preventDefault();
     if (password !== password2) {
       console.log('Passwords do not match');
@@ -60,24 +63,23 @@ export default function SignUp() {
         first_name,
         last_name,
         email,
-        password
+        password,
       };
 
       try {
         const config = {
           headers: {
-            'Content-Type': 'application/json'
-          }
+            'Content-Type': 'application/json',
+          },
         };
 
         const body = JSON.stringify(newUser);
 
-        const res = await axios.post(
-          'http://localhost:8000/api/users',
-          body,
-          config
-        );
-        console.log(res.data);
+        const res = await axios.post(`${endpoint}/users`, body, config);
+        // Save the token in local storage
+        TokenService.saveAuthToken(res.data.token);
+
+        // Redirect to ensure user connects to their spotify account to complete registration
         history.push('/spotify-connect');
       } catch (err) {
         console.error(err.response.data);
@@ -94,7 +96,7 @@ export default function SignUp() {
         <Typography component='h1' variant='h5'>
           Sign Up
         </Typography>
-        <form className={classes.form} noValidate onSubmit={e => onSubmit(e)}>
+        <form className={classes.form} noValidate onSubmit={(e) => onSubmit(e)}>
           <Grid container spacing={1}>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -109,7 +111,7 @@ export default function SignUp() {
                 autoFocus
                 color='secondary'
                 value={first_name}
-                onChange={e => onChange(e)}
+                onChange={(e) => onChange(e)}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -125,7 +127,7 @@ export default function SignUp() {
                 autoFocus
                 color='secondary'
                 value={last_name}
-                onChange={e => onChange(e)}
+                onChange={(e) => onChange(e)}
               />
             </Grid>
           </Grid>
@@ -141,7 +143,7 @@ export default function SignUp() {
             autoFocus
             color='secondary'
             value={email}
-            onChange={e => onChange(e)}
+            onChange={(e) => onChange(e)}
           />
           <Grid container spacing={1}>
             <Grid item xs={12} sm={6}>
@@ -157,7 +159,7 @@ export default function SignUp() {
                 autoComplete='current-password'
                 color='secondary'
                 value={password}
-                onChange={e => onChange(e)}
+                onChange={(e) => onChange(e)}
               />
             </Grid>
 
@@ -174,7 +176,7 @@ export default function SignUp() {
                 autoComplete='confirm-password'
                 color='secondary'
                 value={password2}
-                onChange={e => onChange(e)}
+                onChange={(e) => onChange(e)}
               />
             </Grid>
           </Grid>
