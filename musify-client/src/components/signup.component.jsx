@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import GradientButton from './gradient-button.component';
-import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import { Link, useHistory } from 'react-router-dom';
 import Paper from '@material-ui/core/Paper';
@@ -12,6 +11,8 @@ import Typography from '@material-ui/core/Typography';
 import axios from 'axios';
 import config from '../config';
 import TokenService from '../services/token-service';
+import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
+import Validate from '../services/validate';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -50,6 +51,9 @@ export default function SignUp() {
   });
 
   const { first_name, last_name, email, password, password2 } = formData;
+
+  Validate.passwordMismatch(formData.password);
+  Validate.minLengthCheck();
 
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -96,10 +100,10 @@ export default function SignUp() {
         <Typography component='h1' variant='h5'>
           Sign Up
         </Typography>
-        <form className={classes.form} noValidate onSubmit={(e) => onSubmit(e)}>
+        <ValidatorForm className={classes.form} noValidate onSubmit={(e) => onSubmit(e)}>
           <Grid container spacing={1}>
             <Grid item xs={12} sm={6}>
-              <TextField
+              <TextValidator
                 variant='outlined'
                 margin='normal'
                 required
@@ -111,11 +115,13 @@ export default function SignUp() {
                 autoFocus
                 color='secondary'
                 value={first_name}
+                validators={['required', 'matchRegexp:^[a-zA-Z]*$']}
+                errorMessages={[Validate.REQUIRED, Validate.ALPHA]}
                 onChange={(e) => onChange(e)}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField
+              <TextValidator
                 variant='outlined'
                 margin='normal'
                 required
@@ -127,11 +133,13 @@ export default function SignUp() {
                 autoFocus
                 color='secondary'
                 value={last_name}
+                validators={['required', 'matchRegexp:^[a-zA-Z]*$']}
+                errorMessages={[Validate.REQUIRED, Validate.ALPHA]}
                 onChange={(e) => onChange(e)}
               />
             </Grid>
           </Grid>
-          <TextField
+          <TextValidator
             variant='outlined'
             margin='normal'
             required
@@ -143,11 +151,13 @@ export default function SignUp() {
             autoFocus
             color='secondary'
             value={email}
+            validators={['required', 'isEmail']}
+            errorMessages={[Validate.REQUIRED,Validate.INVALID_EMAIL]}
             onChange={(e) => onChange(e)}
           />
           <Grid container spacing={1}>
             <Grid item xs={12} sm={6}>
-              <TextField
+              <TextValidator
                 variant='outlined'
                 margin='normal'
                 required
@@ -159,12 +169,14 @@ export default function SignUp() {
                 autoComplete='current-password'
                 color='secondary'
                 value={password}
+                validators={['required','minLen']}
+                errorMessages={[Validate.REQUIRED,Validate.ERROR_LEN]}
                 onChange={(e) => onChange(e)}
               />
             </Grid>
 
             <Grid item xs={12} sm={6}>
-              <TextField
+              <TextValidator
                 variant='outlined'
                 margin='normal'
                 required
@@ -176,6 +188,9 @@ export default function SignUp() {
                 autoComplete='confirm-password'
                 color='secondary'
                 value={password2}
+                
+                validators={['required','isPasswordMatch','minLen']}
+                errorMessages={[Validate.REQUIRED,Validate.PASSWORD_MISMATCH,Validate.ERROR_LEN]}
                 onChange={(e) => onChange(e)}
               />
             </Grid>
@@ -195,7 +210,7 @@ export default function SignUp() {
             </Grid>
           </Grid>
           <Box mt={5}></Box>
-        </form>
+        </ValidatorForm>
       </div>
     </Grid>
   );
