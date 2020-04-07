@@ -30,5 +30,6 @@ app.use('/api/auth', require('../routes/api/auth'));
 app.use('/api/profile', require('../routes/api/profile'));
 app.use('/api/posts', require('../routes/api/posts'));
 app.use('/api/spotify-login', require('../routes/api/spotify-login'));
+app.use('/api/forgotpass', require('../routes/api/forgotpassword'));
 
 module.exports = app;

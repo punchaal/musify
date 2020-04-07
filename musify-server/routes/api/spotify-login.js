@@ -92,7 +92,7 @@ router.get('/callback', function (req, res) {
   }
 });
 
-router.get('/refresh_token', function (req, res) {
+router.get('/refresh_token', async function (req, res) {
   // requesting access token from refresh token
   var refresh_token = req.query.refresh_token;
   var authOptions = {
@@ -100,7 +100,7 @@ router.get('/refresh_token', function (req, res) {
     headers: {
       Authorization:
         'Basic ' +
-        new Buffer(client_id + ':' + client_secret).toString('base64'),
+        Buffer.from(client_id + ':' + client_secret).toString('base64'),
     },
     form: {
       grant_type: 'refresh_token',
@@ -109,14 +109,18 @@ router.get('/refresh_token', function (req, res) {
     json: true,
   };
 
-  axios.post(authOptions, function (error, response, body) {
-    if (!error && response.statusCode === 200) {
-      var access_token = body.access_token;
-      res.send({
-        access_token: access_token,
-      });
-    }
-  });
+  try {
+    await axios.post(authOptions, function (error, response, body) {
+      if (!error && response.statusCode === 200) {
+        var access_token = body.access_token;
+        res.send({
+          access_token: access_token,
+        });
+      }
+    });
+  } catch (err) {
+    console.error('Error');
+  }
 });
 
 module.exports = router;
