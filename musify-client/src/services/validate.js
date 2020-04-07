@@ -18,7 +18,7 @@ const Validate = {
   //validation for min password length
   minLengthCheck(){
   ValidatorForm.addValidationRule('minLen', (value) => {
-    if (value.length <= 6) {
+    if (value.length < 6) {
         return false;
     }
     return true;
