@@ -14,6 +14,8 @@ import axios from 'axios';
 import config from '../config';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import TokenService from '../services/token-service';
+import Validate from '../services/validate';
+
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -50,7 +52,7 @@ export default function SignIn() {
   });
 
   const { email, password } = formData;
-
+  Validate.minLengthCheck();
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
@@ -104,6 +106,8 @@ export default function SignIn() {
             color='secondary'
             value={email}
             onChange={(e) => onChange(e)}
+            validators={['required', 'isEmail']}
+            errorMessages={[Validate.REQUIRED, Validate.INVALID_EMAIL]}
           />
           <TextValidator
             variant='outlined'
@@ -118,6 +122,8 @@ export default function SignIn() {
             color='secondary'
             value={password}
             onChange={(e) => onChange(e)}
+            validators={['required','minLen']}
+            errorMessages={[Validate.REQUIRED,Validate.ERROR_LEN]}
           />
           <FormControlLabel
             control={<Checkbox value='remember' color='primary' />}
