@@ -5,7 +5,6 @@ import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import LandingPage from './pages/landing.page';
 import ProfilePage from './pages/profile.page';
 import PrivateRoute from './utils/PrivateRoute';
-import ForgotPass from './pages/forgot-password.page';
 
 const theme = createMuiTheme({
   palette: {
@@ -28,10 +27,9 @@ function App() {
       <Switch>
         <Route
           exact
-          path={['/', '/signup', '/spotify-connect']}
+          path={['/', '/signup', '/spotify-connect', '/forgot-password']}
           component={LandingPage}
         />
-        <Route path='/forgot-password' component={ForgotPass} />
         <PrivateRoute path='/profile-page' component={ProfilePage} />
       </Switch>
     </MuiThemeProvider>

@@ -6,11 +6,13 @@ import BackgroundImage from '../assets/bg-main.jpg';
 import SignIn from '../components/signin.component';
 import SignUp from '../components/signup.component';
 import SpotifyConnect from '../components/spotify-connect.component';
+import ForgotPass from '../components/forgot-password.component';
+import ResetPassword from '../components/reset-password.component';
 import { useHistory } from 'react-router-dom';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
-    height: '100vh'
+    height: '100vh',
   },
   image: {
     backgroundImage: `url(${BackgroundImage})`,
@@ -20,8 +22,8 @@ const useStyles = makeStyles(theme => ({
         ? theme.palette.grey[50]
         : theme.palette.grey[900],
     backgroundSize: 'cover',
-    backgroundPosition: 'center'
-  }
+    backgroundPosition: 'center',
+  },
 }));
 
 export default function LandingPage() {
@@ -32,7 +34,17 @@ export default function LandingPage() {
     <Grid container component='main' className={classes.root}>
       <CssBaseline />
       <Grid item xs={false} sm={4} md={7} className={classes.image} />
-      { history.location.pathname === '/signup' ?<SignUp />:history.location.pathname === '/spotify-connect' ?<SpotifyConnect /> : <SignIn />}
+      {history.location.pathname === '/signup' ? (
+        <SignUp />
+      ) : history.location.pathname === '/forgot-password' ? (
+        <ForgotPass />
+      ) : history.location.pathname === '/spotify-connect' ? (
+        <SpotifyConnect />
+      ) : history.location.pathname === '/reset' ? (
+        <ResetPassword />
+      ) : (
+        <SignIn />
+      )}
     </Grid>
   );
 }
