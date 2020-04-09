@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
+const { check, validationResult } = require('express-validator');
 
 // @route     GET api/reset
 // @desc      Test route
@@ -14,6 +15,11 @@ router.put(
     ).isLength({ min: 6 }),
   ],
   async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
     try {
       let user = await User.findOne({
         email: req.body.username,
