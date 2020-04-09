@@ -63,10 +63,14 @@ export default function SignIn() {
 
   if (successMsg) {
     return (
-      <div>
-        Reset token successfully sent. Please check your email to reset your
-        password.
-      </div>
+      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+        <div className={classes.paper}>
+          <Typography component='h1' variant='body1'>
+            Reset token successfully sent. Please check your email to reset your
+            password.
+          </Typography>
+        </div>
+      </Grid>
     );
   } else {
     return (

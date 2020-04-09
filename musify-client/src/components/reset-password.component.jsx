@@ -32,6 +32,7 @@ export default function ResetPassword() {
   const classes = useStyles();
   const location = useLocation().pathname;
 
+  const [successMsg, setSucccessMsg] = useState(false);
   const [error, setError] = useState({ error: false });
   const [formData, setFormData] = useState({
     username: '',
@@ -86,11 +87,45 @@ export default function ResetPassword() {
         body,
         configure
       );
-      console.log(data);
+
+      setSucccessMsg(true);
     } catch (err) {
       console.error(err.response.data);
     }
   };
+
+  if (successMsg) {
+    return (
+      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+        <div className={classes.paper}>
+          <Typography component='h1' variant='body1'>
+            Password succesfully updated. Please try to login with the new
+            credentials.{' '}
+          </Typography>
+          <Grid
+            container
+            direction='row'
+            justify='center'
+            alignContent='center'
+          >
+            <Box m={2}>
+              <Button
+                component={Link}
+                to='/'
+                type='button'
+                fullWidth
+                variant='contained'
+                color='primary'
+              >
+                Back To Login
+              </Button>
+            </Box>
+          </Grid>
+        </div>
+      </Grid>
+    );
+  }
+
   if (error.error) {
     return (
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
@@ -132,38 +167,46 @@ export default function ResetPassword() {
     );
   } else {
     return (
-      <div>
-        <ValidatorForm
-          className={classes.form}
-          noValidate
-          onSubmit={(e) => updatePassword(e)}
-        >
-          <TextValidator
-            variant='outlined'
-            type='password'
-            margin='normal'
-            required
-            fullWidth
-            id='password'
-            label='password'
-            name='password'
-            autoComplete='password'
-            autoFocus
-            color='secondary'
-            value={password}
-            onChange={(e) => onChange(e)}
-          />
-          <GradientButton
-            type='submit'
-            fullWidth
-            variant='contained'
-            color='primary'
-            className={classes.submit}
+      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+        <div className={classes.paper}>
+          <Typography component='h1' variant='h5'>
+            Update Password{' '}
+          </Typography>
+          <Typography component='h1' variant='body1'>
+            Please select a new password
+          </Typography>
+          <ValidatorForm
+            className={classes.form}
+            noValidate
+            onSubmit={(e) => updatePassword(e)}
           >
-            Update Password
-          </GradientButton>
-        </ValidatorForm>
-      </div>
+            <TextValidator
+              variant='outlined'
+              type='password'
+              margin='normal'
+              required
+              fullWidth
+              id='password'
+              label='password'
+              name='password'
+              autoComplete='password'
+              autoFocus
+              color='secondary'
+              value={password}
+              onChange={(e) => onChange(e)}
+            />
+            <GradientButton
+              type='submit'
+              fullWidth
+              variant='contained'
+              color='primary'
+              className={classes.submit}
+            >
+              Update Password
+            </GradientButton>
+          </ValidatorForm>
+        </div>
+      </Grid>
     );
   }
 }
