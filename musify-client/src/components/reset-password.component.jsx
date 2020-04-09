@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import GradientButton from './gradient-button.component';
+import React, { useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
+import GradientButton from '../components/gradient-button.component';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
@@ -28,33 +30,40 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ResetPassword() {
   const classes = useStyles();
-  const endpoint = config.API_ENDPOINT;
+  const location = useLocation().pathname;
 
-  const [error, setError] = useState({ error: '' });
+  const [successMsg, setSucccessMsg] = useState(false);
+  const [error, setError] = useState({ error: false });
   const [formData, setFormData] = useState({
+    username: '',
     password: '',
   });
 
   useEffect(() => {
     try {
       async function reset() {
-        await axios.get(`${endpoint}/reset`, {
+        const res = await axios.get(`${config.API_ENDPOINT}/reset`, {
           params: {
-            resetPasswordToken: this.props.match.params.token,
+            //set password reset token from the url parameter
+            resetPasswordToken: location.slice(7),
           },
         });
-        console.log(response);
-        response.data.message === 'Password reset link has been verified'
+        console.log(res);
+        res.data.message === 'Password reset link has been verified'
           ? setError({ error: false })
           : setError({ error: true });
+
+        setFormData({ ...formData, username: res.data.username });
       }
       reset();
     } catch (err) {
+      setError({ error: true });
       console.error(err.response.data);
     }
+    // eslint-disable-next-line
   }, []);
 
-  const { password } = formData;
+  const { password, username } = formData;
 
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -68,6 +77,7 @@ export default function ResetPassword() {
         },
       };
       const user = {
+        username,
         password,
       };
       const body = JSON.stringify(user);
@@ -80,79 +90,119 @@ export default function ResetPassword() {
     }
   };
 
-  const { error } = error;
+  if (successMsg) {
+    return (
+      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+        <div className={classes.paper}>
+          <Typography component='h1' variant='body1'>
+            Password succesfully updated. Please try to login with the new
+            credentials.{' '}
+          </Typography>
+          <Grid
+            container
+            direction='row'
+            justify='center'
+            alignContent='center'
+          >
+            <Box m={2}>
+              <Button
+                component={Link}
+                to='/'
+                type='button'
+                fullWidth
+                variant='contained'
+                color='primary'
+              >
+                Back To Login
+              </Button>
+            </Box>
+          </Grid>
+        </div>
+      </Grid>
+    );
+  }
 
-  if (error) {
+  if (error.error) {
     return (
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
         <div className={classes.paper}>
           <Typography component='h1' variant='body1'>
             Problem resetting the password. Please request another reset link
           </Typography>
-          <Grid container spacing={1}>
-            <Grid item xs={12} sm={6}>
-              <GradientButton
+          <Grid
+            container
+            direction='row'
+            justify='center'
+            alignContent='center'
+          >
+            <Box m={2}>
+              <Button
                 component={Link}
-                to={'/forgot-password'}
+                to='/forgot-password'
                 type='button'
                 fullWidth
                 variant='contained'
                 color='primary'
-                className={classes.submit}
               >
                 Forgot Password
-              </GradientButton>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <GradientButton
+              </Button>
+            </Box>
+            <Box m={2}>
+              <Button
                 component={Link}
-                to={'/'}
-                type='button'
-                fullWidth
-                variant='contained'
+                to='/'
+                variant='outlined'
                 color='primary'
-                className={classes.submit}
               >
-                Go back home
-              </GradientButton>
-            </Grid>
+                Go Back Home
+              </Button>
+            </Box>
           </Grid>
         </div>
       </Grid>
     );
   } else {
     return (
-      <div>
-        <ValidatorForm
-          className={classes.form}
-          noValidate
-          onSubmit={(e) => updatePassword(e)}
-        >
-          <TextValidator
-            variant='outlined'
-            margin='normal'
-            required
-            fullWidth
-            id='password'
-            label='password'
-            name='password'
-            autoComplete='password'
-            autoFocus
-            color='secondary'
-            value={password}
-            onChange={(e) => onChange(e)}
-          />
-          <GradientButton
-            type='submit'
-            fullWidth
-            variant='contained'
-            color='primary'
-            className={classes.submit}
+      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+        <div className={classes.paper}>
+          <Typography component='h1' variant='h5'>
+            Update Password{' '}
+          </Typography>
+          <Typography component='h1' variant='body1'>
+            Please select a new password
+          </Typography>
+          <ValidatorForm
+            className={classes.form}
+            noValidate
+            onSubmit={(e) => updatePassword(e)}
           >
-            Update Password
-          </GradientButton>
-        </ValidatorForm>
-      </div>
+            <TextValidator
+              variant='outlined'
+              type='password'
+              margin='normal'
+              required
+              fullWidth
+              id='password'
+              label='password'
+              name='password'
+              autoComplete='password'
+              autoFocus
+              color='secondary'
+              value={password}
+              onChange={(e) => onChange(e)}
+            />
+            <GradientButton
+              type='submit'
+              fullWidth
+              variant='contained'
+              color='primary'
+              className={classes.submit}
+            >
+              Update Password
+            </GradientButton>
+          </ValidatorForm>
+        </div>
+      </Grid>
     );
   }
 }
