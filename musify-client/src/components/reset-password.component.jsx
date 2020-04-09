@@ -82,11 +82,7 @@ export default function ResetPassword() {
       };
       const body = JSON.stringify(user);
 
-      const data = await axios.put(
-        `${config.API_ENDPOINT}/updatepass`,
-        body,
-        configure
-      );
+      await axios.put(`${config.API_ENDPOINT}/updatepass`, body, configure);
 
       setSucccessMsg(true);
     } catch (err) {
