@@ -30,6 +30,7 @@ function App() {
           path={['/', '/signup', '/spotify-connect', '/forgot-password']}
           component={LandingPage}
         />
+        <Route path='/reset' component={LandingPage} />
         <PrivateRoute path='/profile-page' component={ProfilePage} />
       </Switch>
     </MuiThemeProvider>

@@ -48,9 +48,23 @@ export default function SignUp() {
     email: '',
     password: '',
     password2: '',
+    refresh_token: '',
+    access_token: '',
+    resetPasswordToken: '',
+    resetPasswordExpires: '',
   });
 
-  const { first_name, last_name, email, password, password2 } = formData;
+  const {
+    first_name,
+    last_name,
+    email,
+    password,
+    password2,
+    refresh_token,
+    access_token,
+    resetPasswordToken,
+    resetPasswordExpires,
+  } = formData;
 
   Validate.passwordMismatch(formData.password);
   Validate.minLengthCheck();
@@ -68,6 +82,10 @@ export default function SignUp() {
         last_name,
         email,
         password,
+        refresh_token,
+        access_token,
+        resetPasswordToken,
+        resetPasswordExpires,
       };
 
       try {
@@ -100,7 +118,11 @@ export default function SignUp() {
         <Typography component='h1' variant='h5'>
           Sign Up
         </Typography>
-        <ValidatorForm className={classes.form} noValidate onSubmit={(e) => onSubmit(e)}>
+        <ValidatorForm
+          className={classes.form}
+          noValidate
+          onSubmit={(e) => onSubmit(e)}
+        >
           <Grid container spacing={1}>
             <Grid item xs={12} sm={6}>
               <TextValidator
@@ -152,7 +174,7 @@ export default function SignUp() {
             color='secondary'
             value={email}
             validators={['required', 'isEmail']}
-            errorMessages={[Validate.REQUIRED,Validate.INVALID_EMAIL]}
+            errorMessages={[Validate.REQUIRED, Validate.INVALID_EMAIL]}
             onChange={(e) => onChange(e)}
           />
           <Grid container spacing={1}>
@@ -169,8 +191,8 @@ export default function SignUp() {
                 autoComplete='current-password'
                 color='secondary'
                 value={password}
-                validators={['required','minLen']}
-                errorMessages={[Validate.REQUIRED,Validate.ERROR_LEN]}
+                validators={['required', 'minLen']}
+                errorMessages={[Validate.REQUIRED, Validate.ERROR_LEN]}
                 onChange={(e) => onChange(e)}
               />
             </Grid>
@@ -188,9 +210,12 @@ export default function SignUp() {
                 autoComplete='confirm-password'
                 color='secondary'
                 value={password2}
-                
-                validators={['required','isPasswordMatch','minLen']}
-                errorMessages={[Validate.REQUIRED,Validate.PASSWORD_MISMATCH,Validate.ERROR_LEN]}
+                validators={['required', 'isPasswordMatch', 'minLen']}
+                errorMessages={[
+                  Validate.REQUIRED,
+                  Validate.PASSWORD_MISMATCH,
+                  Validate.ERROR_LEN,
+                ]}
                 onChange={(e) => onChange(e)}
               />
             </Grid>

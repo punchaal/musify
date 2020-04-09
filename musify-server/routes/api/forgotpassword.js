@@ -28,7 +28,8 @@ router.post(
           .json({ errors: [{ msg: 'User not in database' }] });
       } else {
         const token = crypto.randomBytes(20).toString('hex');
-        user.update({
+
+        await user.update({
           resetPasswordToken: token,
           resetPasswordExpires: Date.now() + 3600000,
         });

@@ -13,19 +13,13 @@ const User = require('../../models/User');
 router.post(
   '/',
   [
-    check('first_name', 'First name is required')
-      .not()
-      .isEmpty(),
-    check('last_name', 'Last name is required')
-      .not()
-      .isEmpty(),
-    check('email', 'Please include a valid email')
-      .normalizeEmail()
-      .isEmail(),
+    check('first_name', 'First name is required').not().isEmpty(),
+    check('last_name', 'Last name is required').not().isEmpty(),
+    check('email', 'Please include a valid email').normalizeEmail().isEmail(),
     check(
       'password',
       'Please enter a password with 6 or more characters'
-    ).isLength({ min: 6 })
+    ).isLength({ min: 6 }),
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -33,7 +27,16 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { first_name, last_name, email, password } = req.body;
+    const {
+      first_name,
+      last_name,
+      email,
+      password,
+      refresh_token,
+      access_token,
+      resetPasswordToken,
+      resetPasswordExpires,
+    } = req.body;
 
     try {
       let user = await User.findOne({ email });
@@ -48,7 +51,11 @@ router.post(
         first_name,
         last_name,
         email,
-        password
+        password,
+        refresh_token,
+        access_token,
+        resetPasswordToken,
+        resetPasswordExpires,
       });
 
       const salt = await bcrypt.genSalt(10);
@@ -59,8 +66,8 @@ router.post(
 
       const payload = {
         user: {
-          id: user.id
-        }
+          id: user.id,
+        },
       };
 
       jwt.sign(

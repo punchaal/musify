@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
 export default function LandingPage() {
   const classes = useStyles();
   let history = useHistory();
-
+  var regex = /reset*/;
   return (
     <Grid container component='main' className={classes.root}>
       <CssBaseline />
@@ -40,7 +40,7 @@ export default function LandingPage() {
         <ForgotPass />
       ) : history.location.pathname === '/spotify-connect' ? (
         <SpotifyConnect />
-      ) : history.location.pathname === '/reset' ? (
+      ) : regex.test(history.location.pathname) ? (
         <ResetPassword />
       ) : (
         <SignIn />
