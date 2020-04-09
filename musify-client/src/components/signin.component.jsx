@@ -15,9 +15,9 @@ import config from '../config';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import TokenService from '../services/token-service';
 import Validate from '../services/validate';
+import Alert from '@material-ui/lab/Alert';
 
-
-
+ 
 const useStyles = makeStyles((theme) => ({
   paper: {
     margin: theme.spacing(8, 4),
@@ -51,6 +51,10 @@ export default function SignIn() {
     email: '',
     password: '',
   });
+ const [error, setError] = useState({
+   error:false,
+   msg: ""
+ })
 
   const { email, password } = formData;
   Validate.minLengthCheck();
@@ -77,6 +81,7 @@ export default function SignIn() {
       history.push('/profile-page');
     } catch (err) {
       console.error(err.response.data);
+      setError({error: true, msg: err.response.data.errors[0].msg})
     }
   };
 
@@ -94,6 +99,11 @@ export default function SignIn() {
           noValidate
           onSubmit={(e) => onSubmit(e)}
         >
+          {error.error && 
+          <Alert variant="outlined" severity="error">
+             {error.msg}
+          </Alert> }
+          
           <TextValidator
             variant='outlined'
             margin='normal'

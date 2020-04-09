@@ -46,7 +46,7 @@ export default function ProfileInfo() {
           </Typography>
         </Box>
         <Typography variant="subtitle2" color="textSecondary">
-          <Grid container direction="row" justify="left">
+          <Grid container direction="row">
             <Box fontWeight="fontWeightBold" m={1}>
               120k followers
             </Box>

@@ -13,6 +13,7 @@ import config from '../config';
 import TokenService from '../services/token-service';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import Validate from '../services/validate';
+import Alert from '@material-ui/lab/Alert';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -49,7 +50,10 @@ export default function SignUp() {
     password: '',
     password2: '',
   });
-
+  const [error, setError] = useState({
+    error:false,
+    msg: ""
+  })
   const { first_name, last_name, email, password, password2 } = formData;
 
   Validate.passwordMismatch(formData.password);
@@ -87,6 +91,7 @@ export default function SignUp() {
         history.push('/spotify-connect');
       } catch (err) {
         console.error(err.response.data);
+        setError({error: true, msg: err.response.data.errors[0].msg})
       }
     }
   };
@@ -101,7 +106,11 @@ export default function SignUp() {
           Sign Up
         </Typography>
         <ValidatorForm className={classes.form} noValidate onSubmit={(e) => onSubmit(e)}>
-          <Grid container spacing={1}>
+        {error.error && 
+          <Alert variant="outlined" severity="error">
+             {error.msg}
+          </Alert> }
+          <Grid container spacing={1}>         
             <Grid item xs={12} sm={6}>
               <TextValidator
                 variant='outlined'

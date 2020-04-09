@@ -7,7 +7,6 @@ import SignIn from '../components/signin.component';
 import SignUp from '../components/signup.component';
 import SpotifyConnect from '../components/spotify-connect.component';
 import ForgotPass from '../components/forgot-password.component';
-import ResetPassword from '../components/reset-password.component';
 import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
@@ -40,8 +39,6 @@ export default function LandingPage() {
         <ForgotPass />
       ) : history.location.pathname === '/spotify-connect' ? (
         <SpotifyConnect />
-      ) : history.location.pathname === '/reset' ? (
-        <ResetPassword />
       ) : (
         <SignIn />
       )}

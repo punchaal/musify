@@ -37,7 +37,7 @@ export default function LandingPage() {
         </Grid>
 
         <Grid item sm={4} xs={12}>
-          <Grid container direction="row" justify="left">
+          <Grid container direction="row">
             <Box fontWeight="fontWeightBold" m={1}>
               <Button
                 type="submit"
