@@ -72,7 +72,7 @@ export default function SignUp() {
   } = formData;
 
   Validate.passwordMismatch(formData.password);
-  Validate.minLengthCheck();
+  Validate.minLengthCheck(Validate.MIN_PASSWORD_LEN);
 
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });

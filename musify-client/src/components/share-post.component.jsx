@@ -7,9 +7,7 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { Link } from "react-router-dom";
 import PhotoUploadCard from "../components/photo-upload-card.component"
-import { TextValidator } from "react-material-ui-form-validator";
 import { TextField } from "@material-ui/core";
-import { shadows } from '@material-ui/system';
 
 const useStyles = makeStyles((theme) => ({
   cover: {

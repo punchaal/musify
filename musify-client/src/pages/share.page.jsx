@@ -4,7 +4,6 @@ import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
 import MusifyAppBar from "../components/musifyappbar.component";
 import SearchBar from 'material-ui-search-bar';
-import MusicCard from "../components/music-card.component";
 import SharePost from "../components/share-post.component";
 
 
@@ -28,6 +27,10 @@ export default function SharePage() {
   const classes = useStyles();
   const [formData, setFormData] = useState({
     searchVal: '',
+  });
+  const [error, setError] = useState({
+    error:false,
+    msg: ""
   });
   const { searchVal} = formData;
  

@@ -43,7 +43,7 @@ export default function ResetPassword() {
   });
 
   //Error checking for password length
-  Validate.minLengthCheck();
+  Validate.minLengthCheck(Validate.MIN_PASSWORD_LEN);
 
   useEffect(() => {
     try {
