@@ -9,6 +9,8 @@ import Typography from '@material-ui/core/Typography';
 import axios from 'axios';
 import config from '../config';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
+import Validate from '../services/validate';
+import Alert from '@material-ui/lab/Alert';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -37,6 +39,10 @@ export default function SignIn() {
   });
 
   const { email } = formData;
+  const [error, setError] = useState({
+    error:false,
+    msg: ""
+  })
 
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -58,6 +64,7 @@ export default function SignIn() {
       setSuccessMsg(true);
     } catch (err) {
       console.error(err.response.data);
+      setError({error: true, msg: err.response.data.errors[0].msg})
     }
   };
 
@@ -76,6 +83,7 @@ export default function SignIn() {
     return (
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
         <div className={classes.paper}>
+        
           <Typography component='h1' variant='h5'>
             Reset Password{' '}
           </Typography>
@@ -88,6 +96,10 @@ export default function SignIn() {
             noValidate
             onSubmit={(e) => onSubmit(e)}
           >
+            {error.error && 
+          <Alert variant="outlined" severity="error">
+             {error.msg}
+          </Alert> }
             <TextValidator
               variant='outlined'
               margin='normal'
@@ -99,6 +111,8 @@ export default function SignIn() {
               autoComplete='email'
               autoFocus
               color='secondary'
+              validators={['required', 'isEmail']}
+              errorMessages={[Validate.REQUIRED, Validate.INVALID_EMAIL]}
               value={email}
               onChange={(e) => onChange(e)}
             />

@@ -57,7 +57,7 @@ export default function SignUp() {
   const [error, setError] = useState({
     error:false,
     msg: ""
-  })
+  });
 
   const {
     first_name,
