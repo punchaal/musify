@@ -17,7 +17,6 @@ import TokenService from '../services/token-service';
 import Validate from '../services/validate';
 import Alert from '@material-ui/lab/Alert';
 
- 
 const useStyles = makeStyles((theme) => ({
   paper: {
     margin: theme.spacing(8, 4),
@@ -51,10 +50,10 @@ export default function SignIn() {
     email: '',
     password: '',
   });
- const [error, setError] = useState({
-   error:false,
-   msg: ""
- })
+  const [error, setError] = useState({
+    error: false,
+    msg: '',
+  });
 
   const { email, password } = formData;
   Validate.minLengthCheck();
@@ -78,10 +77,14 @@ export default function SignIn() {
       const res = await axios.post(`${endpoint}/auth`, body, config);
       // Save the token in local storage
       TokenService.saveAuthToken(res.data.token);
+
+      // // eslint-disable-next-line
+      // const userEmail = React.createContext({ email: email });
+
       history.push('/profile-page');
     } catch (err) {
       console.error(err.response.data);
-      setError({error: true, msg: err.response.data.errors[0].msg})
+      setError({ error: true, msg: err.response.data.errors[0].msg });
     }
   };
 
@@ -99,11 +102,12 @@ export default function SignIn() {
           noValidate
           onSubmit={(e) => onSubmit(e)}
         >
-          {error.error && 
-          <Alert variant="outlined" severity="error">
-             {error.msg}
-          </Alert> }
-          
+          {error.error && (
+            <Alert variant='outlined' severity='error'>
+              {error.msg}
+            </Alert>
+          )}
+
           <TextValidator
             variant='outlined'
             margin='normal'
@@ -133,8 +137,8 @@ export default function SignIn() {
             color='secondary'
             value={password}
             onChange={(e) => onChange(e)}
-            validators={['required','minLen']}
-            errorMessages={[Validate.REQUIRED,Validate.ERROR_LEN]}
+            validators={['required', 'minLen']}
+            errorMessages={[Validate.REQUIRED, Validate.ERROR_LEN]}
           />
           <FormControlLabel
             control={<Checkbox value='remember' color='primary' />}
