@@ -56,7 +56,7 @@ export default function SignIn() {
   });
 
   const { email, password } = formData;
-  Validate.minLengthCheck();
+  Validate.minLengthCheck(Validate.MIN_PASSWORD_LEN);
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 

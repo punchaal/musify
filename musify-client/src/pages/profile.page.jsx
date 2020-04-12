@@ -13,6 +13,9 @@ import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import PostThumbnail from '../components/post-thumbnail.component';
 import TokenService from '../services/token-service';
+import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
+import Validate from '../services/validate';
+import Alert from '@material-ui/lab/Alert';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -35,9 +38,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function LandingPage() {
+export default function ProfilePage() {
   const classes = useStyles();
-  const [open, setOpen] = useState(false);
 
   const [profile, setProfile] = useState({
     profile_image: '',
@@ -45,12 +47,25 @@ export default function LandingPage() {
     first_name: '',
     last_name: '',
   });
+  const [open, setOpen] = React.useState(false);
+  const [formData, setFormData] = useState({
+    bio: '',
+  });
+  const { editBio } = formData;
+  const [error, setError] = useState({
+    error: false,
+    msg: '',
+  });
+  Validate.maxLengthCheck(Validate.MAX_BIO_LEN);
   const handleOpen = () => {
     setOpen(true);
   };
 
   const handleClose = () => {
     setOpen(false);
+  };
+  const onSubmit = async (e) => {
+    e.preventDefault();
   };
 
   useEffect(() => {
@@ -133,10 +148,45 @@ export default function LandingPage() {
       >
         <Fade in={open}>
           <div className={classes.paper}>
-            <h2 id='transition-modal-title'>Update your bio</h2>
-            <p id='transition-modal-description'>
-              react-transition-group animates me.
-            </p>
+            <h2 id='transition-modal-title'>Update your bio</h2> (150
+            characters)
+            <ValidatorForm
+              className={classes.form}
+              noValidate
+              onSubmit={(e) => onSubmit(e)}
+            >
+              {error.error && (
+                <Alert variant='outlined' severity='error'>
+                  {error.msg}
+                </Alert>
+              )}
+
+              <TextValidator
+                variant='outlined'
+                margin='normal'
+                required
+                fullWidth
+                id='bio'
+                label=''
+                name='bio'
+                autoComplete='bio'
+                autoFocus
+                color='secondary'
+                value={editBio}
+                multiline
+                onChange={(e) => setFormData({ editBio: e.target.value })}
+                validators={['required', 'maxLen']}
+                errorMessages={[Validate.REQUIRED, Validate.ERROR_LEN_BIO]}
+              />
+              <Button
+                type='button'
+                fullWidth
+                variant='contained'
+                color='primary'
+              >
+                Update
+              </Button>
+            </ValidatorForm>
           </div>
         </Fade>
       </Modal>

@@ -10,6 +10,9 @@ import Typography from '@material-ui/core/Typography';
 import axios from 'axios';
 import config from '../config';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
+import Validate from '../services/validate';
+import Alert from '@material-ui/lab/Alert';
+
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -33,11 +36,14 @@ export default function ResetPassword() {
   const location = useLocation().pathname;
 
   const [successMsg, setSucccessMsg] = useState(false);
-  const [error, setError] = useState({ error: false });
+  const [error, setError] = useState({ resetTokenError: false, resetPasswordError: false, resetPasswordErrorMsg:"" });
   const [formData, setFormData] = useState({
     username: '',
     password: '',
   });
+
+  //Error checking for password length
+  Validate.minLengthCheck(Validate.MIN_PASSWORD_LEN);
 
   useEffect(() => {
     try {
@@ -50,14 +56,14 @@ export default function ResetPassword() {
         });
         console.log(res);
         res.data.message === 'Password reset link has been verified'
-          ? setError({ error: false })
-          : setError({ error: true });
+          ? setError({ resetTokenError: false })
+          : setError({ resetTokenError: true });
 
         setFormData({ ...formData, username: res.data.username });
       }
       reset();
     } catch (err) {
-      setError({ error: true });
+      setError({ resetTokenError: true });
       console.error(err.response.data);
     }
     // eslint-disable-next-line
@@ -86,6 +92,7 @@ export default function ResetPassword() {
 
       setSucccessMsg(true);
     } catch (err) {
+      setError({resetPasswordError: true,resetPasswordErrorMsg: err.response.data.errors[0].msg})
       console.error(err.response.data);
     }
   };
@@ -122,7 +129,7 @@ export default function ResetPassword() {
     );
   }
 
-  if (error.error) {
+  if (error.resetTokenError) {
     return (
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
         <div className={classes.paper}>
@@ -176,21 +183,26 @@ export default function ResetPassword() {
             noValidate
             onSubmit={(e) => updatePassword(e)}
           >
-            <TextValidator
-              variant='outlined'
-              type='password'
-              margin='normal'
-              required
-              fullWidth
-              id='password'
-              label='password'
-              name='password'
-              autoComplete='password'
-              autoFocus
-              color='secondary'
-              value={password}
-              onChange={(e) => onChange(e)}
-            />
+            {error.resetPasswordError && 
+          <Alert variant="outlined" severity="error">
+             {error.resetPasswordErrorMsg}
+          </Alert> }
+             <TextValidator
+                variant='outlined'
+                margin='normal'
+                required
+                fullWidth
+                name='password'
+                label='Password'
+                type='password'
+                id='password'
+                autoComplete='current-password'
+                color='secondary'
+                value={password}
+                validators={['required', 'minLen']}
+                errorMessages={[Validate.REQUIRED, Validate.ERROR_LEN]}
+                onChange={(e) => onChange(e)}
+              />
             <GradientButton
               type='submit'
               fullWidth
