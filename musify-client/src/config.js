@@ -1,4 +1,4 @@
 export default {
   API_ENDPOINT: 'http://localhost:8000/api',
-  TOKEN_KEY: '',
+  TOKEN_KEY: 'User Token',
 };

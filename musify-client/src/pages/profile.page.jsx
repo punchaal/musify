@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import config from '../config';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
@@ -10,6 +12,7 @@ import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import PostThumbnail from '../components/post-thumbnail.component';
+import TokenService from '../services/token-service';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -34,8 +37,14 @@ const useStyles = makeStyles((theme) => ({
 
 export default function LandingPage() {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
+  const [profile, setProfile] = useState({
+    profile_image: '',
+    bio: '',
+    first_name: '',
+    last_name: '',
+  });
   const handleOpen = () => {
     setOpen(true);
   };
@@ -43,6 +52,36 @@ export default function LandingPage() {
   const handleClose = () => {
     setOpen(false);
   };
+
+  useEffect(() => {
+    try {
+      async function getProfile() {
+        const token = TokenService.getAuthToken();
+        const headers = {
+          headers: {
+            'x-auth-token': token,
+          },
+        };
+        let profile = await axios.get(
+          `${config.API_ENDPOINT}/profile/me`,
+          headers
+        );
+
+        console.log(profile.data);
+
+        setProfile({
+          profile_image: profile.data.profile_image,
+          bio: profile.data.bio,
+          first_name: profile.data.user.first_name,
+          last_name: profile.data.user.last_name,
+        });
+      }
+      getProfile();
+    } catch (err) {
+      console.error(err.message);
+    }
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <Grid container component='main' className={classes.root}>
@@ -56,7 +95,7 @@ export default function LandingPage() {
         className={classes.marginBox}
       >
         <Grid item sm={8} xs={12}>
-          <ProfileInfo />
+          <ProfileInfo profile={profile} />
         </Grid>
 
         <Grid item sm={4} xs={12}>

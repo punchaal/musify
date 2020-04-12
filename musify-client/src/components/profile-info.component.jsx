@@ -1,7 +1,6 @@
 import React, { useRef } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
-import ProfileImage from '../assets/turntable1.jpg';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -32,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ProfileInfo() {
+export default function ProfileInfo(props) {
   const classes = useStyles();
   const endpoint = config.API_ENDPOINT;
   const fileInput = useRef(null);
@@ -63,17 +62,20 @@ export default function ProfileInfo() {
         />
         <Tooltip title='Upload a new picture'>
           <IconButton onClick={() => triggerInputFile()}>
-            <Avatar src={ProfileImage} className={classes.large} />
+            <Avatar
+              src={props.profile.profile_image}
+              className={classes.large}
+            />
           </IconButton>
         </Tooltip>
       </Grid>
       <Grid item sm={9}>
         <Box className={classes.content}>
           <Typography component='h5' variant='h5'>
-            Live From Space
+            {`${props.profile.first_name} ${props.profile.last_name}`}
           </Typography>
           <Typography variant='subtitle1' color='textSecondary'>
-            Mac Miller
+            {props.profile.bio}
           </Typography>
         </Box>
         <Typography variant='subtitle2' color='textSecondary'>
