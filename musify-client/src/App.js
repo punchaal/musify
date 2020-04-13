@@ -9,6 +9,7 @@ import SharePage from './pages/share.page';
 import DiscoverPage from './pages/discover.page';
 import MessagePage from './pages/messages.page';
 import PrivateRoute from './utils/PrivateRoute';
+import { StateProvider } from './store/store.js';
 
 const theme = createMuiTheme({
   palette: {
@@ -27,6 +28,7 @@ const theme = createMuiTheme({
 
 function App() {
   return (
+    <StateProvider>
     <MuiThemeProvider theme={theme}>
       <Switch>
         <Route
@@ -42,6 +44,7 @@ function App() {
         <PrivateRoute path='/message' component={MessagePage} />
       </Switch>
     </MuiThemeProvider>
+    </StateProvider>
   );
 }
 

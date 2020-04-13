@@ -6,7 +6,7 @@ import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { Link } from "react-router-dom";
-import PhotoUploadCard from "../components/photo-upload-card.component"
+import PhotoUploadCard from "../components/photo-upload-card.component";
 import { TextField } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
@@ -24,7 +24,6 @@ const useStyles = makeStyles((theme) => ({
   med: {
     width: theme.spacing(8),
     height: theme.spacing(8),
-    
   },
 }));
 
@@ -40,44 +39,62 @@ export default function SharePost() {
       alignItems="center"
       spacing={3}
     >
-      <Grid container item sm={6} xs={12} spacing={2} >
-      <Box display="flex" justifyContent="flex-start" boxShadow={3}  width="100%" m={3} p= {3}>
-        <Box p={1}>
-          <Avatar alt="Song Image" src={ProfileImage} className={classes.med} />
-        </Box>
-        <Box p={1}>
-          <Box className={classes.content}>
-            <Typography component="h6" variant="h6">
-              So Many Words
-            </Typography>
-            <Typography variant="subtitle1" color="textSecondary">
-              Pongo - So Many Words
-            </Typography>
+      <Grid container item sm={6} xs={12} spacing={2}>
+        <Box
+          display="flex"
+          justifyContent="flex-start"
+          boxShadow={3}
+          width="100%"
+          m={3}
+          p={3}
+        >
+          <Box p={1}>
+            <Avatar
+              alt="Song Image"
+              src={ProfileImage}
+              className={classes.med}
+            />
+          </Box>
+          <Box p={1}>
+            <Box className={classes.content}>
+              <Typography component="h6" variant="h6">
+                So Many Words
+              </Typography>
+              <Typography variant="subtitle1" color="textSecondary">
+                Pongo - So Many Words
+              </Typography>
+            </Box>
+          </Box>
+          <Box p={1}>
+            <Link to="/share"> Change </Link>
           </Box>
         </Box>
-        <Box p={1}>
-          <Link to="/share"> Change </Link>
+        <Box
+          display="flex"
+          justifyContent="flex-start"
+          boxShadow={3}
+          width="100%"
+          flexDirection="column"
+          m={3}
+          p={3}
+        >
+          <Typography component="h5" variant="h5">
+            Add Description:
+          </Typography>
+          <TextField
+            id="filled-multiline-static"
+            label="Write a Caption"
+            multiline
+            rows="8"
+            fullWidth
+            defaultValue=""
+            variant="filled"
+          />
         </Box>
-       </Box>
-       <Box display="flex" justifyContent="flex-start" boxShadow={3}  width="100%"   flexDirection= "column" m={3} p= {3}>
-        <Typography component="h5" variant="h5">
-              Add Description:
-            </Typography>
-        <TextField
-        id="filled-multiline-static"
-        label="Write a Caption"
-        multiline
-        rows="8"
-        fullWidth
-        defaultValue=""
-        variant="filled"
-      />
-      </Box>
-      
       </Grid>
       <Grid item sm={6} xs={12}>
-        <PhotoUploadCard/>
-        </Grid>
+        <PhotoUploadCard />
+      </Grid>
     </Grid>
   );
 }
