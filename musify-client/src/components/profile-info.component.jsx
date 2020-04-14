@@ -1,11 +1,10 @@
-import React, { useRef } from 'react';
+import React, { useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Avatar from '@material-ui/core/Avatar';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
-import Tooltip from '@material-ui/core/Tooltip';
+import { store } from '../store/store.js';
+
 import ProfileUploadAvatar from './photo-upload-avatar.component';
 
 const useStyles = makeStyles((theme) => ({
@@ -20,6 +19,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ProfileInfo(props) {
   const classes = useStyles();
+  const globalState = useContext(store);
 
   return (
     <Grid container className={classes.cover}>
@@ -29,10 +29,10 @@ export default function ProfileInfo(props) {
       <Grid item sm={9}>
         <Box className={classes.content}>
           <Typography component='h5' variant='h5'>
-            {`${props.profile.first_name} ${props.profile.last_name}`}
+            {`${globalState.state.first_name} ${globalState.state.last_name}`}
           </Typography>
           <Typography variant='subtitle1' color='textSecondary'>
-            {props.profile.bio}
+            {globalState.state.bio}
           </Typography>
         </Box>
         <Typography variant='subtitle2' color='textSecondary'>

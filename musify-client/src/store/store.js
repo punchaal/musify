@@ -1,16 +1,15 @@
 // store.js
-import React, { createContext, useReducer } from "react";
+import React, { createContext, useReducer } from 'react';
 
-const initialState = { profile: "" };
+const initialState = { profile: '' };
 const store = createContext(initialState);
 const { Provider } = store;
 
 const StateProvider = ({ children }) => {
   const [state, dispatch] = useReducer((state, action) => {
     switch (action.type) {
-      case "UPDATE":
+      case 'UPDATE':
         state.profile = action.payload;
-        console.log(action.payload);
         return state.profile;
       default:
         throw new Error();
