@@ -1,32 +1,32 @@
-import React, { useEffect, useContext } from 'react';
-import axios from 'axios';
-import config from '../config';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Grid from '@material-ui/core/Grid';
-import { makeStyles } from '@material-ui/core/styles';
-import MusifyAppBar from '../components/musifyappbar.component';
-import ProfileInfo from '../components/profile-info.component';
-import PostThumbnail from '../components/post-thumbnail.component';
-import TokenService from '../services/token-service';
-import { store } from '../store/store.js';
-import EditBio from '../components/edit-bio.component';
+import React, { useEffect, useContext } from "react";
+import axios from "axios";
+import config from "../config";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Grid from "@material-ui/core/Grid";
+import { makeStyles } from "@material-ui/core/styles";
+import MusifyAppBar from "../components/musifyappbar.component";
+import ProfileInfo from "../components/profile/profile-info.component";
+import PostThumbnail from "../components/profile/post-thumbnail.component";
+import TokenService from "../services/token-service";
+import { store } from "../store/store.js";
+import EditBio from "../components/profile/edit-bio.component";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: 'flex',
-    background: '#ffffff',
+    display: "flex",
+    background: "#ffffff",
   },
   marginBox: {
     margin: theme.spacing(5),
   },
   modal: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
   },
   paper: {
     backgroundColor: theme.palette.background.paper,
-    border: '1px solid #2BA375',
+    border: "1px solid #2BA375",
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
   },
@@ -46,7 +46,7 @@ export default function ProfilePage() {
         const token = TokenService.getAuthToken();
         const headers = {
           headers: {
-            'x-auth-token': token,
+            "x-auth-token": token,
           },
         };
         let profile = await axios.get(
@@ -62,7 +62,7 @@ export default function ProfilePage() {
         };
 
         //updating the globalstate with profile information
-        dispatch({ type: 'UPDATE', payload: profileInfo });
+        dispatch({ type: "UPDATE", payload: profileInfo });
       }
       getProfile();
     } catch (err) {
@@ -72,14 +72,14 @@ export default function ProfilePage() {
   }, []);
 
   return (
-    <Grid container component='main' className={classes.root}>
+    <Grid container component="main" className={classes.root}>
       <MusifyAppBar />
       <CssBaseline />
       <Grid
         container
-        direction='row'
-        justify='center'
-        alignItems='center'
+        direction="row"
+        justify="center"
+        alignItems="center"
         className={classes.marginBox}
       >
         <Grid item sm={8} xs={12}>
@@ -91,9 +91,9 @@ export default function ProfilePage() {
       </Grid>
       <Grid
         container
-        direction='row'
-        justify='center'
-        alignItems='center'
+        direction="row"
+        justify="center"
+        alignItems="center"
         className={classes.marginBox}
       >
         <PostThumbnail />

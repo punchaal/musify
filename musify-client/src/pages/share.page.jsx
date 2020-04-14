@@ -4,8 +4,7 @@ import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
 import MusifyAppBar from "../components/musifyappbar.component";
 import SearchBar from "material-ui-search-bar";
-// import SharePost from "../components/share-post.component";
-import MusicCard from "../components/share/music-card.component";
+import SharePost from "../components/share/share-post.component";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,10 +22,10 @@ export default function SharePage() {
   const [formData, setFormData] = useState({
     searchVal: "",
   });
-  // const [error, setError] = useState({
-  //   error: false,
-  //   msg: '',
-  // });
+  const [error, setError] = useState({
+    error: false,
+    msg: "",
+  });
   const { searchVal } = formData;
 
   return (
@@ -58,7 +57,7 @@ export default function SharePage() {
           alignItems="center"
           className={classes.marginBox}
         ></Grid>
-        <MusicCard />
+        <SharePost />
       </Grid>
     </Grid>
   );

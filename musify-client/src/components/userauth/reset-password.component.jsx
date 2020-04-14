@@ -1,28 +1,27 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import Box from '@material-ui/core/Box';
-import Button from '@material-ui/core/Button';
-import GradientButton from '../components/gradient-button.component';
-import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import axios from 'axios';
-import config from '../config';
-import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
-import Validate from '../services/validate';
-import Alert from '@material-ui/lab/Alert';
-
+import React, { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
+import Box from "@material-ui/core/Box";
+import Button from "@material-ui/core/Button";
+import GradientButton from "../gradient-button.component";
+import { makeStyles } from "@material-ui/core/styles";
+import Paper from "@material-ui/core/Paper";
+import Grid from "@material-ui/core/Grid";
+import Typography from "@material-ui/core/Typography";
+import axios from "axios";
+import config from "../../config";
+import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
+import Validate from "../../services/validate";
+import Alert from "@material-ui/lab/Alert";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
     margin: theme.spacing(30, 6),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
   },
   form: {
-    width: '100%', // Fix IE 11 issue.
+    width: "100%", // Fix IE 11 issue.
     marginTop: theme.spacing(1),
   },
   submit: {
@@ -36,10 +35,14 @@ export default function ResetPassword() {
   const location = useLocation().pathname;
 
   const [successMsg, setSucccessMsg] = useState(false);
-  const [error, setError] = useState({ resetTokenError: false, resetPasswordError: false, resetPasswordErrorMsg:"" });
+  const [error, setError] = useState({
+    resetTokenError: false,
+    resetPasswordError: false,
+    resetPasswordErrorMsg: "",
+  });
   const [formData, setFormData] = useState({
-    username: '',
-    password: '',
+    username: "",
+    password: "",
   });
 
   //Error checking for password length
@@ -55,7 +58,7 @@ export default function ResetPassword() {
           },
         });
         console.log(res);
-        res.data.message === 'Password reset link has been verified'
+        res.data.message === "Password reset link has been verified"
           ? setError({ resetTokenError: false })
           : setError({ resetTokenError: true });
 
@@ -79,7 +82,7 @@ export default function ResetPassword() {
     try {
       const configure = {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       };
       const user = {
@@ -92,7 +95,10 @@ export default function ResetPassword() {
 
       setSucccessMsg(true);
     } catch (err) {
-      setError({resetPasswordError: true,resetPasswordErrorMsg: err.response.data.errors[0].msg})
+      setError({
+        resetPasswordError: true,
+        resetPasswordErrorMsg: err.response.data.errors[0].msg,
+      });
       console.error(err.response.data);
     }
   };
@@ -101,24 +107,24 @@ export default function ResetPassword() {
     return (
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
         <div className={classes.paper}>
-          <Typography component='h1' variant='body1'>
+          <Typography component="h1" variant="body1">
             Password succesfully updated. Please try to login with the new
-            credentials.{' '}
+            credentials.{" "}
           </Typography>
           <Grid
             container
-            direction='row'
-            justify='center'
-            alignContent='center'
+            direction="row"
+            justify="center"
+            alignContent="center"
           >
             <Box m={2}>
               <Button
                 component={Link}
-                to='/'
-                type='button'
+                to="/"
+                type="button"
                 fullWidth
-                variant='contained'
-                color='primary'
+                variant="contained"
+                color="primary"
               >
                 Back To Login
               </Button>
@@ -133,23 +139,23 @@ export default function ResetPassword() {
     return (
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
         <div className={classes.paper}>
-          <Typography component='h1' variant='body1'>
+          <Typography component="h1" variant="body1">
             Problem resetting the password. Please request another reset link
           </Typography>
           <Grid
             container
-            direction='row'
-            justify='center'
-            alignContent='center'
+            direction="row"
+            justify="center"
+            alignContent="center"
           >
             <Box m={2}>
               <Button
                 component={Link}
-                to='/forgot-password'
-                type='button'
+                to="/forgot-password"
+                type="button"
                 fullWidth
-                variant='contained'
-                color='primary'
+                variant="contained"
+                color="primary"
               >
                 Forgot Password
               </Button>
@@ -157,9 +163,9 @@ export default function ResetPassword() {
             <Box m={2}>
               <Button
                 component={Link}
-                to='/'
-                variant='outlined'
-                color='primary'
+                to="/"
+                variant="outlined"
+                color="primary"
               >
                 Go Back Home
               </Button>
@@ -172,10 +178,10 @@ export default function ResetPassword() {
     return (
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
         <div className={classes.paper}>
-          <Typography component='h1' variant='h5'>
-            Update Password{' '}
+          <Typography component="h1" variant="h5">
+            Update Password{" "}
           </Typography>
-          <Typography component='h1' variant='body1'>
+          <Typography component="h1" variant="body1">
             Please select a new password
           </Typography>
           <ValidatorForm
@@ -183,31 +189,32 @@ export default function ResetPassword() {
             noValidate
             onSubmit={(e) => updatePassword(e)}
           >
-            {error.resetPasswordError && 
-          <Alert variant="outlined" severity="error">
-             {error.resetPasswordErrorMsg}
-          </Alert> }
-             <TextValidator
-                variant='outlined'
-                margin='normal'
-                required
-                fullWidth
-                name='password'
-                label='Password'
-                type='password'
-                id='password'
-                autoComplete='current-password'
-                color='secondary'
-                value={password}
-                validators={['required', 'minLen']}
-                errorMessages={[Validate.REQUIRED, Validate.ERROR_LEN]}
-                onChange={(e) => onChange(e)}
-              />
-            <GradientButton
-              type='submit'
+            {error.resetPasswordError && (
+              <Alert variant="outlined" severity="error">
+                {error.resetPasswordErrorMsg}
+              </Alert>
+            )}
+            <TextValidator
+              variant="outlined"
+              margin="normal"
+              required
               fullWidth
-              variant='contained'
-              color='primary'
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+              color="secondary"
+              value={password}
+              validators={["required", "minLen"]}
+              errorMessages={[Validate.REQUIRED, Validate.ERROR_LEN]}
+              onChange={(e) => onChange(e)}
+            />
+            <GradientButton
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
               className={classes.submit}
             >
               Update Password

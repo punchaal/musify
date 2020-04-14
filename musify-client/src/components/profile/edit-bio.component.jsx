@@ -1,6 +1,6 @@
 import React, { useState, useContext, Fragment } from 'react';
 import axios from 'axios';
-import config from '../config';
+import config from '../../config';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
@@ -8,10 +8,10 @@ import Fade from '@material-ui/core/Fade';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
-import Validate from '../services/validate';
+import Validate from '../../services/validate';
 import Alert from '@material-ui/lab/Alert';
-import { store } from '../store/store.js';
-import TokenService from '../services/token-service';
+import { store } from '../../store/store.js';
+import TokenService from '../../services/token-service';
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -82,6 +82,7 @@ export default function EditBio() {
       handleClose();
     } catch (err) {
       console.error(err.message);
+      setError({ error: true, msg: err.message });
     }
   };
 

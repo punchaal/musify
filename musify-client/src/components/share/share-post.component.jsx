@@ -5,14 +5,13 @@ import ProfileImage from "../assets/turntable1.jpg";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import { Link } from "react-router-dom";
-import PhotoUploadCard from "../components/photo-upload-card.component";
-import { TextField } from "@material-ui/core";
+import SongPhotoUpload from "./song-photo-upload.component";
+import { TextField, Button } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   cover: {
     display: "flex",
-    margin: theme.spacing(1),
+    margin: theme.spacing(2),
   },
   avatar: {
     margin: theme.spacing(2, 2),
@@ -65,8 +64,10 @@ export default function SharePost() {
               </Typography>
             </Box>
           </Box>
-          <Box p={1}>
-            <Link to="/share"> Change </Link>
+          <Box p={1} display="flex" alignItems="center">
+            <Button type="button" color="primary">
+              Change
+            </Button>
           </Box>
         </Box>
         <Box
@@ -92,9 +93,14 @@ export default function SharePost() {
           />
         </Box>
       </Grid>
-      <Grid item sm={6} xs={12}>
-        <PhotoUploadCard />
+      <Grid container item sm={6} xs={12} spacing={2}>
+        <Grid container direction="column" justify="center" alignItems="center">
+          <SongPhotoUpload />
+        </Grid>
       </Grid>
+      <Button type="button" variant="contained" color="primary">
+        Share Post
+      </Button>
     </Grid>
   );
 }
