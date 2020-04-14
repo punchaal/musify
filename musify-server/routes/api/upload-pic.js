@@ -4,6 +4,7 @@ require('dotenv').config();
 const Profile = require('../../models/Profile');
 const multer = require('multer');
 const cloudinary = require('cloudinary');
+const auth = require('../../middleware/auth');
 
 //IMAGE UPLOAD CONFIGURATION
 
@@ -30,17 +31,30 @@ cloudinary.config({
   api_secret: apiSecret,
 });
 
-router.post('/add', upload.single('image'), (req, res) => {
+router.post('/add', auth, upload.single('image'), (req, res) => {
   console.log(req.file);
-  cloudinary.v2.uploader.upload(req.file.path, function (err, result) {
+  cloudinary.v2.uploader.upload(req.file.path, async function (err, result) {
     if (err) {
       req.json(err.message);
     }
-    Profile.update({
-      profile_image: result.secure_url,
-    });
 
-    res.send(req.file);
+    try {
+      let profile = await Profile.findOne({ user: req.user.id });
+
+      if (profile) {
+        //Update
+        profile = await Profile.findOneAndUpdate(
+          { user: req.user.id },
+          { $set: { profile_image: result.secure_url } },
+          { new: true }
+        ).populate('user', ['first_name', 'last_name']);
+      }
+
+      return res.json(profile);
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send('Server Error');
+    }
   });
 });
 

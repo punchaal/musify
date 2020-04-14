@@ -78,9 +78,6 @@ export default function SignIn() {
       // Save the token in local storage
       TokenService.saveAuthToken(res.data.token);
 
-      // // eslint-disable-next-line
-      // const userEmail = React.createContext({ email: email });
-
       history.push('/profile-page');
     } catch (err) {
       console.error(err.response.data);

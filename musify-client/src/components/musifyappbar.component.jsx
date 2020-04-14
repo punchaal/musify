@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useHistory, Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -10,8 +10,9 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import TokenService from '../services/token-service';
-import Avatar from "@material-ui/core/Avatar";
-import ProfileImage from "../assets/turntable1.jpg";
+import Avatar from '@material-ui/core/Avatar';
+import ProfileImage from '../assets/turntable1.jpg';
+import { store } from '../store/store.js';
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -24,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
   menuButton: {
     marginRight: theme.spacing(1),
   },
-  
+
   title: {
     display: 'none',
     [theme.breakpoints.up('sm')]: {
@@ -62,6 +63,8 @@ const useStyles = makeStyles((theme) => ({
 export default function MusifyAppBar() {
   const classes = useStyles();
   const history = useHistory();
+  const globalState = useContext(store);
+
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
@@ -101,7 +104,11 @@ export default function MusifyAppBar() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem><Link to="/profile-page" className={classes.link}>Profile </Link> </MenuItem>
+      <MenuItem>
+        <Link to='/profile-page' className={classes.link}>
+          Profile{' '}
+        </Link>{' '}
+      </MenuItem>
       <MenuItem onClick={handleLogOut}>Logout</MenuItem>
     </Menu>
   );
@@ -117,28 +124,29 @@ export default function MusifyAppBar() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      
-      <MenuItem component = {Link} to = '/share'>
+      <MenuItem component={Link} to='/share'>
         Share
       </MenuItem>
-      <MenuItem component = {Link} to = '/discover'>
+      <MenuItem component={Link} to='/discover'>
         Discover
       </MenuItem>
-      <MenuItem component = {Link} to = '/message'>
+      <MenuItem component={Link} to='/message'>
         Messages
       </MenuItem>
       <MenuItem onClick={handleLogOut}>
         <p>Logout</p>
       </MenuItem>
       <MenuItem>
-      <Link to="/profile-page" className={classes.link} color="primary"> <IconButton
-          aria-label='account of current user'
-          aria-controls='primary-search-account-menu'
-          aria-haspopup='true'
-          color='inherit'
-        >
-         <Avatar alt="Remy Sharp" src={ProfileImage} />
-        </IconButton>
+        <Link to='/profile-page' className={classes.link} color='primary'>
+          {' '}
+          <IconButton
+            aria-label='account of current user'
+            aria-controls='primary-search-account-menu'
+            aria-haspopup='true'
+            color='inherit'
+          >
+            <Avatar alt='Remy Sharp' src={ProfileImage} />
+          </IconButton>
         </Link>
       </MenuItem>
     </Menu>
@@ -154,14 +162,18 @@ export default function MusifyAppBar() {
 
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <Button variant="outlined" component = {Link} to = '/share'>
-            Share Music 
+            <Button variant='outlined' component={Link} to='/share'>
+              Share Music
             </Button>
-            <Button component = {Link} to = '/discover'>  Discover
+            <Button component={Link} to='/discover'>
+              {' '}
+              Discover
             </Button>
-            <Button component = {Link} to = '/message'> Messages 
+            <Button component={Link} to='/message'>
+              {' '}
+              Messages
             </Button>
-            
+
             <IconButton
               edge='end'
               aria-label='account of current user'
@@ -170,7 +182,7 @@ export default function MusifyAppBar() {
               onClick={handleProfileMenuOpen}
               color='inherit'
             >
-              <Avatar alt="Remy Sharp" src={ProfileImage} />
+              <Avatar alt='Remy Sharp' src={globalState.state.profile_image} />
             </IconButton>
           </div>
           <div className={classes.sectionMobile}>
