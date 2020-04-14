@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext, Fragment } from 'react';
+import React, { useState, useContext, Fragment } from 'react';
 import axios from 'axios';
 import config from '../config';
 import { makeStyles } from '@material-ui/core/styles';
