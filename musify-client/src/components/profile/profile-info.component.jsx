@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import { store } from "../store/store.js";
+import { store } from "../../store/store.js";
 
 import ProfileUploadAvatar from "./photo-upload-avatar.component";
 
@@ -19,7 +19,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ProfileInfo() {
   const classes = useStyles();
-  const globalState = useContext(store);
 
   //getting the global state for user info
   const globalState = useContext(store);

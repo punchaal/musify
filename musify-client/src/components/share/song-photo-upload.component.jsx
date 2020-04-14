@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function PhotoUploadCard() {
+export default function SongPhotoUpload() {
   const classes = useStyles();
 
   return (

@@ -5,8 +5,7 @@ import ProfileImage from "../assets/turntable1.jpg";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import { Link } from "react-router-dom";
-import PhotoUploadCard from "../components/photo-upload-card.component";
+import SongPhotoUpload from "./song-photo-upload.component";
 import { TextField, Button } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
@@ -96,7 +95,7 @@ export default function SharePost() {
       </Grid>
       <Grid container item sm={6} xs={12} spacing={2}>
         <Grid container direction="column" justify="center" alignItems="center">
-          <PhotoUploadCard />
+          <SongPhotoUpload />
         </Grid>
       </Grid>
       <Button type="button" variant="contained" color="primary">

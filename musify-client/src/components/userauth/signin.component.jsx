@@ -1,35 +1,35 @@
-import React, { useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
-import Avatar from '@material-ui/core/Avatar';
-import GradientButton from './gradient-button.component';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import { makeStyles } from '@material-ui/core/styles';
-import Checkbox from '@material-ui/core/Checkbox';
-import Paper from '@material-ui/core/Paper';
-import Box from '@material-ui/core/Box';
-import Grid from '@material-ui/core/Grid';
-import QueueMusicIcon from '@material-ui/icons/QueueMusic';
-import Typography from '@material-ui/core/Typography';
-import axios from 'axios';
-import config from '../config';
-import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
-import TokenService from '../services/token-service';
-import Validate from '../services/validate';
-import Alert from '@material-ui/lab/Alert';
+import React, { useState } from "react";
+import { Link, useHistory } from "react-router-dom";
+import Avatar from "@material-ui/core/Avatar";
+import GradientButton from "../gradient-button.component";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import { makeStyles } from "@material-ui/core/styles";
+import Checkbox from "@material-ui/core/Checkbox";
+import Paper from "@material-ui/core/Paper";
+import Box from "@material-ui/core/Box";
+import Grid from "@material-ui/core/Grid";
+import QueueMusicIcon from "@material-ui/icons/QueueMusic";
+import Typography from "@material-ui/core/Typography";
+import axios from "axios";
+import config from "../../config";
+import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
+import TokenService from "../../services/token-service";
+import Validate from "../../services/validate";
+import Alert from "@material-ui/lab/Alert";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
     margin: theme.spacing(8, 4),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
   },
   avatar: {
     margin: theme.spacing(1),
     backgroundColor: theme.palette.primary.main,
   },
   form: {
-    width: '100%', // Fix IE 11 issue.
+    width: "100%", // Fix IE 11 issue.
     marginTop: theme.spacing(1),
   },
   submit: {
@@ -47,12 +47,12 @@ export default function SignIn() {
   const endpoint = config.API_ENDPOINT;
 
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   });
   const [error, setError] = useState({
     error: false,
-    msg: '',
+    msg: "",
   });
 
   const { email, password } = formData;
@@ -65,7 +65,7 @@ export default function SignIn() {
     try {
       const config = {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       };
       const loginUser = {
@@ -78,7 +78,7 @@ export default function SignIn() {
       // Save the token in local storage
       TokenService.saveAuthToken(res.data.token);
 
-      history.push('/profile-page');
+      history.push("/profile-page");
     } catch (err) {
       console.error(err.response.data);
       setError({ error: true, msg: err.response.data.errors[0].msg });
@@ -91,7 +91,7 @@ export default function SignIn() {
         <Avatar className={classes.avatar}>
           <QueueMusicIcon />
         </Avatar>
-        <Typography component='h1' variant='h5'>
+        <Typography component="h1" variant="h5">
           Sign in
         </Typography>
         <ValidatorForm
@@ -100,52 +100,52 @@ export default function SignIn() {
           onSubmit={(e) => onSubmit(e)}
         >
           {error.error && (
-            <Alert variant='outlined' severity='error'>
+            <Alert variant="outlined" severity="error">
               {error.msg}
             </Alert>
           )}
 
           <TextValidator
-            variant='outlined'
-            margin='normal'
+            variant="outlined"
+            margin="normal"
             required
             fullWidth
-            id='email'
-            label='Email Address'
-            name='email'
-            autoComplete='email'
+            id="email"
+            label="Email Address"
+            name="email"
+            autoComplete="email"
             autoFocus
-            color='secondary'
+            color="secondary"
             value={email}
             onChange={(e) => onChange(e)}
-            validators={['required', 'isEmail']}
+            validators={["required", "isEmail"]}
             errorMessages={[Validate.REQUIRED, Validate.INVALID_EMAIL]}
           />
           <TextValidator
-            variant='outlined'
-            margin='normal'
+            variant="outlined"
+            margin="normal"
             required
             fullWidth
-            name='password'
-            label='Password'
-            type='password'
-            id='password'
-            autoComplete='current-password'
-            color='secondary'
+            name="password"
+            label="Password"
+            type="password"
+            id="password"
+            autoComplete="current-password"
+            color="secondary"
             value={password}
             onChange={(e) => onChange(e)}
-            validators={['required', 'minLen']}
+            validators={["required", "minLen"]}
             errorMessages={[Validate.REQUIRED, Validate.ERROR_LEN]}
           />
           <FormControlLabel
-            control={<Checkbox value='remember' color='primary' />}
-            label='Remember me'
+            control={<Checkbox value="remember" color="primary" />}
+            label="Remember me"
           />
           <GradientButton
-            type='submit'
+            type="submit"
             fullWidth
-            variant='contained'
-            color='primary'
+            variant="contained"
+            color="primary"
             className={classes.submit}
           >
             Sign In
@@ -153,16 +153,16 @@ export default function SignIn() {
           <Grid container>
             <Grid item xs>
               <Link
-                to='/forgot-password'
-                variant='body2'
-                className='classes.link'
-                color='inherit'
+                to="/forgot-password"
+                variant="body2"
+                className="classes.link"
+                color="inherit"
               >
                 Forgot password?
               </Link>
             </Grid>
             <Grid item>
-              <Link to='/signup'>{"Don't have an account? Sign Up"}</Link>
+              <Link to="/signup">{"Don't have an account? Sign Up"}</Link>
             </Grid>
           </Grid>
           <Box mt={5}></Box>

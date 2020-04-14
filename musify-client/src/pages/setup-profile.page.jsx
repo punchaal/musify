@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
-import ProfileUploadAvatar from "../components/photo-upload-avatar.component";
+import ProfileUploadAvatar from "../components/profile/photo-upload-avatar.component";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import MusifyAppBar from "../components/musifyappbar.component";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import Validate from "../services/validate";
-import Alert from "@material-ui/lab/Alert";
+// import Alert from "@material-ui/lab/Alert";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
@@ -37,10 +37,10 @@ export default function ProfileInfo() {
     bio: "",
   });
   const { bio } = formData;
-  const [error, setError] = useState({
-    error: false,
-    msg: "",
-  });
+  // const [error, setError] = useState({
+  //   error: false,
+  //   msg: "",
+  // });
   Validate.maxLengthCheck(Validate.MAX_BIO_LEN);
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -79,11 +79,11 @@ export default function ProfileInfo() {
               noValidate
               onSubmit={(e) => onSubmit(e)}
             >
-              {error.error && (
+              {/* {error.error && (
                 <Alert variant="outlined" severity="error">
                   {error.msg}
                 </Alert>
-              )}
+              )} */}
 
               <TextValidator
                 variant="outlined"
