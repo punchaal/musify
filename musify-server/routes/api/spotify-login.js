@@ -1,33 +1,34 @@
 const express = require('express');
 const router = express.Router();
-var request = require('request');
-var querystring = require('querystring');
+let request = require('request');
+let querystring = require('querystring');
 require('dotenv').config();
 const auth = require('../../middleware/auth');
+const client = require('../../src/redis-local');
 
-var client_id = process.env.CLIENT_ID;
-var client_secret = process.env.CLIENT_SECRET;
-var redirect_uri = process.env.REDIRECT_URI;
+let client_id = process.env.CLIENT_ID;
+let client_secret = process.env.CLIENT_SECRET;
+let redirect_uri = process.env.REDIRECT_URI;
 
 router.get('/', (req, res) => {
-  var generateRandomString = function (length) {
-    var text = '';
-    var possible =
+  let generateRandomString = function (length) {
+    let text = '';
+    let possible =
       'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
-    for (var i = 0; i < length; i++) {
+    for (let i = 0; i < length; i++) {
       text += possible.charAt(Math.floor(Math.random() * possible.length));
     }
     return text;
   };
 
-  var stateKey = 'spotify_auth_state';
+  let stateKey = 'spotify_auth_state';
 
-  var state = generateRandomString(16);
+  let state = generateRandomString(16);
   res.cookie(stateKey, state);
 
   // Request authorization
-  var scope = 'user-read-private user-read-email';
+  let scope = 'user-read-private user-read-email';
   res.redirect(
     'https://accounts.spotify.com/authorize?' +
       querystring.stringify({
@@ -43,9 +44,9 @@ router.get('/', (req, res) => {
 router.post('/callback', auth, (req, res) => {
   // Application requests refresh and access tokens
   // after checking the state parameter
-  var code = req.body.code || null;
-  var state = req.body.state || null;
-  // var storedState = req.cookies ? req.cookies[stateKey] : null;
+  let code = req.body.code || null;
+  let state = req.body.state || null;
+  // let storedState = req.cookies ? req.cookies[stateKey] : null;
 
   if (state === null) {
     res.redirect(
@@ -55,9 +56,8 @@ router.post('/callback', auth, (req, res) => {
         })
     );
   } else {
-    console.log('Now I am here');
     // res.clearCookie(stateKey);
-    var authOptions = {
+    let authOptions = {
       url: 'https://accounts.spotify.com/api/token',
       form: {
         code: code,
@@ -74,7 +74,7 @@ router.post('/callback', auth, (req, res) => {
 
     request.post(authOptions, async (error, response, body) => {
       if (!error && response.statusCode === 200) {
-        var access_token = body.access_token,
+        let access_token = body.access_token,
           refresh_token = body.refresh_token;
         try {
           let user = await User.findOneAndUpdate(
@@ -82,11 +82,16 @@ router.post('/callback', auth, (req, res) => {
             {
               $set: {
                 refresh_token: refresh_token,
-                access_token: access_token,
               },
             },
             { new: true }
           );
+
+          console.log(user);
+          // Set access token to Redis
+
+          client.setex(`${user._id}-access`, 3600, access_token);
+
           return res.json(user);
         } catch (err) {
           console.error(err.message);
@@ -99,10 +104,10 @@ router.post('/callback', auth, (req, res) => {
   }
 });
 
-router.get('/refresh_token', async (req, res) => {
+router.post('/refresh_token', auth, async (req, res) => {
   // requesting access token from refresh token
-  var refresh_token = req.query.refresh_token;
-  var authOptions = {
+  let refresh_token = req.query.refresh_token;
+  let authOptions = {
     url: 'https://accounts.spotify.com/api/token',
     headers: {
       Authorization:
@@ -119,10 +124,12 @@ router.get('/refresh_token', async (req, res) => {
   try {
     await axios.post(authOptions, (error, response, body) => {
       if (!error && response.statusCode === 200) {
-        var access_token = body.access_token;
+        let access_token = body.access_token;
         res.send({
           access_token: access_token,
         });
+
+        client.setex(`${user._id}-access`, 3600, access_token);
       }
     });
   } catch (err) {

@@ -1,10 +1,15 @@
 require('dotenv').config();
 const express = require('express');
 const connectDB = require('../config/db');
+const redis = require('redis');
 const morgan = require('morgan');
 const cors = require('cors');
 const helmet = require('helmet');
 const { NODE_ENV } = require('./config');
+
+const REDIS_PORT = process.env.PORT || 6379;
+
+const client = redis.createClient(REDIS_PORT);
 
 const app = express();
 
