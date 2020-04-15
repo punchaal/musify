@@ -1,27 +1,27 @@
-import React, { useState, useContext, Fragment } from "react";
-import axios from "axios";
-import config from "../../config";
-import { makeStyles } from "@material-ui/core/styles";
-import Modal from "@material-ui/core/Modal";
-import Backdrop from "@material-ui/core/Backdrop";
-import Fade from "@material-ui/core/Fade";
-import Box from "@material-ui/core/Box";
-import Button from "@material-ui/core/Button";
-import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
-import Validate from "../../services/validate";
-import Alert from "@material-ui/lab/Alert";
-import { store } from "../../store/store.js";
-import TokenService from "../../services/token-service";
+import React, { useState, useContext, Fragment } from 'react';
+import axios from 'axios';
+import config from '../../config';
+import { makeStyles } from '@material-ui/core/styles';
+import Modal from '@material-ui/core/Modal';
+import Backdrop from '@material-ui/core/Backdrop';
+import Fade from '@material-ui/core/Fade';
+import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
+import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
+import Validate from '../../services/validate';
+import Alert from '@material-ui/lab/Alert';
+import { store } from '../../store/store.js';
+import TokenService from '../../services/token-service';
 
 const useStyles = makeStyles((theme) => ({
   modal: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   paper: {
     backgroundColor: theme.palette.background.paper,
-    border: "1px solid #2BA375",
+    border: '1px solid #2BA375',
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
   },
@@ -36,7 +36,7 @@ export default function EditBio() {
   //for editing the bio
 
   const [formData, setFormData] = useState({
-    bio: "",
+    bio: '',
   });
 
   const { bio } = formData;
@@ -50,7 +50,7 @@ export default function EditBio() {
 
   const handleClose = () => {
     setOpen(false);
-    setFormData({ bio: "" });
+    setFormData({ bio: '' });
   };
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -58,8 +58,8 @@ export default function EditBio() {
       const token = TokenService.getAuthToken();
       const headers = {
         headers: {
-          "Content-Type": "application/json",
-          "x-auth-token": token,
+          'Content-Type': 'application/json',
+          'x-auth-token': token,
         },
       };
       const body = JSON.stringify({ bio });
@@ -77,7 +77,7 @@ export default function EditBio() {
       };
 
       //updating the globalstate with profile information
-      await dispatch({ type: "UPDATE", payload: profileInfo });
+      await dispatch({ type: 'UPDATE', payload: profileInfo });
 
       handleClose();
     } catch (err) {
@@ -89,21 +89,21 @@ export default function EditBio() {
   //checking error for edit bio
   const [error, setError] = useState({
     error: false,
-    msg: "",
+    msg: '',
   });
   Validate.maxLengthCheck(Validate.MAX_BIO_LEN);
 
   // Ends here
   return (
     <Fragment>
-      <Box fontWeight="fontWeightBold" m={1}>
-        <Button variant="outlined" color="primary" onClick={handleOpen}>
+      <Box fontWeight='fontWeightBold' m={1}>
+        <Button variant='outlined' color='primary' onClick={handleOpen}>
           Edit Bio
         </Button>
       </Box>
       <Modal
-        aria-labelledby="transition-modal-title"
-        aria-describedby="transition-modal-description"
+        aria-labelledby='transition-modal-title'
+        aria-describedby='transition-modal-description'
         className={classes.modal}
         open={open}
         onClose={handleClose}
@@ -115,7 +115,7 @@ export default function EditBio() {
       >
         <Fade in={open}>
           <div className={classes.paper}>
-            <h2 id="transition-modal-title">Update your bio</h2> (150
+            <h2 id='transition-modal-title'>Update your bio</h2> (150
             characters)
             <ValidatorForm
               className={classes.form}
@@ -123,33 +123,33 @@ export default function EditBio() {
               onSubmit={(e) => onSubmit(e)}
             >
               {error.error && (
-                <Alert variant="outlined" severity="error">
+                <Alert variant='outlined' severity='error'>
                   {error.msg}
                 </Alert>
               )}
 
               <TextValidator
-                variant="outlined"
-                margin="normal"
+                variant='outlined'
+                margin='normal'
                 required
                 fullWidth
-                id="bio"
-                label=""
-                name="bio"
-                autoComplete="bio"
+                id='bio'
+                label=''
+                name='bio'
+                autoComplete='bio'
                 autoFocus
-                color="secondary"
+                color='secondary'
                 value={bio}
                 multiline
                 onChange={(e) => setFormData({ bio: e.target.value })}
-                validators={["required", "maxLen"]}
+                validators={['required', 'maxLen']}
                 errorMessages={[Validate.REQUIRED, Validate.ERROR_LEN_BIO]}
               />
               <Button
-                type="submit"
+                type='submit'
                 fullWidth
-                variant="contained"
-                color="primary"
+                variant='contained'
+                color='primary'
               >
                 Update
               </Button>

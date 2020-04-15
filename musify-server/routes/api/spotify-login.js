@@ -1,15 +1,15 @@
 const express = require('express');
 const router = express.Router();
-var axios = require('axios');
+var request = require('request');
 var querystring = require('querystring');
 require('dotenv').config();
-const User = require('../../models/User');
+const auth = require('../../middleware/auth');
 
 var client_id = process.env.CLIENT_ID;
 var client_secret = process.env.CLIENT_SECRET;
 var redirect_uri = process.env.REDIRECT_URI;
 
-router.get('/', function (req, res) {
+router.get('/', (req, res) => {
   var generateRandomString = function (length) {
     var text = '';
     var possible =
@@ -40,15 +40,14 @@ router.get('/', function (req, res) {
   );
 });
 
-router.get('/callback', function (req, res) {
+router.post('/callback', auth, (req, res) => {
   // Application requests refresh and access tokens
   // after checking the state parameter
+  var code = req.body.code || null;
+  var state = req.body.state || null;
+  // var storedState = req.cookies ? req.cookies[stateKey] : null;
 
-  var code = req.query.code || null;
-  var state = req.query.state || null;
-  var storedState = req.cookies ? req.cookies[stateKey] : null;
-
-  if (state === null || state !== storedState) {
+  if (state === null) {
     res.redirect(
       '/#' +
         querystring.stringify({
@@ -56,7 +55,8 @@ router.get('/callback', function (req, res) {
         })
     );
   } else {
-    res.clearCookie(stateKey);
+    console.log('Now I am here');
+    // res.clearCookie(stateKey);
     var authOptions = {
       url: 'https://accounts.spotify.com/api/token',
       form: {
@@ -67,32 +67,39 @@ router.get('/callback', function (req, res) {
       headers: {
         Authorization:
           'Basic ' +
-          new Buffer(client_id + ':' + client_secret).toString('base64'),
+          new Buffer.from(client_id + ':' + client_secret).toString('base64'),
       },
       json: true,
     };
 
-    axios.post(authOptions, function (error, response, body) {
+    request.post(authOptions, async (error, response, body) => {
       if (!error && response.statusCode === 200) {
         var access_token = body.access_token,
           refresh_token = body.refresh_token;
-
-        var options = {
-          url: 'https://api.spotify.com/v1/me',
-          headers: { Authorization: 'Bearer ' + access_token },
-          json: true,
-        };
-
-        // use the access token to access the Spotify Web API
-        axios.get(options, function (error, response, body) {
-          console.log(body);
-        });
+        try {
+          let user = await User.findOneAndUpdate(
+            { _id: req.user.id },
+            {
+              $set: {
+                refresh_token: refresh_token,
+                access_token: access_token,
+              },
+            },
+            { new: true }
+          );
+          return res.json(user);
+        } catch (err) {
+          console.error(err.message);
+          res.status(500).send('Server error');
+        }
+      } else {
+        res.send('Something went wrong');
       }
     });
   }
 });
 
-router.get('/refresh_token', async function (req, res) {
+router.get('/refresh_token', async (req, res) => {
   // requesting access token from refresh token
   var refresh_token = req.query.refresh_token;
   var authOptions = {
@@ -110,7 +117,7 @@ router.get('/refresh_token', async function (req, res) {
   };
 
   try {
-    await axios.post(authOptions, function (error, response, body) {
+    await axios.post(authOptions, (error, response, body) => {
       if (!error && response.statusCode === 200) {
         var access_token = body.access_token;
         res.send({
