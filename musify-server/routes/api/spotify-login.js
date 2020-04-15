@@ -87,7 +87,6 @@ router.post('/callback', auth, (req, res) => {
             { new: true }
           );
 
-          console.log(user);
           // Set access token to Redis
 
           client.setex(`${user._id}-access`, 3600, access_token);
@@ -106,7 +105,13 @@ router.post('/callback', auth, (req, res) => {
 
 router.post('/refresh_token', auth, async (req, res) => {
   // requesting access token from refresh token
-  let refresh_token = req.query.refresh_token;
+
+  let userId = req.user.id;
+
+  // Find user in the db to get their refresh token
+  let user = await User.findById(userId);
+  let refresh_token = user.refresh_token;
+
   let authOptions = {
     url: 'https://accounts.spotify.com/api/token',
     headers: {
@@ -122,7 +127,7 @@ router.post('/refresh_token', auth, async (req, res) => {
   };
 
   try {
-    await axios.post(authOptions, (error, response, body) => {
+    await request.post(authOptions, (error, response, body) => {
       if (!error && response.statusCode === 200) {
         let access_token = body.access_token;
         res.send({
@@ -133,7 +138,7 @@ router.post('/refresh_token', auth, async (req, res) => {
       }
     });
   } catch (err) {
-    console.error('Error');
+    console.error(err);
   }
 });
 
