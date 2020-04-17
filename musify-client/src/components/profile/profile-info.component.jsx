@@ -1,15 +1,15 @@
-import React, { useContext } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Box from "@material-ui/core/Box";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import { store } from "../../store/store.js";
+import React, { useContext } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import Box from '@material-ui/core/Box';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import { store } from '../../store/store.js';
 
-import ProfileUploadAvatar from "./photo-upload-avatar.component";
+import ProfileUploadAvatar from './photo-upload-avatar.component';
 
 const useStyles = makeStyles((theme) => ({
   cover: {
-    display: "flex",
+    display: 'flex',
     margin: theme.spacing(1),
   },
   content: {
@@ -22,7 +22,6 @@ export default function ProfileInfo() {
 
   //getting the global state for user info
   const globalState = useContext(store);
-  console.log(globalState);
   return (
     <Grid container className={classes.cover}>
       <Grid item sm={3}>
@@ -30,19 +29,19 @@ export default function ProfileInfo() {
       </Grid>
       <Grid item sm={9}>
         <Box className={classes.content}>
-          <Typography component="h5" variant="h5">
+          <Typography component='h5' variant='h5'>
             {`${globalState.state.first_name} ${globalState.state.last_name}`}
           </Typography>
-          <Typography variant="subtitle1" color="textSecondary">
+          <Typography variant='subtitle1' color='textSecondary'>
             {globalState.state.bio}
           </Typography>
         </Box>
-        <Typography variant="subtitle2" color="textSecondary">
-          <Grid container direction="row">
-            <Box fontWeight="fontWeightBold" m={2}>
+        <Typography variant='subtitle2' color='textSecondary'>
+          <Grid container direction='row'>
+            <Box fontWeight='fontWeightBold' m={2}>
               120k followers
             </Box>
-            <Box fontWeight="fontWeightBold" m={2}>
+            <Box fontWeight='fontWeightBold' m={2}>
               20k following
             </Box>
           </Grid>

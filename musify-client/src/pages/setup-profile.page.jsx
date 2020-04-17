@@ -1,34 +1,34 @@
-import React, { useState, useEffect, useContext } from "react";
-import { useHistory } from "react-router-dom";
-import { makeStyles } from "@material-ui/core/styles";
-import axios from "axios";
-import config from "../config";
-import Grid from "@material-ui/core/Grid";
-import ProfileUploadAvatar from "../components/profile/photo-upload-avatar.component";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
-import Validate from "../services/validate";
-import Alert from "@material-ui/lab/Alert";
-import Button from "@material-ui/core/Button";
-import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import Typography from "@material-ui/core/Typography";
-import TokenService from "../services/token-service";
-import { store } from "../store/store.js";
+import React, { useState, useEffect, useContext } from 'react';
+import { useHistory } from 'react-router-dom';
+import { makeStyles } from '@material-ui/core/styles';
+import axios from 'axios';
+import config from '../config';
+import Grid from '@material-ui/core/Grid';
+import ProfileUploadAvatar from '../components/profile/photo-upload-avatar.component';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
+import Validate from '../services/validate';
+import Alert from '@material-ui/lab/Alert';
+import Button from '@material-ui/core/Button';
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import Typography from '@material-ui/core/Typography';
+import TokenService from '../services/token-service';
+import { store } from '../store/store.js';
 
 const useStyles = makeStyles((theme) => ({
   margin: {
     margin: theme.spacing(1),
   },
   root: {
-    display: "flex",
-    background: "#ffffff",
-    minHeight: "700px",
+    display: 'flex',
+    background: '#ffffff',
+    minHeight: '700px',
   },
   cardRoot: {
     minWidth: 275,
-    textAlign: "center",
+    textAlign: 'center',
   },
   content: {
     margin: theme.spacing(5, 5),
@@ -43,7 +43,7 @@ export default function ProfileInfo() {
   const history = useHistory();
 
   const [formData, setFormData] = useState({
-    bio: "",
+    bio: '',
   });
   const { bio } = formData;
 
@@ -63,16 +63,14 @@ export default function ProfileInfo() {
         }
 
         var params = getHashParams();
-        console.log(params);
         const token = TokenService.getAuthToken();
         const headers = {
           headers: {
-            "Content-Type": "application/json",
-            "x-auth-token": token,
+            'Content-Type': 'application/json',
+            'x-auth-token': token,
           },
         };
         const body = JSON.stringify(params);
-        console.log(body);
         await axios.post(
           `${config.API_ENDPOINT}/spotify-login/callback`,
           body,
@@ -87,19 +85,19 @@ export default function ProfileInfo() {
   }, []);
   const [error, setError] = useState({
     error: false,
-    msg: "",
+    msg: '',
   });
   Validate.maxLengthCheck(Validate.MAX_BIO_LEN);
 
   const onSubmit = async (e) => {
     e.preventDefault();
     try {
-      console.log("helooo");
+      console.log('helooo');
       const token = TokenService.getAuthToken();
       const headers = {
         headers: {
-          "Content-Type": "application/json",
-          "x-auth-token": token,
+          'Content-Type': 'application/json',
+          'x-auth-token': token,
         },
       };
       const body = JSON.stringify({ bio });
@@ -117,8 +115,8 @@ export default function ProfileInfo() {
       };
 
       //updating the globalstate with profile information
-      await dispatch({ type: "UPDATE", payload: profileInfo });
-      history.push("/profile-page");
+      await dispatch({ type: 'UPDATE', payload: profileInfo });
+      history.push('/profile-page');
     } catch (err) {
       console.error(err.message);
       setError({ error: true, msg: err.message });
@@ -130,13 +128,13 @@ export default function ProfileInfo() {
       <CssBaseline />
       <Grid
         container
-        direction="column"
-        justify="center"
-        alignContent="center"
-        alignItems="center"
+        direction='column'
+        justify='center'
+        alignContent='center'
+        alignItems='center'
         className={classes.content}
       >
-        <Card className={classes.cardRoot} variant="outlined">
+        <Card className={classes.cardRoot} variant='outlined'>
           <ValidatorForm
             className={classes.form}
             noValidate
@@ -145,47 +143,47 @@ export default function ProfileInfo() {
             <CardContent>
               <Typography
                 className={classes.title}
-                color="textSecondary"
+                color='textSecondary'
                 gutterBottom
               >
                 Setup your profile
               </Typography>
-              <Typography variant="h5" component="h2">
+              <Typography variant='h5' component='h2'>
                 Upload a picture or an avatar:
               </Typography>
               <ProfileUploadAvatar />
-              <Typography variant="h5" component="h2">
+              <Typography variant='h5' component='h2'>
                 Write a little bit about yourself:
               </Typography>
 
               {error.error && (
-                <Alert variant="outlined" severity="error">
+                <Alert variant='outlined' severity='error'>
                   {error.msg}
                 </Alert>
               )}
 
               <TextValidator
-                variant="outlined"
-                margin="normal"
+                variant='outlined'
+                margin='normal'
                 required
                 fullWidth
-                id="bio"
-                label=""
-                name="bio"
-                autoComplete="bio"
+                id='bio'
+                label=''
+                name='bio'
+                autoComplete='bio'
                 autoFocus
-                color="secondary"
+                color='secondary'
                 value={bio}
                 multiline
                 onChange={(e) => setFormData({ bio: e.target.value })}
-                validators={["required", "maxLen"]}
+                validators={['required', 'maxLen']}
                 errorMessages={[Validate.REQUIRED, Validate.ERROR_LEN_BIO]}
-                rows="8"
-                placeholder="150 Character limit"
+                rows='8'
+                placeholder='150 Character limit'
               />
             </CardContent>
             <CardActions className={classes.margin}>
-              <Button type="submit" variant="contained" color="primary">
+              <Button type='submit' variant='contained' color='primary'>
                 Create Profile
               </Button>
             </CardActions>
