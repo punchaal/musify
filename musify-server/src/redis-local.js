@@ -1,4 +1,4 @@
-const redis = require('redis');
+const redis = require('async-redis');
 const REDIS_PORT = process.env.PORT || 6379;
 
 const client = redis.createClient(REDIS_PORT);

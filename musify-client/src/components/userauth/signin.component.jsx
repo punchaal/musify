@@ -80,7 +80,7 @@ export default function SignIn() {
 
       history.push('/profile-page');
     } catch (err) {
-      console.error(err.response.data);
+      console.error('err.response.data');
       setError({ error: true, msg: err.response.data.errors[0].msg });
     }
   };

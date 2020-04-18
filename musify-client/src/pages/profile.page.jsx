@@ -1,7 +1,8 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import axios from 'axios';
 import config from '../config';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import MusifyAppBar from '../components/musifyappbar.component';
@@ -30,10 +31,17 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
   },
+  loading: {
+    height: '100vh',
+    width: '100vw',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 }));
 
 export default function ProfilePage() {
   const classes = useStyles();
+  const [loading, setLoading] = useState(false);
 
   //getting the global state for user info
   const globalState = useContext(store);
@@ -49,10 +57,13 @@ export default function ProfilePage() {
             'x-auth-token': token,
           },
         };
+        setLoading(true);
+
         let profile = await axios.get(
           `${config.API_ENDPOINT}/profile/me`,
           headers
         );
+        setLoading(false);
 
         const profileInfo = {
           profile_image: profile.data.profile_image,
@@ -71,6 +82,13 @@ export default function ProfilePage() {
     // eslint-disable-next-line
   }, []);
 
+  if (loading) {
+    return (
+      <Grid className={classes.loading}>
+        <CircularProgress />
+      </Grid>
+    );
+  }
   return (
     <Grid container component='main' className={classes.root}>
       <MusifyAppBar />

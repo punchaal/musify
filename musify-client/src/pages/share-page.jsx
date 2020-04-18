@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
@@ -7,10 +6,11 @@ import MusifyAppBar from '../components/musifyappbar.component';
 import SearchBar from 'material-ui-search-bar';
 // import SharePost from "../components/share-post.component";
 import MusicCard from '../components/share/music-card.component';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import axios from 'axios';
 import config from '../config';
 import TokenService from '../services/token-service';
+import SharePost from '../components/share/share-post.component';
+import Loader from '../assets/bars.gif';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -19,6 +19,10 @@ const useStyles = makeStyles((theme) => ({
   },
   marginBox: {
     margin: theme.spacing(5),
+  },
+  searchResults: {
+    margin: theme.spacing(5),
+    minHeight: '60vh',
   },
   search: { margin: '0 auto', maxWidth: 800, height: theme.spacing(8) },
 }));
@@ -45,8 +49,9 @@ export default function SharePage() {
     msg: '',
   });
 
-  const history = useHistory();
   const [loading, setLoading] = useState(false);
+
+  const [songSelected, setSongSelected] = useState(false);
 
   const { searchVal } = formData;
   const onChange = async (newValue) => {
@@ -97,22 +102,24 @@ export default function SharePage() {
     }
   };
 
-  const handleClick = (e) => {
-    console.log(e.target);
-    history.push('create-post');
+  const handleClick = (selectedSong) => {
+    console.log(selectedSong);
+    setSongSelected(selectedSong);
   };
+  const changeSong = () => {
+    console.log('change song');
+    setSongSelected(null);
+  };
+
+  if (songSelected) {
+    return <SharePost song={songSelected} action={changeSong} />;
+  }
 
   return (
     <Grid container component='main' className={classes.root}>
       <MusifyAppBar />
       <CssBaseline />
-      <Grid
-        container
-        direction='row'
-        justify='center'
-        alignItems='center'
-        className={classes.marginBox}
-      >
+      <Grid container direction='row' className={classes.marginBox}>
         <Grid item xs={12}>
           <SearchBar
             name='search'
@@ -129,25 +136,24 @@ export default function SharePage() {
           direction='row'
           justify='center'
           alignItems='center'
-          className={classes.marginBox}
-        ></Grid>
-        {loading ? (
-          <CircularProgress />
-        ) : (
-          songInfo.map((value, i) => {
-            if (searchVal.length > 0) {
-              return (
-                <MusicCard
-                  key={i}
-                  song={value}
-                  onClick={(e) => handleClick(e)}
-                ></MusicCard>
-              );
-            } else {
-              return <div></div>;
-            }
-          })
-        )}
+          className={classes.searchResults}
+        >
+          {loading && searchVal.length !== 0 ? (
+            <img src={Loader} alt='... Loading' />
+          ) : (
+            songInfo.map((value, i) => {
+              if (searchVal.length > 0) {
+                return (
+                  <div key={value.id} onClick={() => handleClick(value)}>
+                    <MusicCard song={value}></MusicCard>
+                  </div>
+                );
+              } else {
+                return null;
+              }
+            })
+          )}
+        </Grid>
       </Grid>
     </Grid>
   );

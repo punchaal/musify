@@ -34,5 +34,6 @@ app.use('/api/forgotpass', require('../routes/api/forgotpassword'));
 app.use('/api/reset', require('../routes/api/reset-password'));
 app.use('/api/updatepass', require('../routes/api/updatePassword'));
 app.use('/api/upload-pic', require('../routes/api/upload-pic'));
+app.use('/api/search-tracks', require('../routes/api/search-tracks'));
 
 module.exports = app;

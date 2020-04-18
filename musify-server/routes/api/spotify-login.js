@@ -103,43 +103,4 @@ router.post('/callback', auth, (req, res) => {
   }
 });
 
-router.post('/refresh_token', auth, async (req, res) => {
-  // requesting access token from refresh token
-
-  let userId = req.user.id;
-
-  // Find user in the db to get their refresh token
-  let user = await User.findById(userId);
-  let refresh_token = user.refresh_token;
-
-  let authOptions = {
-    url: 'https://accounts.spotify.com/api/token',
-    headers: {
-      Authorization:
-        'Basic ' +
-        Buffer.from(client_id + ':' + client_secret).toString('base64'),
-    },
-    form: {
-      grant_type: 'refresh_token',
-      refresh_token: refresh_token,
-    },
-    json: true,
-  };
-
-  try {
-    await request.post(authOptions, (error, response, body) => {
-      if (!error && response.statusCode === 200) {
-        let access_token = body.access_token;
-        res.send({
-          access_token: access_token,
-        });
-
-        client.setex(`${user._id}-access`, 3600, access_token);
-      }
-    });
-  } catch (err) {
-    console.error(err);
-  }
-});
-
 module.exports = router;
