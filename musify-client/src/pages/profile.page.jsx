@@ -84,6 +84,31 @@ export default function ProfilePage() {
     // eslint-disable-next-line
   }, []);
 
+  useEffect(() => {
+    try {
+      async function getPosts() {
+        const token = TokenService.getAuthToken();
+        const headers = {
+          headers: {
+            'x-auth-token': token,
+          },
+        };
+        setLoading(true);
+
+        let posts = await axios.get(
+          `${config.API_ENDPOINT}/posts/user`,
+          headers
+        );
+        setLoading(false);
+
+        console.log(posts);
+      }
+      getPosts();
+    } catch (err) {
+      console.error(err.message);
+    } // eslint-disable-next-line
+  }, []);
+
   if (loading) {
     return (
       <Grid className={classes.loading}>

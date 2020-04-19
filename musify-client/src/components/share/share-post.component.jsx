@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import SongPhotoUpload from './song-photo-upload.component';
 import {
   TextField,
@@ -9,6 +10,9 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import TokenService from '../../services/token-service';
+import axios from 'axios';
+import config from '../../config';
 
 const useStyles = makeStyles((theme) => ({
   cover: {
@@ -31,10 +35,41 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SharePost(props) {
   const classes = useStyles();
-  console.log(props.song);
+  const history = useHistory();
 
-  const onSubmit = () => {
-    console.log('Clicked');
+  const [formData, setFormData] = useState({ caption: '' });
+
+  const { caption } = formData;
+
+  const onChange = (e) => setFormData({ caption: e.target.value });
+
+  const onSubmit = async () => {
+    let song_image = props.song.image;
+    let caption_text = formData.caption;
+
+    try {
+      const token = TokenService.getAuthToken();
+      const headers = {
+        headers: {
+          'Content-Type': 'application/json',
+          'x-auth-token': token,
+        },
+      };
+      let postDetails = {
+        song_image,
+        caption_text,
+      };
+      const body = JSON.stringify({ postDetails });
+      let post = await axios.post(
+        `${config.API_ENDPOINT}/posts`,
+        body,
+        headers
+      );
+      console.log(post);
+      history.push('/profile-page');
+    } catch (err) {
+      console.error(err.message);
+    }
   };
 
   return (
@@ -96,8 +131,9 @@ export default function SharePost(props) {
             multiline
             rows='8'
             fullWidth
-            defaultValue=''
             variant='filled'
+            value={caption}
+            onChange={(e) => onChange(e)}
           />
         </Box>
       </Grid>
@@ -110,7 +146,7 @@ export default function SharePost(props) {
         type='submit'
         variant='contained'
         color='primary'
-        onSubmit={() => onSubmit()}
+        onClick={() => onSubmit()}
       >
         Share Post
       </Button>

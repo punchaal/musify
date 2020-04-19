@@ -100,7 +100,6 @@ export default function SharePage() {
   };
 
   const handleClick = (selectedSong) => {
-    console.log(selectedSong);
     setSongSelected(selectedSong);
   };
   const changeSong = () => {
