@@ -1,11 +1,7 @@
 import React from 'react';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Grid from '@material-ui/core/Grid';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, CssBaseline, Grid, Box, Button } from '@material-ui/core';
 import MusifyAppBar from '../components/musifyappbar.component';
 import ProfileInfo from '../components/profile-info.component';
-import Box from '@material-ui/core/Box';
-import Button from '@material-ui/core/Button';
 import PostThumbnail from '../components/post-thumbnail.component';
 
 const useStyles = makeStyles((theme) => ({

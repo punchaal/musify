@@ -1,9 +1,6 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import CardMedia from "@material-ui/core/CardMedia";
-import ThumbImage from "../../assets/turntable1.jpg";
+import React from 'react';
+import { makeStyles, Card, CardActionArea, CardMedia } from '@material-ui/core';
+import ThumbImage from '../../assets/turntable1.jpg';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -25,7 +22,7 @@ export default function PostThumbnail() {
         <CardMedia
           className={classes.media}
           image={ThumbImage}
-          title="Song Post"
+          title='Song Post'
         />
       </CardActionArea>
     </Card>

@@ -1,17 +1,20 @@
 import React, { useContext } from 'react';
 import { useHistory, Link } from 'react-router-dom';
-import { fade, makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
+import {
+  fade,
+  makeStyles,
+  AppBar,
+  Toolbar,
+  IconButton,
+  Button,
+  Typography,
+  MenuItem,
+  Menu,
+  Avatar,
+} from '@material-ui/core';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import TokenService from '../services/token-service';
 import SearchBar from 'material-ui-search-bar';
-import Avatar from '@material-ui/core/Avatar';
 import { store } from '../store/store.js';
 
 const useStyles = makeStyles((theme) => ({

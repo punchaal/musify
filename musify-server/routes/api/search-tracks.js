@@ -7,7 +7,6 @@ const client = require('../../src/redis-local');
 
 router.post('/', [auth, getaccesstoken], async (req, res) => {
   try {
-    console.log(req.body.newValue);
     let q = req.body.newValue;
     const endpoint = 'https://api.spotify.com/v1/search';
 

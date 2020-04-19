@@ -1,8 +1,5 @@
 import React, { useContext } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Box from '@material-ui/core/Box';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
+import { makeStyles, Box, Grid, Typography } from '@material-ui/core';
 import { store } from '../../store/store.js';
 
 import ProfileUploadAvatar from './photo-upload-avatar.component';

@@ -1,10 +1,12 @@
 import React, { useEffect, useContext, useState } from 'react';
 import axios from 'axios';
 import config from '../config';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import Grid from '@material-ui/core/Grid';
-import { makeStyles } from '@material-ui/core/styles';
+import {
+  makeStyles,
+  CssBaseline,
+  CircularProgress,
+  Grid,
+} from '@material-ui/core';
 import MusifyAppBar from '../components/musifyappbar.component';
 import ProfileInfo from '../components/profile/profile-info.component';
 import PostThumbnail from '../components/profile/post-thumbnail.component';

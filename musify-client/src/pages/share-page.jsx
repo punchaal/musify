@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Grid from '@material-ui/core/Grid';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, CssBaseline, Grid } from '@material-ui/core';
 import MusifyAppBar from '../components/musifyappbar.component';
 import SearchBar from 'material-ui-search-bar';
-// import SharePost from "../components/share-post.component";
 import MusicCard from '../components/share/music-card.component';
 import axios from 'axios';
 import config from '../config';
@@ -141,7 +138,7 @@ export default function SharePage() {
           {loading && searchVal.length !== 0 ? (
             <img src={Loader} alt='... Loading' />
           ) : (
-            songInfo.map((value, i) => {
+            songInfo.map((value) => {
               if (searchVal.length > 0) {
                 return (
                   <div key={value.id} onClick={() => handleClick(value)}>

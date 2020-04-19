@@ -1,19 +1,21 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 import config from '../config';
-import Grid from '@material-ui/core/Grid';
+import {
+  makeStyles,
+  Grid,
+  CssBaseline,
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  Typography,
+} from '@material-ui/core';
 import ProfileUploadAvatar from '../components/profile/photo-upload-avatar.component';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import Validate from '../services/validate';
 import Alert from '@material-ui/lab/Alert';
-import Button from '@material-ui/core/Button';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import Typography from '@material-ui/core/Typography';
 import TokenService from '../services/token-service';
 import { store } from '../store/store.js';
 

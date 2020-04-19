@@ -1,11 +1,14 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Avatar from '@material-ui/core/Avatar';
-import Box from '@material-ui/core/Box';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
 import SongPhotoUpload from './song-photo-upload.component';
-import { TextField, Button } from '@material-ui/core';
+import {
+  TextField,
+  Button,
+  Grid,
+  Box,
+  Avatar,
+  Typography,
+  makeStyles,
+} from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   cover: {
@@ -29,6 +32,10 @@ const useStyles = makeStyles((theme) => ({
 export default function SharePost(props) {
   const classes = useStyles();
   console.log(props.song);
+
+  const onSubmit = () => {
+    console.log('Clicked');
+  };
 
   return (
     <Grid
@@ -99,7 +106,12 @@ export default function SharePost(props) {
           <SongPhotoUpload image={props.song.image} />
         </Grid>
       </Grid>
-      <Button type='button' variant='contained' color='primary'>
+      <Button
+        type='submit'
+        variant='contained'
+        color='primary'
+        onSubmit={() => onSubmit()}
+      >
         Share Post
       </Button>
     </Grid>

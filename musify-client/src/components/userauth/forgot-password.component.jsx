@@ -1,26 +1,28 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import Box from "@material-ui/core/Box";
-import Button from "@material-ui/core/Button";
-import { makeStyles } from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import axios from "axios";
-import config from "../../config";
-import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
-import Validate from "../../services/validate";
-import Alert from "@material-ui/lab/Alert";
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import axios from 'axios';
+import config from '../../config';
+import {
+  makeStyles,
+  Box,
+  Button,
+  Paper,
+  Grid,
+  Typography,
+} from '@material-ui/core';
+import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
+import Validate from '../../services/validate';
+import Alert from '@material-ui/lab/Alert';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
     margin: theme.spacing(30, 6),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
   },
   form: {
-    width: "100%", // Fix IE 11 issue.
+    width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing(1),
   },
   submit: {
@@ -35,13 +37,13 @@ export default function SignIn() {
 
   const [successMsg, setSuccessMsg] = useState(false);
   const [formData, setFormData] = useState({
-    email: "",
+    email: '',
   });
 
   const { email } = formData;
   const [error, setError] = useState({
     error: false,
-    msg: "",
+    msg: '',
   });
 
   const onChange = (e) =>
@@ -52,7 +54,7 @@ export default function SignIn() {
     try {
       const config = {
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
       };
       const user = {
@@ -72,7 +74,7 @@ export default function SignIn() {
     return (
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
         <div className={classes.paper}>
-          <Typography component="h1" variant="body1">
+          <Typography component='h1' variant='body1'>
             Reset token successfully sent. Please check your email to reset your
             password.
           </Typography>
@@ -83,12 +85,12 @@ export default function SignIn() {
     return (
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
         <div className={classes.paper}>
-          <Typography component="h1" variant="h5">
-            Reset Password{" "}
+          <Typography component='h1' variant='h5'>
+            Reset Password{' '}
           </Typography>
-          <Typography component="h1" variant="body1">
+          <Typography component='h1' variant='body1'>
             Enter the email address associated with your account, and we'll
-            email you a link to reset your password{" "}
+            email you a link to reset your password{' '}
           </Typography>
           <ValidatorForm
             className={classes.form}
@@ -96,38 +98,38 @@ export default function SignIn() {
             onSubmit={(e) => onSubmit(e)}
           >
             {error.error && (
-              <Alert variant="outlined" severity="error">
+              <Alert variant='outlined' severity='error'>
                 {error.msg}
               </Alert>
             )}
             <TextValidator
-              variant="outlined"
-              margin="normal"
+              variant='outlined'
+              margin='normal'
               required
               fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
+              id='email'
+              label='Email Address'
+              name='email'
+              autoComplete='email'
               autoFocus
-              color="secondary"
-              validators={["required", "isEmail"]}
+              color='secondary'
+              validators={['required', 'isEmail']}
               errorMessages={[Validate.REQUIRED, Validate.INVALID_EMAIL]}
               value={email}
               onChange={(e) => onChange(e)}
             />
             <Grid
               container
-              direction="row"
-              justify="center"
-              alignContent="center"
+              direction='row'
+              justify='center'
+              alignContent='center'
             >
               <Box m={2}>
                 <Button
-                  type="submit"
+                  type='submit'
                   fullWidth
-                  variant="contained"
-                  color="primary"
+                  variant='contained'
+                  color='primary'
                 >
                   Send Reset Link
                 </Button>
@@ -135,9 +137,9 @@ export default function SignIn() {
               <Box m={2}>
                 <Button
                   component={Link}
-                  to="/signup"
-                  variant="outlined"
-                  color="primary"
+                  to='/signup'
+                  variant='outlined'
+                  color='primary'
                 >
                   Sign Up
                 </Button>

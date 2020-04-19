@@ -1,8 +1,5 @@
 import React, { useRef, useContext } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Avatar from '@material-ui/core/Avatar';
-import IconButton from '@material-ui/core/IconButton';
-import Tooltip from '@material-ui/core/Tooltip';
+import { makeStyles, Avatar, IconButton, Tooltip } from '@material-ui/core';
 import Axios from 'axios';
 import config from '../../config';
 import TokenService from '../../services/token-service';

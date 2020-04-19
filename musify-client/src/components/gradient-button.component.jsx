@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import Button from '@material-ui/core/Button';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, Button } from '@material-ui/core';
 
 // We can inject some CSS into the DOM.
 const styles = {

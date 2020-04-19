@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import Avatar from '@material-ui/core/Avatar';
-import GradientButton from '../gradient-button.component';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import { makeStyles } from '@material-ui/core/styles';
-import Checkbox from '@material-ui/core/Checkbox';
-import Paper from '@material-ui/core/Paper';
-import Box from '@material-ui/core/Box';
-import Grid from '@material-ui/core/Grid';
-import QueueMusicIcon from '@material-ui/icons/QueueMusic';
-import Typography from '@material-ui/core/Typography';
 import axios from 'axios';
 import config from '../../config';
+import {
+  makeStyles,
+  Avatar,
+  FormControlLabel,
+  Checkbox,
+  Paper,
+  Box,
+  Grid,
+  Typography,
+} from '@material-ui/core';
+import QueueMusicIcon from '@material-ui/icons/QueueMusic';
+import GradientButton from '../gradient-button.component';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import TokenService from '../../services/token-service';
 import Validate from '../../services/validate';
