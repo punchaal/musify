@@ -5,7 +5,6 @@ const auth = require('../../middleware/auth');
 
 const Post = require('../../models/Post');
 const Profile = require('../../models/Profile');
-const User = require('../../models/User');
 
 // @route     POST api/posts
 // @desc      Create post
@@ -13,13 +12,19 @@ const User = require('../../models/User');
 
 router.post('/', auth, async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).select('-password');
+    const profile = await Profile.findOne({
+      user: req.user.id,
+    }).populate('user', ['first_name', 'last_name']);
+
+    console.log(profile);
+
+    console.log(req.body);
     const newPost = new Post({
-      song_image: req.body.song_image,
-      caption: req.body.caption,
-      first_name: user.first_name,
-      last_name: user.last_name,
-      profile_image: user.profile_image,
+      song_image: req.body.postDetails.song_image,
+      caption: req.body.postDetails.caption_text,
+      first_name: profile.user.first_name,
+      last_name: profile.user.last_name,
+      profile_image: profile.profile_image,
       user: req.user.id,
     });
 
@@ -52,10 +57,15 @@ router.get('/', [auth], async (req, res) => {
 
 router.get('/user', [auth], async (req, res) => {
   try {
+    let userPosts = [];
     const posts = await Post.find().sort({ date: -1 });
-    if (posts.user.toString() === req.user.id) {
-      res.json(posts);
-    }
+    posts.forEach((post) => {
+      if (post.user.toString() === req.user.id) {
+        userPosts.push(post);
+      }
+    });
+
+    res.json(userPosts);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
