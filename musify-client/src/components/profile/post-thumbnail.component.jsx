@@ -1,6 +1,5 @@
 import React from 'react';
 import { makeStyles, Card, CardActionArea, CardMedia } from '@material-ui/core';
-import ThumbImage from '../../assets/turntable1.jpg';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -13,15 +12,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function PostThumbnail() {
+export default function PostThumbnail({ post, onChildClick }) {
   const classes = useStyles();
+  function handleClick() {
+    onChildClick(post); // pass any argument to the callback
+  }
 
   return (
-    <Card className={classes.root}>
+    <Card className={classes.root} onClick={handleClick}>
       <CardActionArea>
         <CardMedia
           className={classes.media}
-          image={ThumbImage}
+          image={post.song_image}
           title='Song Post'
         />
       </CardActionArea>

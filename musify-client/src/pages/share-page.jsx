@@ -35,10 +35,11 @@ export default function SharePage() {
 
   const [songInfo, setSongInfo] = useState([
     {
-      artist_name: 'hello',
-      song_name: 'song_name',
-      image: 'image',
-      id: 'id',
+      artist_name: '',
+      song_name: '',
+      image: '',
+      id: '',
+      uri: '',
     },
   ]);
   const [error, setError] = useState({
@@ -74,18 +75,22 @@ export default function SharePage() {
       );
       setLoading(false);
 
+      console.log(searchResults);
+
       const songItem = () => {
         searchResults.data.forEach(function (song) {
           let artist_name = song.artists[0].name;
           let song_name = song.name;
           let image = song.album.images[0].url;
           let id = song.id;
+          let uri = song.uri;
 
           let songObject = {
             artist_name: artist_name,
             song_name: song_name,
             image: image,
             id: id,
+            uri: uri,
           };
 
           newResults.push(songObject);

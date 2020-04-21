@@ -22,6 +22,7 @@ router.post('/', auth, async (req, res) => {
     const newPost = new Post({
       song_image: req.body.postDetails.song_image,
       caption: req.body.postDetails.caption_text,
+      uri: req.body.postDetails.uri,
       first_name: profile.user.first_name,
       last_name: profile.user.last_name,
       profile_image: profile.profile_image,

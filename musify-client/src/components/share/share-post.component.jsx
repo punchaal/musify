@@ -45,6 +45,7 @@ export default function SharePost(props) {
 
   const onSubmit = async () => {
     let song_image = props.song.image;
+    let uri = props.song.uri;
     let caption_text = formData.caption;
 
     try {
@@ -58,6 +59,7 @@ export default function SharePost(props) {
       let postDetails = {
         song_image,
         caption_text,
+        uri,
       };
       const body = JSON.stringify({ postDetails });
       let post = await axios.post(
