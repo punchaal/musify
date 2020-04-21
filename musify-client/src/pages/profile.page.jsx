@@ -8,12 +8,10 @@ import {
   Backdrop,
   Fade,
   Modal,
-  Link,
 } from '@material-ui/core';
 import MusifyAppBar from '../components/musifyappbar.component';
 import ProfileInfo from '../components/profile/profile-info.component';
 import PostThumbnail from '../components/profile/post-thumbnail.component';
-import GradientButton from '../components/gradient-button.component';
 import TokenService from '../services/token-service';
 import { store } from '../store/store.js';
 import EditBio from '../components/profile/edit-bio.component';
@@ -210,27 +208,27 @@ export default function ProfilePage() {
           }}
         >
           <Fade in={openModal}>
-            <div className={classes.paper}>
-              <img
-                src={postDetails.song_image}
-                alt='song-cover'
-                onClick={() => playSong()}
-              />
-              <GradientButton component={Link} href={postDetails.uri}>
-                Listen on spotify
-              </GradientButton>
-              <iframe
-                src={`https://open.spotify.com/embed/track/${
-                  postDetails.uri && postDetails.uri.slice(14, 36)
-                }`}
-                width='300'
-                height='80'
-                frameBorder='0'
-                allowtransparency='true'
-                allow='encrypted-media'
-                title='song'
-              ></iframe>
-            </div>
+            <Grid item direction='row'>
+              <div className={classes.paper}>
+                <img
+                  src={postDetails.song_image}
+                  alt='song-cover'
+                  onClick={() => playSong()}
+                />
+
+                <iframe
+                  src={`https://open.spotify.com/embed/track/${
+                    postDetails.uri && postDetails.uri.slice(14, 36)
+                  }`}
+                  width='300'
+                  height='80'
+                  frameBorder='0'
+                  allowtransparency='true'
+                  allow='encrypted-media'
+                  title='song'
+                ></iframe>
+              </div>
+            </Grid>
           </Fade>
         </Modal>
       </div>
