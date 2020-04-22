@@ -19,6 +19,7 @@ export default function ProfileInfo() {
 
   //getting the global state for user info
   const globalState = useContext(store);
+
   return (
     <Grid container className={classes.cover}>
       <Grid item sm={3}>

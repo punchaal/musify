@@ -1,14 +1,8 @@
 import React, { useEffect, useContext, useState, useReducer } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import config from '../config';
-import {
-  makeStyles,
-  CssBaseline,
-  Grid,
-  Backdrop,
-  Fade,
-  Modal,
-} from '@material-ui/core';
+import { makeStyles, CssBaseline, Grid } from '@material-ui/core';
 import MusifyAppBar from '../components/musifyappbar.component';
 import ProfileInfo from '../components/profile/profile-info.component';
 import PostThumbnail from '../components/profile/post-thumbnail.component';
@@ -47,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
 export default function ProfilePage() {
   const classes = useStyles();
   const [loading, setLoading] = useState(false);
-  const [postDetails, setPostDetails] = useState({});
+  let location = useLocation();
 
   const initialState = { userPosts: [] };
   const [state, dispatchPosts] = useReducer(reducer, initialState);
@@ -60,20 +54,9 @@ export default function ProfilePage() {
     }
   }
 
-  const [openModal, setOpenModal] = useState(false);
-
-  const playSong = () => {
-    console.log('I will be listening to a song now');
-  };
-
-  const handleOpen = (post) => {
-    setOpenModal(true);
-    setPostDetails(post);
-  };
-
-  const handleClose = () => {
-    setOpenModal(false);
-  };
+  // const handleOpen = (post) => {
+  //   history.push(`/post/${post._id}`);
+  // };
 
   //getting the global state for user info
   const globalState = useContext(store);
@@ -102,6 +85,8 @@ export default function ProfilePage() {
           bio: profile.data.bio,
           first_name: profile.data.user.first_name,
           last_name: profile.data.user.last_name,
+          followers: profile.data.followers,
+          following: profile.data.following,
         };
 
         //updating the globalstate with profile information
@@ -182,11 +167,21 @@ export default function ProfilePage() {
         {state.userPosts.length > 0 ? (
           state.userPosts.map((value) => {
             return (
-              <PostThumbnail
-                post={value}
+              <Link
                 key={value._id}
-                onChildClick={handleOpen}
-              ></PostThumbnail>
+                to={{
+                  pathname: `/post/${value._id}`,
+                  // This is the trick! This link sets
+                  // the `background` in location state.
+                  state: { background: location },
+                }}
+              >
+                <PostThumbnail
+                  post={value}
+                  key={value._id}
+                  // onChildClick={handleOpen}
+                ></PostThumbnail>
+              </Link>
             );
           })
         ) : (
@@ -196,42 +191,6 @@ export default function ProfilePage() {
           </div>
         )}
       </Grid>
-      <div>
-        <Modal
-          open={openModal}
-          onClose={handleClose}
-          className={classes.modal}
-          closeAfterTransition
-          BackdropComponent={Backdrop}
-          BackdropProps={{
-            timeout: 500,
-          }}
-        >
-          <Fade in={openModal}>
-            <Grid item direction='row'>
-              <div className={classes.paper}>
-                <img
-                  src={postDetails.song_image}
-                  alt='song-cover'
-                  onClick={() => playSong()}
-                />
-
-                <iframe
-                  src={`https://open.spotify.com/embed/track/${
-                    postDetails.uri && postDetails.uri.slice(14, 36)
-                  }`}
-                  width='300'
-                  height='80'
-                  frameBorder='0'
-                  allowtransparency='true'
-                  allow='encrypted-media'
-                  title='song'
-                ></iframe>
-              </div>
-            </Grid>
-          </Fade>
-        </Modal>
-      </div>
     </Grid>
   );
 }

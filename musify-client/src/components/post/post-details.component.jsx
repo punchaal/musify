@@ -1,11 +1,11 @@
-import React, { useContext } from "react";
-import { makeStyles, Box, Grid, Typography } from "@material-ui/core";
-import { store } from "../../store/store.js";
-import Avatar from "@material-ui/core/Avatar";
+import React from 'react';
+import { makeStyles, Box, Grid, Typography } from '@material-ui/core';
+import Avatar from '@material-ui/core/Avatar';
+import moment from 'moment';
 
 const useStyles = makeStyles((theme) => ({
   cover: {
-    display: "flex",
+    display: 'flex',
     margin: theme.spacing(2),
   },
   content: {
@@ -18,24 +18,24 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function PostDetails() {
+export default function PostDetails(props) {
   const classes = useStyles();
 
   return (
     <Grid container className={classes.cover}>
       <Grid item sm={1}>
-        <Avatar className={classes.avatar} />
+        <Avatar className={classes.avatar} src={props.post.profile_image} />
       </Grid>
       <Grid item sm={9}>
         <Box className={classes.content}>
-          <Typography component="h5" variant="h5">
-            Kenneth J
+          <Typography component='h5' variant='h5'>
+            {`${props.post.first_name} ${props.post.last_name}`}
           </Typography>
-          <Typography variant="subtitle1" color="textSecondary">
-            Check out this hot new song
+          <Typography variant='subtitle1' color='textSecondary'>
+            {props.post.caption}
           </Typography>
-          <Typography variant="subtitle1" color="textSecondary">
-            15 mins ago
+          <Typography variant='subtitle1' color='textSecondary'>
+            {moment(props.post.date).fromNow()}
           </Typography>
         </Box>
       </Grid>
