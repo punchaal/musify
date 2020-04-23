@@ -53,8 +53,8 @@ router.get('/', [auth], async (req, res) => {
   }
 });
 
-// @route     GET api/posts/:userid
-// @desc      Get all posts for a user
+// @route     GET api/posts/user
+// @desc      Get all posts for private profile
 // @access    Private
 
 router.get('/user', [auth], async (req, res) => {
@@ -63,6 +63,28 @@ router.get('/user', [auth], async (req, res) => {
     const posts = await Post.find().sort({ date: -1 });
     posts.forEach((post) => {
       if (post.user.toString() === req.user.id) {
+        userPosts.push(post);
+      }
+    });
+
+    res.json(userPosts);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+// @route     GET api/posts/user/:userid
+// @desc      Get all posts for public profile
+// @access    Private
+
+router.get('/user/:userid', [auth], async (req, res) => {
+  try {
+    let userPosts = [];
+    console.log(req.params);
+    const posts = await Post.find().sort({ date: -1 });
+    posts.forEach((post) => {
+      if (post.user.toString() === req.params.userid) {
         userPosts.push(post);
       }
     });

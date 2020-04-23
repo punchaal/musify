@@ -1,14 +1,13 @@
 import React, { useEffect, useContext, useState, useReducer } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import axios from 'axios';
 import config from '../config';
-import { makeStyles, CssBaseline, Grid } from '@material-ui/core';
+import { makeStyles, CssBaseline, Grid, Box, Button } from '@material-ui/core';
 import MusifyAppBar from '../components/musifyappbar.component';
 import ProfileInfo from '../components/profile/profile-info.component';
 import PostThumbnail from '../components/profile/post-thumbnail.component';
 import TokenService from '../services/token-service';
 import { store } from '../store/store.js';
-import EditBio from '../components/profile/edit-bio.component';
 import Loader from '../assets/bars.gif';
 
 const useStyles = makeStyles((theme) => ({
@@ -41,6 +40,8 @@ const useStyles = makeStyles((theme) => ({
 export default function ProfilePage() {
   const classes = useStyles();
   const [loading, setLoading] = useState(false);
+  let params = useParams();
+  console.log(params);
   let location = useLocation();
 
   const initialState = { userPosts: [] };
@@ -54,6 +55,10 @@ export default function ProfilePage() {
     }
   }
 
+  //getting the global state for user info
+  const globalState = useContext(store);
+  const { dispatch } = globalState;
+
   useEffect(() => {
     //Get the profile information on mounting the component
     try {
@@ -61,7 +66,7 @@ export default function ProfilePage() {
         setLoading(true);
 
         let profile = await axios.get(
-          `${config.API_ENDPOINT}/profile/user/:user_id`
+          `${config.API_ENDPOINT}/profile/user/${params.userid}`
         );
         setLoading(false);
         console.log(profile);
@@ -75,7 +80,8 @@ export default function ProfilePage() {
           following: profile.data.following,
         };
 
-        console.log(profileInfo);
+        //updating the globalstate with profile information
+        dispatch({ type: 'UPDATE', payload: profileInfo });
       }
       getProfile();
     } catch (err) {
@@ -96,10 +102,12 @@ export default function ProfilePage() {
         setLoading(true);
 
         let posts = await axios.get(
-          `${config.API_ENDPOINT}/posts/user`,
+          `${config.API_ENDPOINT}/posts/user/${params.userid}`,
           headers
         );
         setLoading(false);
+
+        console.log(posts);
 
         dispatchPosts({ type: 'set', payload: posts.data });
       }
@@ -137,9 +145,21 @@ export default function ProfilePage() {
         <Grid item sm={8} xs={12}>
           <ProfileInfo />
         </Grid>
-        <Grid item sm={4} xs={12}>
-          <EditBio />
-        </Grid>
+        <Box m={2}>
+          <Button type='submit' fullWidth variant='contained' color='primary'>
+            Follow
+          </Button>
+        </Box>
+        <Box m={2}>
+          <Button
+            component={Link}
+            to='/signup'
+            variant='outlined'
+            color='primary'
+          >
+            Message
+          </Button>
+        </Box>
       </Grid>
 
       <Grid

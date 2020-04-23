@@ -45,7 +45,7 @@ export default function PostInfoPage() {
     setOpenModal(false);
 
     e.stopPropagation();
-    history.push('/profile-page');
+    history.goBack();
   };
 
   useEffect(() => {
