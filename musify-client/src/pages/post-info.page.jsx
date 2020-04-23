@@ -25,11 +25,14 @@ const useStyles = makeStyles((theme) => ({
     border: '1px solid #2BA375',
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
+    width: 'auto',
+    maxWidth: '900px',
   },
   modal: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    width: 'auto',
   },
 }));
 
@@ -90,7 +93,7 @@ export default function PostInfoPage() {
           <Fade in={openModal}>
             <div className={classes.paper}>
               <Grid container direction='row' className={classes.marginBox}>
-                <Grid item sm={5}>
+                <Grid item sm={6}>
                   <img
                     src={postDetails.song_image}
                     alt='song-cover'
@@ -110,7 +113,7 @@ export default function PostInfoPage() {
                   ></iframe>
                 </Grid>
 
-                <Grid item sm={5}>
+                <Grid item sm={6}>
                   <PostDetails post={postDetails} />
                   <CommentList
                     post={postDetails}

@@ -1,12 +1,12 @@
-import React, { useContext } from 'react';
-import { makeStyles, Box, Grid, Typography } from '@material-ui/core';
-import Avatar from '@material-ui/core/Avatar';
-import moment from 'moment';
-import { store } from '../../store/store.js';
+import React, { useContext } from "react";
+import { makeStyles, Box, Grid, Typography } from "@material-ui/core";
+import Avatar from "@material-ui/core/Avatar";
+import moment from "moment";
+import { store } from "../../store/store.js";
 
 const useStyles = makeStyles((theme) => ({
   cover: {
-    display: 'flex',
+    display: "flex",
     margin: theme.spacing(2),
   },
   content: {
@@ -33,13 +33,13 @@ export default function PostDetails(props) {
       </Grid>
       <Grid item sm={9}>
         <Box className={classes.content}>
-          <Typography component='h5' variant='h5'>
+          <Typography component="h5" variant="h5">
             {`${props.post.first_name} ${props.post.last_name}`}
           </Typography>
-          <Typography variant='subtitle1' color='textSecondary'>
+          <Typography variant="subtitle1" color="textSecondary">
             {props.post.caption}
           </Typography>
-          <Typography variant='subtitle1' color='textSecondary'>
+          <Typography variant="subtitle1" color="textSecondary">
             {moment(props.post.date).fromNow()}
           </Typography>
         </Box>
