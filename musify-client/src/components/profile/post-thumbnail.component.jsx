@@ -12,11 +12,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function PostThumbnail({ post, onChildClick }) {
+export default function PostThumbnail({ post }) {
   const classes = useStyles();
-  // function handleClick() {
-  //   onChildClick(post); // pass any argument to the callback
-  // }
 
   return (
     <Card className={classes.root}>

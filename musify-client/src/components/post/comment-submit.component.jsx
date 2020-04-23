@@ -1,24 +1,41 @@
-import React from 'react';
-// import { makeStyles } from '@material-ui/core';
-
+import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
+import TokenService from '../../services/token-service';
+import axios from 'axios';
+import config from '../../config';
 import { TextField, Button, InputAdornment } from '@material-ui/core';
 
-// const useStyles = makeStyles((theme) => ({
-//   root: {
-//     '& .MuiTextField-root': {
-//       margin: theme.spacing(1),
-//       width: '25ch',
-//     },
-//   },
-// }));
-
 export default function CommentSubmit() {
-  const [value, setValue] = React.useState('');
+  const [formData, setFormData] = useState({ comment: '' });
 
-  const handleChange = (event) => {
-    setValue(event.target.value);
+  const params = useParams();
+  const { comment } = formData;
 
-    console.log(value);
+  const onChange = (e) => setFormData({ comment: e.target.value });
+
+  const onSubmit = async (e) => {
+    let text = formData.comment;
+
+    try {
+      console.log(params);
+      const token = TokenService.getAuthToken();
+      const headers = {
+        headers: {
+          'Content-Type': 'application/json',
+          'x-auth-token': token,
+        },
+      };
+
+      const body = JSON.stringify({ text });
+      await axios.post(
+        `${config.API_ENDPOINT}/posts/comment/${params.id}`,
+        body,
+        headers
+      );
+      setFormData({ comment: '' });
+    } catch (err) {
+      console.error(err.message);
+    }
   };
   return (
     <form>
@@ -28,12 +45,12 @@ export default function CommentSubmit() {
         placeholder='Placeholder'
         multiline
         variant='outlined'
-        value={value}
-        onChange={handleChange}
+        value={comment}
+        onChange={(e) => onChange(e)}
         InputProps={{
           endAdornment: (
             <InputAdornment position='end'>
-              <Button>Post</Button>
+              <Button onClick={(e) => onSubmit(e)}>Post</Button>
             </InputAdornment>
           ),
         }}

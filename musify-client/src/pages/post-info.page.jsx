@@ -38,8 +38,6 @@ export default function PostInfoPage() {
   const params = useParams();
   const history = useHistory();
 
-  console.log(params);
-
   const [openModal, setOpenModal] = useState(true);
   const [postDetails, setPostDetails] = useState({});
 
@@ -65,8 +63,6 @@ export default function PostInfoPage() {
           `${config.API_ENDPOINT}/posts/${params.id}`,
           headers
         );
-
-        console.log(post.data);
 
         setPostDetails(post.data);
       }
@@ -114,9 +110,12 @@ export default function PostInfoPage() {
                   ></iframe>
                 </Grid>
 
-                <Grid item sm={6}>
+                <Grid item sm={5}>
                   <PostDetails post={postDetails} />
-                  <CommentList post={postDetails} />
+                  <CommentList
+                    post={postDetails}
+                    style={{ maxHeight: '100%', overflow: 'auto' }}
+                  />
                   <CommentSubmit post={postDetails} />
                 </Grid>
               </Grid>

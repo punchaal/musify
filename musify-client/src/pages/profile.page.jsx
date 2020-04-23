@@ -54,10 +54,6 @@ export default function ProfilePage() {
     }
   }
 
-  // const handleOpen = (post) => {
-  //   history.push(`/post/${post._id}`);
-  // };
-
   //getting the global state for user info
   const globalState = useContext(store);
   const { dispatch } = globalState;
@@ -171,16 +167,11 @@ export default function ProfilePage() {
                 key={value._id}
                 to={{
                   pathname: `/post/${value._id}`,
-                  // This is the trick! This link sets
-                  // the `background` in location state.
+                  //Setting background in the location state
                   state: { background: location },
                 }}
               >
-                <PostThumbnail
-                  post={value}
-                  key={value._id}
-                  // onChildClick={handleOpen}
-                ></PostThumbnail>
+                <PostThumbnail post={value} key={value._id}></PostThumbnail>
               </Link>
             );
           })

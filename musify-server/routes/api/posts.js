@@ -206,13 +206,18 @@ router.post(
 
       const post = await Post.findById(req.params.id);
 
-      const newComment = new Post({
+      console.log(post);
+
+      console.log(req.body);
+      const newComment = {
         text: req.body.text,
         first_name: profile.user.first_name,
         last_name: profile.user.last_name,
         profile_image: profile.profile_image,
         user: req.user.id,
-      });
+      };
+
+      console.log(newComment.text);
 
       post.comments.unshift(newComment);
 

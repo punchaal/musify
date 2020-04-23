@@ -44,10 +44,14 @@ const PostSchema = new mongoose.Schema({
         type: String,
         required: true,
       },
-      name: {
+      first_name: {
         type: String,
       },
-      avatar: {
+      last_name: {
+        type: String,
+      },
+
+      profile_image: {
         type: String,
       },
       date: {
