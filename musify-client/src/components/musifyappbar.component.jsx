@@ -14,7 +14,7 @@ import {
 } from "@material-ui/core";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import TokenService from "../services/token-service";
-import SearchBar from "material-ui-search-bar";
+import SearchUser from "./search-user.component";
 import { store } from "../store/store.js";
 
 const useStyles = makeStyles((theme) => ({
@@ -191,7 +191,7 @@ export default function MusifyAppBar() {
             Musify
           </Typography>
           <div className={classes.grow}>
-            <SearchBar className={classes.search}></SearchBar>
+            <SearchUser />
           </div>
           <div className={classes.sectionDesktop}>
             <Button variant="outlined" component={Link} to="/share">
