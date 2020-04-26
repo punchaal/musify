@@ -8,10 +8,17 @@ import {
   Button,
   InputAdornment,
   makeStyles,
+  Grid,
 } from "@material-ui/core";
+import Likes from "./likes.component";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
+  cover: {
+    margin: theme.spacing(1),
+    width: "100%",
+    background: "#ffffff",
+  },
+  container: {
     width: "100%",
   },
 }));
@@ -49,24 +56,29 @@ export default function CommentSubmit() {
     }
   };
   return (
-    <form>
-      <TextField
-        id="outlined-textarea"
-        label="Comment"
-        className={classes.root}
-        placeholder="Placeholder"
-        multiline
-        variant="outlined"
-        value={comment}
-        onChange={(e) => onChange(e)}
-        InputProps={{
-          endAdornment: (
-            <InputAdornment position="end">
-              <Button onClick={(e) => onSubmit(e)}>Post</Button>
-            </InputAdornment>
-          ),
-        }}
-      />
-    </form>
+    <div className={classes.cover}>
+      <Grid container className={classes.container}>
+        <Likes />
+        <form className={classes.container}>
+          <TextField
+            id="outlined-textarea"
+            label="Comment"
+            className={classes.container}
+            placeholder="Placeholder"
+            multiline
+            variant="outlined"
+            value={comment}
+            onChange={(e) => onChange(e)}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <Button onClick={(e) => onSubmit(e)}>Post</Button>
+                </InputAdornment>
+              ),
+            }}
+          />
+        </form>
+      </Grid>
+    </div>
   );
 }

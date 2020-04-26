@@ -13,8 +13,9 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     backgroundColor: theme.palette.background.paper,
     padding: "10px",
-    maxHeight: "350px",
+    maxHeight: "240px",
     overflowY: "auto",
+    flexGrow: 1,
   },
   inline: {
     display: "inline",

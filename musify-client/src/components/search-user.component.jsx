@@ -74,7 +74,7 @@ export default function SearchUser() {
       onClose={() => {
         setOpen(false);
       }}
-      getOptionSelected={(option, value) => option.fist_name === value.name}
+      getOptionSelected={(option, value) => option.first_name === value.name}
       getOptionLabel={(option) => `${option.first_name} ${option.last_name}`}
       options={options}
       loading={loading}
