@@ -23,7 +23,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 export default function CommentSubmit() {
-  const [formData, setFormData] = useState({ comment: '' });
+  const classes = useStyles;
+  const [formData, setFormData] = useState({ comment: "" });
 
   const params = useParams();
   const { comment } = formData;
@@ -38,8 +39,8 @@ export default function CommentSubmit() {
       const token = TokenService.getAuthToken();
       const headers = {
         headers: {
-          'Content-Type': 'application/json',
-          'x-auth-token': token,
+          "Content-Type": "application/json",
+          "x-auth-token": token,
         },
       };
 
@@ -49,13 +50,12 @@ export default function CommentSubmit() {
         body,
         headers
       );
-      setFormData({ comment: '' });
+      setFormData({ comment: "" });
     } catch (err) {
       console.error(err.message);
     }
   };
   return (
-<<<<<<< HEAD
     <div className={classes.cover}>
       <Grid container className={classes.container}>
         <Likes />
@@ -80,25 +80,5 @@ export default function CommentSubmit() {
         </form>
       </Grid>
     </div>
-=======
-    <form>
-      <TextField
-        id='outlined-textarea'
-        label='Comment'
-        placeholder='Placeholder'
-        multiline
-        variant='outlined'
-        value={comment}
-        onChange={(e) => onChange(e)}
-        InputProps={{
-          endAdornment: (
-            <InputAdornment position='end'>
-              <Button onClick={(e) => onSubmit(e)}>Post</Button>
-            </InputAdornment>
-          ),
-        }}
-      />
-    </form>
->>>>>>> d3fcea1fe74d1882f62129140c90f04e6b07f284
   );
 }
