@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory, Link } from 'react-router-dom';
 import axios from 'axios';
 import config from '../config';
@@ -17,7 +17,6 @@ import {
 import MoreIcon from '@material-ui/icons/MoreVert';
 import TokenService from '../services/token-service';
 import SearchUser from './search-user.component';
-import { store } from '../store/store.js';
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -90,7 +89,6 @@ const useStyles = makeStyles((theme) => ({
 export default function MusifyAppBar() {
   const classes = useStyles();
   const history = useHistory();
-  const globalState = useContext(store);
 
   const [auth, setAuth] = useState({});
 
@@ -135,7 +133,7 @@ export default function MusifyAppBar() {
     >
       <MenuItem>
         <Link
-          to={`/profile/user/${globalState.state.id}`}
+          to={`/profile/user/${auth.user && auth.user._id}`}
           className={classes.link}
         >
           Profile{' '}
@@ -170,7 +168,7 @@ export default function MusifyAppBar() {
       </MenuItem>
       <MenuItem>
         <Link
-          to={`/profile/user/${globalState.state.id}`}
+          to={`/profile/user/${auth.user && auth.user._id}`}
           className={classes.link}
           color='primary'
         >
@@ -181,7 +179,7 @@ export default function MusifyAppBar() {
             aria-haspopup='true'
             color='inherit'
           >
-            <Avatar alt='Remy Sharp' src={globalState.state.profile_image} />
+            <Avatar alt='Remy Sharp' src={auth.profile_image} />
           </IconButton>
         </Link>
       </MenuItem>
@@ -204,8 +202,6 @@ export default function MusifyAppBar() {
           headers
         );
 
-        console.log(profile);
-
         if (mounted) {
           setAuth(profile.data);
         }
@@ -225,7 +221,7 @@ export default function MusifyAppBar() {
             variant='h3'
             noWrap
             component={Link}
-            to={`/profile/user/${globalState.state.id}`}
+            to={`/profile/user/${auth.user && auth.user._id}`}
           >
             Musify
           </Typography>
@@ -253,7 +249,7 @@ export default function MusifyAppBar() {
               onClick={handleProfileMenuOpen}
               color='inherit'
             >
-              <Avatar alt='Remy Sharp' src={globalState.state.profile_image} />
+              <Avatar alt='Remy Sharp' src={auth.profile_image} />
             </IconButton>
           </div>
           <div className={classes.sectionMobile}>

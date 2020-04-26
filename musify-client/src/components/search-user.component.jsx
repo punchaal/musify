@@ -36,12 +36,10 @@ export default function SearchUser() {
   const loading = open && options.length === 0;
 
   const handleChange = (event, value) => {
-    console.log(event.currentTarget);
     if (value !== null) {
       history.push(`/profile/user/${value._id}`);
       setValue("");
     }
-    console.log(history);
   };
 
   React.useEffect(() => {
@@ -55,7 +53,6 @@ export default function SearchUser() {
       const response = await Axios.get(`${endpoint}/profile`);
 
       const users = response.data;
-      console.log(users);
 
       if (active) {
         setOptions(users.map((user) => user.user));
@@ -88,6 +85,9 @@ export default function SearchUser() {
       onClose={() => {
         setOpen(false);
       }}
+      getOptionSelected={(option, value) =>
+        option.first_name === value.first_name
+      }
       getOptionLabel={(option) => `${option.first_name} ${option.last_name}`}
       options={options}
       loading={loading}

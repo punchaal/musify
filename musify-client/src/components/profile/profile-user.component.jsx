@@ -99,8 +99,6 @@ export default function ProfileUser() {
         );
         setLoading(false);
 
-        console.log(profile);
-
         const profileInfo = {
           id: profile.data.user._id,
           profile_image: profile.data.profile_image,

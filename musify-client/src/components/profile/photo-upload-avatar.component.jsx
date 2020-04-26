@@ -1,14 +1,15 @@
-import React, { useRef, useContext, useState } from "react";
-import { makeStyles, Avatar, IconButton, Tooltip } from "@material-ui/core";
-import Axios from "axios";
-import config from "../../config";
-import TokenService from "../../services/token-service";
-import { store } from "../../store/store.js";
-import Loader from "../../assets/bars.gif";
+import React, { useRef, useContext, useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import { makeStyles, Avatar, IconButton, Tooltip } from '@material-ui/core';
+import Axios from 'axios';
+import config from '../../config';
+import TokenService from '../../services/token-service';
+import { store } from '../../store/store.js';
+import Loader from '../../assets/bars.gif';
 
 const useStyles = makeStyles((theme) => ({
   cover: {
-    display: "flex",
+    display: 'flex',
     margin: theme.spacing(1),
   },
   avatar: {
@@ -21,18 +22,18 @@ const useStyles = makeStyles((theme) => ({
   large: {
     width: theme.spacing(20),
     height: theme.spacing(20),
-    [theme.breakpoints.down("md")]: {
+    [theme.breakpoints.down('md')]: {
       width: theme.spacing(15),
       height: theme.spacing(15),
     },
   },
 
   loader: {
-    textAlign: "center",
-    justifyContent: "center",
-    width: "50%",
-    height: "50%",
-    [theme.breakpoints.down("md")]: {
+    textAlign: 'center',
+    justifyContent: 'center',
+    width: '50%',
+    height: '50%',
+    [theme.breakpoints.down('md')]: {
       width: theme.spacing(15),
       height: theme.spacing(15),
     },
@@ -41,6 +42,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ProfileUploadAvatar() {
   const classes = useStyles();
+  const history = useHistory();
 
   const globalState = useContext(store);
   const { dispatch } = globalState;
@@ -53,13 +55,13 @@ export default function ProfileUploadAvatar() {
   const uploadPicture = async (e) => {
     setLoading(true);
     const image = new FormData();
-    image.append("image", e.target.files[0]);
+    image.append('image', e.target.files[0]);
     const token = TokenService.getAuthToken();
     console.log(token);
     const headers = {
       headers: {
-        "x-auth-token": token,
-        "Content-Type": "multipart/form-data",
+        'x-auth-token': token,
+        'Content-Type': 'multipart/form-data',
       },
     };
     const res = await Axios.post(`${endpoint}/upload-pic/add`, image, headers);
@@ -72,8 +74,9 @@ export default function ProfileUploadAvatar() {
       last_name: res.data.user.last_name,
     };
     //updating the globalstate with profile information
-    dispatch({ type: "UPDATE", payload: profileInfo });
+    dispatch({ type: 'UPDATE', payload: profileInfo });
     setLoading(false);
+    history.go();
   };
 
   const triggerInputFile = () => {
@@ -83,16 +86,16 @@ export default function ProfileUploadAvatar() {
   return (
     <div>
       <input
-        type="file"
+        type='file'
         onChange={(e) => uploadPicture(e)}
-        name="image"
-        style={{ display: "none" }}
+        name='image'
+        style={{ display: 'none' }}
         ref={fileInput}
       />
-      <Tooltip title="Upload a new picture">
+      <Tooltip title='Upload a new picture'>
         <IconButton onClick={() => triggerInputFile()}>
           {loading ? (
-            <img src={Loader} alt="... Loading" className={classes.large} />
+            <img src={Loader} alt='... Loading' className={classes.large} />
           ) : (
             <Avatar
               src={globalState.state.profile_image}
