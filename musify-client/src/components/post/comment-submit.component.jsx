@@ -1,23 +1,12 @@
-import React, { useState } from "react";
-import { useParams } from "react-router-dom";
-import TokenService from "../../services/token-service";
-import axios from "axios";
-import config from "../../config";
-import {
-  TextField,
-  Button,
-  InputAdornment,
-  makeStyles,
-} from "@material-ui/core";
+import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
+import TokenService from '../../services/token-service';
+import axios from 'axios';
+import config from '../../config';
+import { TextField, Button, InputAdornment } from '@material-ui/core';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    width: "100%",
-  },
-}));
 export default function CommentSubmit() {
-  const classes = useStyles();
-  const [formData, setFormData] = useState({ comment: "" });
+  const [formData, setFormData] = useState({ comment: '' });
 
   const params = useParams();
   const { comment } = formData;
@@ -32,8 +21,8 @@ export default function CommentSubmit() {
       const token = TokenService.getAuthToken();
       const headers = {
         headers: {
-          "Content-Type": "application/json",
-          "x-auth-token": token,
+          'Content-Type': 'application/json',
+          'x-auth-token': token,
         },
       };
 
@@ -43,7 +32,7 @@ export default function CommentSubmit() {
         body,
         headers
       );
-      setFormData({ comment: "" });
+      setFormData({ comment: '' });
     } catch (err) {
       console.error(err.message);
     }
@@ -51,17 +40,16 @@ export default function CommentSubmit() {
   return (
     <form>
       <TextField
-        id="outlined-textarea"
-        label="Comment"
-        className={classes.root}
-        placeholder="Placeholder"
+        id='outlined-textarea'
+        label='Comment'
+        placeholder='Placeholder'
         multiline
-        variant="outlined"
+        variant='outlined'
         value={comment}
         onChange={(e) => onChange(e)}
         InputProps={{
           endAdornment: (
-            <InputAdornment position="end">
+            <InputAdornment position='end'>
               <Button onClick={(e) => onSubmit(e)}>Post</Button>
             </InputAdornment>
           ),

@@ -1,5 +1,7 @@
-import React, { useContext } from "react";
-import { useHistory, Link } from "react-router-dom";
+import React, { useContext, useEffect, useState } from 'react';
+import { useHistory, Link } from 'react-router-dom';
+import axios from 'axios';
+import config from '../config';
 import {
   fade,
   makeStyles,
@@ -11,76 +13,76 @@ import {
   MenuItem,
   Menu,
   Avatar,
-} from "@material-ui/core";
-import MoreIcon from "@material-ui/icons/MoreVert";
-import TokenService from "../services/token-service";
-import SearchUser from "./search-user.component";
-import { store } from "../store/store.js";
+} from '@material-ui/core';
+import MoreIcon from '@material-ui/icons/MoreVert';
+import TokenService from '../services/token-service';
+import SearchUser from './search-user.component';
+import { store } from '../store/store.js';
 
 const useStyles = makeStyles((theme) => ({
   grow: {
     flexGrow: 1,
-    textAlign: "center",
-    alignContent: "center",
+    textAlign: 'center',
+    alignContent: 'center',
   },
   root: {
-    color: "#ffffff",
-    background: "linear-gradient(to right, #1d976c, #93f9b9);",
+    color: '#ffffff',
+    background: 'linear-gradient(to right, #1d976c, #93f9b9);',
   },
   menuButton: {
     marginRight: theme.spacing(1),
   },
 
   title: {
-    display: "none",
-    [theme.breakpoints.up("sm")]: {
-      display: "block",
+    display: 'none',
+    [theme.breakpoints.up('sm')]: {
+      display: 'block',
     },
-    textDecoration: "none",
-    color: "white",
+    textDecoration: 'none',
+    color: 'white',
   },
   noPadding: {
     padding: 0,
-    backgroundColor: "#ccc",
+    backgroundColor: '#ccc',
   },
   inputRoot: {
-    color: "inherit",
+    color: 'inherit',
   },
   inputInput: {
     padding: theme.spacing(1, 1, 1, 0),
     // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-    transition: theme.transitions.create("width"),
-    width: "100%",
-    [theme.breakpoints.up("md")]: {
-      width: "20ch",
+    transition: theme.transitions.create('width'),
+    width: '100%',
+    [theme.breakpoints.up('md')]: {
+      width: '20ch',
     },
   },
   sectionDesktop: {
-    display: "none",
-    [theme.breakpoints.up("md")]: {
-      display: "flex",
+    display: 'none',
+    [theme.breakpoints.up('md')]: {
+      display: 'flex',
     },
   },
   search: {
-    position: "relative",
+    position: 'relative',
     borderRadius: theme.shape.borderRadius,
     backgroundColor: fade(theme.palette.common.white, 0.15),
-    "&:hover": {
+    '&:hover': {
       backgroundColor: fade(theme.palette.common.white, 0.25),
     },
-    margin: "0 auto",
-    width: "50%",
-    [theme.breakpoints.down("sm")]: {
-      margin: "0 auto",
-      width: "70%",
+    margin: '0 auto',
+    width: '50%',
+    [theme.breakpoints.down('sm')]: {
+      margin: '0 auto',
+      width: '70%',
     },
   },
 
   sectionMobile: {
-    display: "flex",
-    [theme.breakpoints.up("md")]: {
-      display: "none",
+    display: 'flex',
+    [theme.breakpoints.up('md')]: {
+      display: 'none',
     },
   },
 }));
@@ -89,6 +91,8 @@ export default function MusifyAppBar() {
   const classes = useStyles();
   const history = useHistory();
   const globalState = useContext(store);
+
+  const [auth, setAuth] = useState({});
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -115,78 +119,113 @@ export default function MusifyAppBar() {
 
   const handleLogOut = () => {
     TokenService.clearAuthToken();
-    history.push("/");
+    history.push('/');
   };
 
-  const menuId = "primary-search-account-menu";
+  const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
-      anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
       id={menuId}
       keepMounted
-      transformOrigin={{ vertical: "top", horizontal: "right" }}
+      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
       <MenuItem>
-        <Link to="/profile-page" className={classes.link}>
-          Profile{" "}
-        </Link>{" "}
+        <Link
+          to={`/profile/user/${globalState.state.id}`}
+          className={classes.link}
+        >
+          Profile{' '}
+        </Link>{' '}
       </MenuItem>
       <MenuItem onClick={handleLogOut}>Logout</MenuItem>
     </Menu>
   );
 
-  const mobileMenuId = "primary-search-account-menu-mobile";
+  const mobileMenuId = 'primary-search-account-menu-mobile';
   const renderMobileMenu = (
     <Menu
       anchorEl={mobileMoreAnchorEl}
-      anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
       id={mobileMenuId}
       keepMounted
-      transformOrigin={{ vertical: "top", horizontal: "right" }}
+      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem component={Link} to="/share">
+      <MenuItem component={Link} to='/share'>
         Share
       </MenuItem>
-      <MenuItem component={Link} to="/discover">
+      <MenuItem component={Link} to='/discover'>
         Discover
       </MenuItem>
-      <MenuItem component={Link} to="/message">
+      <MenuItem component={Link} to='/message'>
         Messages
       </MenuItem>
       <MenuItem onClick={handleLogOut}>
         <p>Logout</p>
       </MenuItem>
       <MenuItem>
-        <Link to="/profile-page" className={classes.link} color="primary">
-          {" "}
+        <Link
+          to={`/profile/user/${globalState.state.id}`}
+          className={classes.link}
+          color='primary'
+        >
+          {' '}
           <IconButton
-            aria-label="account of current user"
-            aria-controls="primary-search-account-menu"
-            aria-haspopup="true"
-            color="inherit"
+            aria-label='account of current user'
+            aria-controls='primary-search-account-menu'
+            aria-haspopup='true'
+            color='inherit'
           >
-            <Avatar alt="Remy Sharp" src={globalState.state.profile_image} />
+            <Avatar alt='Remy Sharp' src={globalState.state.profile_image} />
           </IconButton>
         </Link>
       </MenuItem>
     </Menu>
   );
 
+  useEffect(() => {
+    try {
+      async function getUserProfile() {
+        let mounted = true;
+        const token = TokenService.getAuthToken();
+        const headers = {
+          headers: {
+            'x-auth-token': token,
+          },
+        };
+
+        let profile = await axios.get(
+          `${config.API_ENDPOINT}/profile/me`,
+          headers
+        );
+
+        console.log(profile);
+
+        if (mounted) {
+          setAuth(profile.data);
+        }
+        return () => (mounted = false);
+      }
+      getUserProfile();
+    } catch (err) {
+      console.error(err.message);
+    }
+  }, []);
   return (
     <div className={classes.grow}>
-      <AppBar position="static" className={classes.root}>
+      <AppBar position='static' className={classes.root}>
         <Toolbar>
           <Typography
             className={classes.title}
-            variant="h3"
+            variant='h3'
             noWrap
             component={Link}
-            to="/profile-page"
+            to={`/profile/user/${globalState.state.id}`}
           >
             Musify
           </Typography>
@@ -194,36 +233,36 @@ export default function MusifyAppBar() {
             <SearchUser />
           </div>
           <div className={classes.sectionDesktop}>
-            <Button variant="outlined" component={Link} to="/share">
+            <Button variant='outlined' component={Link} to='/share'>
               Share Music
             </Button>
-            <Button component={Link} to="/discover">
-              {" "}
+            <Button component={Link} to='/discover'>
+              {' '}
               Discover
             </Button>
-            <Button component={Link} to="/message">
-              {" "}
+            <Button component={Link} to='/message'>
+              {' '}
               Messages
             </Button>
 
             <IconButton
-              edge="end"
-              aria-label="account of current user"
+              edge='end'
+              aria-label='account of current user'
               aria-controls={menuId}
-              aria-haspopup="true"
+              aria-haspopup='true'
               onClick={handleProfileMenuOpen}
-              color="inherit"
+              color='inherit'
             >
-              <Avatar alt="Remy Sharp" src={globalState.state.profile_image} />
+              <Avatar alt='Remy Sharp' src={globalState.state.profile_image} />
             </IconButton>
           </div>
           <div className={classes.sectionMobile}>
             <IconButton
-              aria-label="show more"
+              aria-label='show more'
               aria-controls={mobileMenuId}
-              aria-haspopup="true"
+              aria-haspopup='true'
               onClick={handleMobileMenuOpen}
-              color="inherit"
+              color='inherit'
             >
               <MoreIcon />
             </IconButton>
