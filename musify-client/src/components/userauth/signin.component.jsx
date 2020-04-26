@@ -80,7 +80,18 @@ export default function SignIn() {
       // Save the token in local storage
       TokenService.saveAuthToken(res.data.token);
 
-      history.push('/profile-page');
+      console.log(res);
+
+      const headers = {
+        headers: {
+          'x-auth-token': res.data.token,
+          'Content-Type': 'application/json',
+        },
+      };
+      const auth = await axios.get(`${endpoint}/auth`, headers);
+      console.log(auth);
+
+      history.push(`/profile/user/${auth.data._id}`);
     } catch (err) {
       console.error('err.response.data');
       setError({ error: true, msg: err.response.data.errors[0].msg });

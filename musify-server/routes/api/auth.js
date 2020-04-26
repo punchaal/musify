@@ -11,10 +11,8 @@ const { check, validationResult } = require('express-validator');
 router.post(
   '/',
   [
-    check('email', 'Please include a valid email')
-      .normalizeEmail()
-      .isEmail(),
-    check('password', 'Password is required').exists()
+    check('email', 'Please include a valid email').normalizeEmail().isEmail(),
+    check('password', 'Password is required').exists(),
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -43,8 +41,8 @@ router.post(
 
       const payload = {
         user: {
-          id: user.id
-        }
+          id: user.id,
+        },
       };
 
       jwt.sign(
@@ -84,15 +82,9 @@ router.get('/', auth, async (req, res) => {
 router.post(
   '/',
   [
-    check('first_name', 'First name is required')
-      .not()
-      .isEmpty(),
-    check('last_name', 'Last name is required')
-      .not()
-      .isEmpty(),
-    check('email', 'Please include a valid email')
-      .normalizeEmail()
-      .isEmail(),
+    check('first_name', 'First name is required').not().isEmpty(),
+    check('last_name', 'Last name is required').not().isEmpty(),
+    check('email', 'Please include a valid email').normalizeEmail().isEmail(),
     check(
       'password',
       'Please enter a password with 6 or more characters'
@@ -102,7 +94,7 @@ router.post(
         throw new Error('Password confirmation does not match password');
       }
       return true;
-    })
+    }),
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -125,7 +117,7 @@ router.post(
         first_name,
         last_name,
         email,
-        password
+        password,
       });
 
       const salt = await bcrypt.genSalt(10);
@@ -136,8 +128,8 @@ router.post(
 
       const payload = {
         user: {
-          id: user.id
-        }
+          id: user.id,
+        },
       };
 
       jwt.sign(

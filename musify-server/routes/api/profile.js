@@ -70,6 +70,7 @@ router.get('/', async (req, res) => {
     const profiles = await Profile.find().populate('user', [
       'first_name',
       'last_name',
+      '_id',
     ]);
     res.json(profiles);
   } catch (err) {

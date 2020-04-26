@@ -1,6 +1,6 @@
-// *https://www.registers.service.gov.uk/registers/country/use-the-api*
 import Axios from "axios";
 import React from "react";
+import { useHistory } from "react-router-dom";
 import config from "../config";
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
@@ -28,10 +28,21 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SearchUser() {
   const classes = useStyles();
+  const history = useHistory();
   const [open, setOpen] = React.useState(false);
+  const [value, setValue] = React.useState("");
   const [options, setOptions] = React.useState([]);
   const endpoint = config.API_ENDPOINT;
   const loading = open && options.length === 0;
+
+  const handleChange = (event, value) => {
+    console.log(event.currentTarget);
+    if (value !== null) {
+      history.push(`/profile/user/${value._id}`);
+      setValue("");
+    }
+    console.log(history);
+  };
 
   React.useEffect(() => {
     let active = true;
@@ -54,6 +65,7 @@ export default function SearchUser() {
     return () => {
       active = false;
     };
+    // eslint-disable-next-line
   }, [loading]);
 
   React.useEffect(() => {
@@ -68,17 +80,19 @@ export default function SearchUser() {
       style={{ width: 300 }}
       className={classes.search}
       open={open}
+      inputValue={value}
+      onChange={(event, value) => handleChange(event, value)}
       onOpen={() => {
         setOpen(true);
       }}
       onClose={() => {
         setOpen(false);
       }}
-      getOptionSelected={(option, value) => option.first_name === value.name}
       getOptionLabel={(option) => `${option.first_name} ${option.last_name}`}
       options={options}
       loading={loading}
       size="small"
+      clearOnEscape={true}
       forcePopupIcon={false}
       renderInput={(params) => (
         <TextField
