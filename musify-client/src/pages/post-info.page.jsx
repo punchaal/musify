@@ -83,8 +83,12 @@ export default function PostInfoPage() {
     // eslint-disable-next-line
   }, []);
 
-  const changeState = (newComments) => {
+  const changeComments = (newComments) => {
     setPostDetails({ ...postDetails, comments: newComments });
+  };
+
+  const changeLikes = (newLike) => {
+    setPostDetails({ ...postDetails, likes: newLike });
   };
 
   return (
@@ -136,7 +140,8 @@ export default function PostInfoPage() {
                   <p className={classes.grow}></p>
                   <CommentSubmit
                     post={postDetails}
-                    action={changeState}
+                    commentsAction={changeComments}
+                    likesAction={changeLikes}
                     style={{ alignSelf: 'bottom' }}
                   />
                 </Grid>

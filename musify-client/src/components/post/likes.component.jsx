@@ -48,7 +48,7 @@ export default function Likes(props) {
     }
   }, []);
 
-  const toggleLike = async () => {
+  const Like = async () => {
     try {
       const token = TokenService.getAuthToken();
       const headers = {
@@ -64,8 +64,28 @@ export default function Likes(props) {
         body,
         headers
       );
+      props.likesAction(likes.data);
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
 
-      console.log(likes);
+  const Unlike = async () => {
+    try {
+      const token = TokenService.getAuthToken();
+      const headers = {
+        headers: {
+          'Content-Type': 'application/json',
+          'x-auth-token': token,
+        },
+      };
+      const body = JSON.stringify({ like: '' });
+      const unlike = await axios.put(
+        `${config.API_ENDPOINT}/posts/unlike/${params.id}`,
+        body,
+        headers
+      );
+      props.likesAction(unlike.data);
     } catch (err) {
       console.error(err.message);
     }
@@ -74,21 +94,26 @@ export default function Likes(props) {
   return (
     <Grid container className={classes.cover}>
       <Grid item>
-        <IconButton
-          color='primary'
-          aria-label='likes'
-          component='span'
-          onClick={toggleLike}
-        >
-          {props.post.likes &&
-            props.post.likes.map((like) =>
-              like.user === auth._id ? (
-                <LibraryMusicIcon />
-              ) : (
-                <LibraryMusicOutlinedIcon />
-              )
-            )}
-        </IconButton>
+        {props.post.likes &&
+        props.post.likes.find((like) => like.user === auth._id) ? (
+          <IconButton
+            color='primary'
+            aria-label='likes'
+            component='span'
+            onClick={Unlike}
+          >
+            <LibraryMusicIcon />
+          </IconButton>
+        ) : (
+          <IconButton
+            color='primary'
+            aria-label='likes'
+            component='span'
+            onClick={Like}
+          >
+            <LibraryMusicOutlinedIcon />
+          </IconButton>
+        )}
 
         <Typography variant='subtitle1'>
           <b>{props.post.likes && `${props.post.likes.length}`} </b>{' '}

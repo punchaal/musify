@@ -49,7 +49,7 @@ export default function CommentSubmit(props) {
         body,
         headers
       );
-      props.action(comment.data);
+      props.commentsAction(comment.data);
       setFormData({ comment: '' });
     } catch (err) {
       console.error(err.message);
@@ -59,7 +59,7 @@ export default function CommentSubmit(props) {
   return (
     <div className={classes.cover}>
       <Grid container className={classes.container}>
-        <Likes post={props.post} />
+        <Likes post={props.post} likesAction={props.likesAction} />
         <form className={classes.container}>
           <TextField
             id='outlined-textarea'
