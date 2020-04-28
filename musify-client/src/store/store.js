@@ -1,7 +1,7 @@
 // store.js
 import React, { createContext, useReducer } from 'react';
 
-const initialState = { profile: '' };
+const initialState = { profile: '', post: '' };
 const store = createContext(initialState);
 const { Provider } = store;
 
@@ -11,6 +11,9 @@ const StateProvider = ({ children }) => {
       case 'UPDATE':
         state.profile = action.payload;
         return state.profile;
+      case 'UPDATE_POST':
+        state.post = action.payload;
+        return state.post;
       default:
         throw new Error();
     }

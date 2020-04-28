@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { makeStyles, Box, Grid, Typography } from '@material-ui/core';
+import { makeStyles, Box, Grid, Typography, Avatar } from '@material-ui/core';
 import { store } from '../../store/store.js';
 
 import ProfileUploadAvatar from './photo-upload-avatar.component';
@@ -12,18 +12,36 @@ const useStyles = makeStyles((theme) => ({
   content: {
     margin: theme.spacing(2, 2),
   },
+  large: {
+    width: theme.spacing(20),
+    height: theme.spacing(20),
+    [theme.breakpoints.down('md')]: {
+      width: theme.spacing(15),
+      height: theme.spacing(15),
+    },
+  },
 }));
 
-export default function ProfileInfo() {
+export default function ProfileInfo(props) {
   const classes = useStyles();
 
   //getting the global state for user info
   const globalState = useContext(store);
 
+  const followersArray = globalState.state.followers;
+  const followingArray = globalState.state.following;
+
   return (
     <Grid container className={classes.cover}>
       <Grid item sm={3}>
-        <ProfileUploadAvatar />
+        {props.auth._id === globalState.state.id ? (
+          <ProfileUploadAvatar />
+        ) : (
+          <Avatar
+            src={globalState.state.profile_image}
+            className={classes.large}
+          />
+        )}
       </Grid>
       <Grid item sm={9}>
         <Box className={classes.content}>
@@ -37,10 +55,14 @@ export default function ProfileInfo() {
         <Typography variant='subtitle2' color='textSecondary'>
           <Grid container direction='row'>
             <Box fontWeight='fontWeightBold' m={2}>
-              120k followers
+              {followersArray && followersArray.length > 0
+                ? `${followersArray.length} Followers`
+                : `0 Followers`}
             </Box>
             <Box fontWeight='fontWeightBold' m={2}>
-              20k following
+              {followingArray && followingArray.length > 0
+                ? `${followingArray.length} Following`
+                : `0 Following`}
             </Box>
           </Grid>
         </Typography>

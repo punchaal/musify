@@ -1,11 +1,10 @@
-import React, { useRef, useContext, useState } from 'react';
+import React, { useRef, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import { makeStyles, Avatar, IconButton, Tooltip } from '@material-ui/core';
 import Axios from 'axios';
 import config from '../../config';
 import TokenService from '../../services/token-service';
 import { store } from '../../store/store.js';
-import Loader from '../../assets/bars.gif';
 
 const useStyles = makeStyles((theme) => ({
   cover: {
@@ -50,14 +49,10 @@ export default function ProfileUploadAvatar() {
   const endpoint = config.API_ENDPOINT;
   const fileInput = useRef(null);
 
-  const [loading, setLoading] = useState(false);
-
   const uploadPicture = async (e) => {
-    setLoading(true);
     const image = new FormData();
     image.append('image', e.target.files[0]);
     const token = TokenService.getAuthToken();
-    console.log(token);
     const headers = {
       headers: {
         'x-auth-token': token,
@@ -65,7 +60,6 @@ export default function ProfileUploadAvatar() {
       },
     };
     const res = await Axios.post(`${endpoint}/upload-pic/add`, image, headers);
-    console.log(res);
 
     const profileInfo = {
       profile_image: res.data.profile_image,
@@ -75,8 +69,8 @@ export default function ProfileUploadAvatar() {
     };
     //updating the globalstate with profile information
     dispatch({ type: 'UPDATE', payload: profileInfo });
-    setLoading(false);
-    history.go();
+    history.location.pathname.toString().slice(1, 8) === 'profile' &&
+      history.go();
   };
 
   const triggerInputFile = () => {
@@ -94,14 +88,10 @@ export default function ProfileUploadAvatar() {
       />
       <Tooltip title='Upload a new picture'>
         <IconButton onClick={() => triggerInputFile()}>
-          {loading ? (
-            <img src={Loader} alt='... Loading' className={classes.large} />
-          ) : (
-            <Avatar
-              src={globalState.state.profile_image}
-              className={classes.large}
-            />
-          )}
+          <Avatar
+            src={globalState.state.profile_image}
+            className={classes.large}
+          />
         </IconButton>
       </Tooltip>
     </div>

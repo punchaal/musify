@@ -169,9 +169,13 @@ export default function ProfileUser() {
         className={classes.marginBox}
       >
         <Grid item sm={8} xs={12}>
-          <ProfileInfo />
+          <ProfileInfo auth={auth} />
         </Grid>
-        {auth._id === globalState.state.id ? <EditBio /> : <Follow />}
+        {auth._id === globalState.state.id ? (
+          <EditBio />
+        ) : (
+          <Follow auth={auth} />
+        )}
       </Grid>
 
       <Grid

@@ -1,28 +1,28 @@
-import React, { useContext } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import Divider from "@material-ui/core/Divider";
-import ListItemText from "@material-ui/core/ListItemText";
-import ListItemAvatar from "@material-ui/core/ListItemAvatar";
-import Avatar from "@material-ui/core/Avatar";
-import { store } from "../../store/store.js";
+import React, { useContext } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import Divider from '@material-ui/core/Divider';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import Avatar from '@material-ui/core/Avatar';
+import { store } from '../../store/store.js';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: "100%",
+    width: '100%',
     backgroundColor: theme.palette.background.paper,
-    padding: "10px",
-    maxHeight: "240px",
-    overflowY: "auto",
+    padding: '10px',
+    maxHeight: '240px',
+    overflowY: 'auto',
     flexGrow: 1,
   },
   inline: {
-    display: "inline",
+    display: 'inline',
   },
   listItem: {
-    width: "auto",
-    maxWidth: "450px",
+    width: 'auto',
+    maxWidth: '450px',
   },
 }));
 
@@ -36,10 +36,10 @@ export default function CommentList(props) {
         {props.post.comments.map((comment) => {
           return (
             <div key={comment._id} className={classes.listItem}>
-              <ListItem alignItems="flex-start" className={classes.listItem}>
+              <ListItem alignItems='flex-start' className={classes.listItem}>
                 <ListItemAvatar>
                   <Avatar
-                    alt="Remy Sharp"
+                    alt='Remy Sharp'
                     src={globalState.state.profile_image}
                   />
                 </ListItemAvatar>
@@ -49,8 +49,8 @@ export default function CommentList(props) {
                 />
               </ListItem>
               <Divider
-                variant="inset"
-                component="li"
+                variant='inset'
+                component='li'
                 className={classes.listItem}
               />
             </div>

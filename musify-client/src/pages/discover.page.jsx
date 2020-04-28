@@ -1,6 +1,5 @@
 import React from 'react';
 import { makeStyles, Grid, CssBaseline } from '@material-ui/core';
-import MusifyAppBar from '../components/musifyappbar.component';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -17,7 +16,6 @@ export default function DiscoverPage() {
 
   return (
     <Grid container component='main' className={classes.root}>
-      <MusifyAppBar />
       <CssBaseline />
       <Grid
         container

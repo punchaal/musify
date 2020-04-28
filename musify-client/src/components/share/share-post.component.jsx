@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import SongPhotoUpload from './song-photo-upload.component';
 import {
@@ -38,8 +38,36 @@ export default function SharePost(props) {
   const history = useHistory();
 
   const [formData, setFormData] = useState({ caption: '' });
+  const [auth, setAuth] = useState({});
 
   const { caption } = formData;
+
+  useEffect(() => {
+    try {
+      async function getUserProfile() {
+        let mounted = true;
+        const token = TokenService.getAuthToken();
+        const headers = {
+          headers: {
+            'x-auth-token': token,
+          },
+        };
+
+        let profile = await axios.get(
+          `${config.API_ENDPOINT}/profile/me`,
+          headers
+        );
+
+        if (mounted) {
+          setAuth(profile.data);
+        }
+        return () => (mounted = false);
+      }
+      getUserProfile();
+    } catch (err) {
+      console.error(err.message);
+    }
+  }, []);
 
   const onChange = (e) => setFormData({ caption: e.target.value });
 
@@ -68,7 +96,7 @@ export default function SharePost(props) {
         headers
       );
       console.log(post);
-      history.push('/profile-page');
+      history.push(`/profile/user/${auth.user._id}`);
     } catch (err) {
       console.error(err.message);
     }

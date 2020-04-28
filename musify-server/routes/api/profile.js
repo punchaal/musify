@@ -46,7 +46,7 @@ router.post('/', auth, async (req, res) => {
         { user: req.user.id },
         { $set: profileFields },
         { new: true }
-      ).populate('user', ['first_name', 'last_name']);
+      ).populate('user', ['first_name', 'last_name', '_id']);
 
       return res.json(profile);
     }
@@ -124,4 +124,102 @@ router.delete('/', auth, async (req, res) => {
   }
 });
 
+// @route    PUT api/profile/user/follow/:userid
+// @desc     Add a follower
+// @acess    Private
+
+router.put('/user/follow/:userid', [auth], async (req, res) => {
+  try {
+    const follower = await Profile.findOne({
+      user: req.user.id,
+    }).populate('user', ['first_name', 'last_name']);
+
+    // Check if already following exists in the list
+
+    if (
+      follower.following.filter(
+        (follows) => follows.user.toString() === req.params.userid
+      ).length > 0
+    ) {
+      return res.status(400).json({ msg: 'User already followed' });
+    }
+
+    const following = await Profile.findOne({
+      user: req.params.userid,
+    }).populate('user', ['first_name', 'last_name']);
+
+    const newFollower = {
+      first_name: follower.user.first_name,
+      last_name: follower.user.last_name,
+      profile_image: follower.profile_image,
+      user: req.user.id,
+    };
+
+    const newFollowing = {
+      first_name: following.user.first_name,
+      last_name: following.user.last_name,
+      profile_image: following.profile_image,
+      user: req.params.userid,
+    };
+
+    following.followers.unshift(newFollower);
+    follower.following.unshift(newFollowing);
+
+    await following.save();
+    await follower.save();
+    res.json({ following });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+// @route    DELETE api/profile/user/unfollow/:userid
+// @desc     Remove a follower
+// @acess    Private
+
+router.delete('/user/unfollow/:userid', [auth], async (req, res) => {
+  try {
+    const follower = await Profile.findOne({
+      user: req.user.id,
+    }).populate('user', ['first_name', 'last_name']);
+
+    const following = await Profile.findOne({
+      user: req.params.userid,
+    }).populate('user', ['first_name', 'last_name']);
+
+    // Check if already following exists in the list
+
+    const userFollows = follower.following.find(
+      (follows) => follows.user.toString() === req.params.userid
+    );
+
+    const userFollowing = following.followers.find(
+      (following) => following.user.toString() === req.user.id
+    );
+
+    if (!userFollows) {
+      return res.status(404).json({ msg: 'User is not currently followed' });
+    }
+
+    if (!userFollowing) {
+      return res.status(404).json({ msg: 'Cannot find the user' });
+    }
+    //Remove users object from the array
+
+    follower.following = follower.following.filter(
+      (user) => user.user.toString() !== req.params.userid
+    );
+    following.followers = following.followers.filter(
+      (user) => user.user.toString() !== req.user.id
+    );
+
+    await follower.save();
+    await following.save();
+    res.json({ following });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
 module.exports = router;

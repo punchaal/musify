@@ -21,6 +21,15 @@ const ProfileSchema = new mongoose.Schema({
         required: true,
         ref: 'User',
       },
+      first_name: {
+        type: String,
+      },
+      last_name: {
+        type: String,
+      },
+      profile_image: {
+        type: String,
+      },
     },
   ],
   following: [
@@ -29,6 +38,15 @@ const ProfileSchema = new mongoose.Schema({
         type: mongoose.Schema.ObjectId,
         required: true,
         ref: 'User',
+      },
+      first_name: {
+        type: String,
+      },
+      last_name: {
+        type: String,
+      },
+      profile_image: {
+        type: String,
       },
     },
   ],

@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { useParams, useHistory } from "react-router-dom";
-import axios from "axios";
-import config from "../config";
+import React, { useState, useEffect } from 'react';
+import { useParams, useHistory } from 'react-router-dom';
+import axios from 'axios';
+import config from '../config';
 import {
   makeStyles,
   CssBaseline,
@@ -9,37 +9,37 @@ import {
   Backdrop,
   Modal,
   Fade,
-} from "@material-ui/core";
-import CommentList from "../components/post/comment-list.component";
-import CommentSubmit from "../components/post/comment-submit.component";
-import PostDetails from "../components/post/post-details.component";
-import TokenService from "../services/token-service";
+} from '@material-ui/core';
+import CommentList from '../components/post/comment-list.component';
+import CommentSubmit from '../components/post/comment-submit.component';
+import PostDetails from '../components/post/post-details.component';
+import TokenService from '../services/token-service';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: "flex",
-    background: "#ffffff",
+    display: 'flex',
+    background: '#ffffff',
   },
   paper: {
     backgroundColor: theme.palette.background.paper,
-    border: "1px solid #2BA375",
+    border: '1px solid #2BA375',
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
-    width: "auto",
-    maxWidth: "900px",
+    width: 'auto',
+    maxWidth: '900px',
   },
   modal: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    width: "auto",
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 'auto',
   },
   grow: {
     flexGrow: 1,
   },
   section: {
-    display: "flex",
-    flexDirection: "column",
+    display: 'flex',
+    flexDirection: 'column',
   },
 }));
 
@@ -65,7 +65,7 @@ export default function PostInfoPage() {
         const token = TokenService.getAuthToken();
         const headers = {
           headers: {
-            "x-auth-token": token,
+            'x-auth-token': token,
           },
         };
 
@@ -83,8 +83,12 @@ export default function PostInfoPage() {
     // eslint-disable-next-line
   }, []);
 
+  const changeState = (newComments) => {
+    setPostDetails({ ...postDetails, comments: newComments });
+  };
+
   return (
-    <Grid container component="main" className={classes.root}>
+    <Grid container component='main' className={classes.root}>
       <CssBaseline />
       <div>
         <Modal
@@ -99,24 +103,24 @@ export default function PostInfoPage() {
         >
           <Fade in={openModal}>
             <div className={classes.paper}>
-              <Grid container direction="row" className={classes.marginBox}>
+              <Grid container direction='row' className={classes.marginBox}>
                 <Grid item sm={6}>
                   <img
                     src={postDetails.song_image}
-                    alt="song-cover"
-                    height="400px"
-                    width="400px"
+                    alt='song-cover'
+                    height='400px'
+                    width='400px'
                   />
                   <iframe
                     src={`https://open.spotify.com/embed/track/${
                       postDetails.uri && postDetails.uri.slice(14, 36)
                     }`}
-                    width="400"
-                    height="80"
-                    frameBorder="0"
-                    allowtransparency="true"
-                    allow="encrypted-media"
-                    title="song"
+                    width='400'
+                    height='80'
+                    frameBorder='0'
+                    allowtransparency='true'
+                    allow='encrypted-media'
+                    title='song'
                   ></iframe>
                 </Grid>
 
@@ -125,14 +129,15 @@ export default function PostInfoPage() {
                   <CommentList
                     post={postDetails}
                     style={{
-                      maxHeight: "100%",
-                      overflow: "auto",
+                      maxHeight: '100%',
+                      overflow: 'auto',
                     }}
                   />
                   <p className={classes.grow}></p>
                   <CommentSubmit
                     post={postDetails}
-                    style={{ alignSelf: "bottom" }}
+                    action={changeState}
+                    style={{ alignSelf: 'bottom' }}
                   />
                 </Grid>
               </Grid>
