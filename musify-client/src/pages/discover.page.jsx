@@ -24,7 +24,7 @@ export default function DiscoverPage() {
         alignItems='center'
         className={classes.marginBox}
       >
-        Helloooo lets discoverrr
+        If this works I am going to shit balls!
       </Grid>
     </Grid>
   );
