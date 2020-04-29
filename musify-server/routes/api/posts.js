@@ -68,7 +68,7 @@ router.get('/popular', [auth], async (req, res) => {
         likes: -1,
         date: -1,
       })
-      .limit(50);
+      .limit(45);
     res.json(posts);
   } catch (err) {
     console.error(err.message);
@@ -93,14 +93,12 @@ router.get('/following', [auth], async (req, res) => {
       followingArray.push(follows.user);
     });
 
-    const posts = await Post.find().where('user').in(followingArray);
-    // let start = moment().subtract(1, 'days').toDate();
-    // const posts = await Post.find({ date: { $gte: start } })
-    //   .sort({
-    //     likes: -1,
-    //     date: -1,
-    //   })
-    //   .limit(50);
+    const posts = await Post.find()
+      .where('user')
+      .in(followingArray)
+      .sort({ date: -1 })
+      .limit(45);
+
     res.json(posts);
   } catch (err) {
     console.error(err.message);
