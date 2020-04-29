@@ -9,6 +9,12 @@ const PostSchema = new mongoose.Schema({
   song_image: {
     type: String,
   },
+  song_name: {
+    type: String,
+  },
+  artist_name: {
+    type: String,
+  },
   first_name: {
     type: String,
   },

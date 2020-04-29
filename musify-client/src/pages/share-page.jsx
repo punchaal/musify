@@ -74,8 +74,6 @@ export default function SharePage() {
       );
       setLoading(false);
 
-      console.log(searchResults);
-
       const songItem = () => {
         searchResults.data.forEach(function (song) {
           let artist_name = song.artists[0].name;

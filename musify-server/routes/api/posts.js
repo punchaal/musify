@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const moment = require('moment');
 
 const auth = require('../../middleware/auth');
 const { check, validationResult } = require('express-validator');
@@ -28,6 +29,8 @@ router.post('/', auth, async (req, res) => {
       last_name: profile.user.last_name,
       profile_image: profile.profile_image,
       user: req.user.id,
+      song_name: req.body.postDetails.song_name,
+      artist_name: req.body.postDetails.artist_name,
     });
 
     const post = await newPost.save();
@@ -46,6 +49,58 @@ router.post('/', auth, async (req, res) => {
 router.get('/', [auth], async (req, res) => {
   try {
     const posts = await Post.find().sort({ date: -1 });
+    res.json(posts);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+// @route     GET api/posts/popular
+// @desc      Get all popular posts sorted by likes and date
+// @access    Private
+
+router.get('/popular', [auth], async (req, res) => {
+  try {
+    let start = moment().subtract(1, 'days').toDate();
+    const posts = await Post.find({ date: { $gte: start } })
+      .sort({
+        likes: -1,
+        date: -1,
+      })
+      .limit(50);
+    res.json(posts);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+// @route     GET api/posts/popular
+// @desc      Get all posts a user follows sorted by time
+// @access    Private
+
+router.get('/following', [auth], async (req, res) => {
+  try {
+    // Find all users the logged in user follows
+
+    const profile = await Profile.findOne({
+      user: req.user.id,
+    });
+
+    let followingArray = [];
+    const following = profile.following.map((follows) => {
+      followingArray.push(follows.user);
+    });
+
+    const posts = await Post.find().where('user').in(followingArray);
+    // let start = moment().subtract(1, 'days').toDate();
+    // const posts = await Post.find({ date: { $gte: start } })
+    //   .sort({
+    //     likes: -1,
+    //     date: -1,
+    //   })
+    //   .limit(50);
     res.json(posts);
   } catch (err) {
     console.error(err.message);

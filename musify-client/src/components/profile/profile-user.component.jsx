@@ -160,7 +160,6 @@ export default function ProfileUser() {
   }
 
   const handleClick = (value) => {
-    console.log(value);
     history.push({
       pathname: `/post/${value._id}`,
       //Setting background in the location state

@@ -62,6 +62,7 @@ export default function ProfileUploadAvatar() {
     const res = await Axios.post(`${endpoint}/upload-pic/add`, image, headers);
 
     const profileInfo = {
+      id: res.data.user._id,
       profile_image: res.data.profile_image,
       bio: res.data.bio,
       first_name: res.data.user.first_name,
@@ -69,8 +70,7 @@ export default function ProfileUploadAvatar() {
     };
     //updating the globalstate with profile information
     dispatch({ type: 'UPDATE', payload: profileInfo });
-    history.location.pathname.toString().slice(1, 8) === 'profile' &&
-      history.go();
+    // history.location.pathname.toString().slice(1, 8) === 'profile' &&
   };
 
   const triggerInputFile = () => {

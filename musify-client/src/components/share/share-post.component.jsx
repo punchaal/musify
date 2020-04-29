@@ -75,6 +75,8 @@ export default function SharePost(props) {
     let song_image = props.song.image;
     let uri = props.song.uri;
     let caption_text = formData.caption;
+    let song_name = props.song.song_name;
+    let artist_name = props.song.artist_name;
 
     try {
       const token = TokenService.getAuthToken();
@@ -88,14 +90,11 @@ export default function SharePost(props) {
         song_image,
         caption_text,
         uri,
+        song_name,
+        artist_name,
       };
       const body = JSON.stringify({ postDetails });
-      let post = await axios.post(
-        `${config.API_ENDPOINT}/posts`,
-        body,
-        headers
-      );
-      console.log(post);
+      await axios.post(`${config.API_ENDPOINT}/posts`, body, headers);
       history.push(`/profile/user/${auth.user._id}`);
     } catch (err) {
       console.error(err.message);

@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   makeStyles,
   Card,
@@ -9,9 +9,9 @@ import {
   Grid,
   Avatar,
   Box,
-} from "@material-ui/core";
-import TestImage from "../../assets/turntable1.jpg";
-import Likes from "../post/likes.component";
+} from '@material-ui/core';
+import moment from 'moment';
+import Likes from '../post/likes.component';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,14 +20,14 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(1),
   },
   description: {
-    display: "block",
-    color: "#999",
+    display: 'block',
+    color: '#999',
     fontSize: 14,
     marginBottom: 20,
   },
   overline: {
-    display: "block",
-    color: "#9e9e9e",
+    display: 'block',
+    color: '#9e9e9e',
     fontSize: 15,
     marginBottom: 10,
   },
@@ -41,10 +41,10 @@ const useStyles = makeStyles((theme) => ({
   },
   body: {
     fontSize: 14,
-    color: "#222",
+    color: '#222',
     lineHeight: 1.75,
-    width: "88%",
-    margin: "0 auto",
+    width: '88%',
+    margin: '0 auto',
   },
 }));
 
@@ -56,33 +56,41 @@ export default function DiscoverCard(props) {
         <CardContent>
           <Grid container className={classes.cover}>
             <Grid item sm={2}>
-              <Avatar className={classes.avatar} src={TestImage} />
+              <Avatar
+                className={classes.avatar}
+                src={props.post && props.post.profile_image}
+              />
             </Grid>
             <Grid item sm={8}>
               <Box className={classes.content}>
-                <Typography component="h6" variant="h6">
-                  Person Naam
+                <Typography component='h6' variant='h6'>
+                  {props.post &&
+                    `${props.post.first_name} ${props.post.last_name}`}
                 </Typography>
-                <Typography variant="caption" color="textSecondary">
-                  Now
+                <Typography variant='caption' color='textSecondary'>
+                  {props.post && moment(props.post.date).fromNow()}
                 </Typography>
               </Box>
             </Grid>
           </Grid>
         </CardContent>
         <CardMedia
-          component="img"
-          alt="Song"
-          height="200"
-          image={TestImage}
-          title="Song"
+          component='img'
+          alt='Song'
+          height='200'
+          image={props.post && props.post.song_image}
+          title='Song'
         />
         <CardContent>
-          <Typography className={classes.heading}>Song nu Naam</Typography>
-          <Typography className={classes.overline}>Artist nu Naam</Typography>
-          {/* insert <like> component here */}
+          <Typography className={classes.heading}>
+            {props.post && props.post.song_name}
+          </Typography>
+          <Typography className={classes.overline}>
+            {props.post && props.post.artist_name}
+          </Typography>
+          <Likes post={props.post} />
           <Typography className={classes.description}>
-            Song nu description aiyan avse. Ek ke be line avse pachi ....
+            {`${props.post && props.post.caption}`}
           </Typography>
         </CardContent>
       </CardActionArea>

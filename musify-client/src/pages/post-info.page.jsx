@@ -53,8 +53,6 @@ export default function PostInfoPage() {
 
   const handleClose = (e) => {
     setOpenModal(false);
-
-    console.log(history);
     e.stopPropagation();
     history.goBack();
   };
