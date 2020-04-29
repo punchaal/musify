@@ -1,5 +1,5 @@
 import React, { useEffect, useContext, useState, useReducer } from 'react';
-import { Link, useLocation, useParams } from 'react-router-dom';
+import { useLocation, useParams, useHistory } from 'react-router-dom';
 import axios from 'axios';
 import config from '../../config';
 import { makeStyles, CssBaseline, Grid } from '@material-ui/core';
@@ -44,6 +44,7 @@ export default function ProfileUser() {
   const [auth, setAuth] = useState({});
   let params = useParams();
   let location = useLocation();
+  const history = useHistory();
 
   const initialState = { userPosts: [] };
   const [state, dispatchPosts] = useReducer(reducer, initialState);
@@ -158,6 +159,15 @@ export default function ProfileUser() {
     );
   }
 
+  const handleClick = (value) => {
+    console.log(value);
+    history.push({
+      pathname: `/post/${value._id}`,
+      //Setting background in the location state
+      state: { background: location },
+    });
+  };
+
   return (
     <Grid container component='main' className={classes.root}>
       <CssBaseline />
@@ -188,16 +198,9 @@ export default function ProfileUser() {
         {state.userPosts.length > 0 ? (
           state.userPosts.map((value) => {
             return (
-              <Link
-                key={value._id}
-                to={{
-                  pathname: `/post/${value._id}`,
-                  //Setting background in the location state
-                  state: { background: location },
-                }}
-              >
-                <PostThumbnail post={value} key={value._id}></PostThumbnail>
-              </Link>
+              <div key={value._id} onClick={() => handleClick(value)}>
+                <PostThumbnail post={value}></PostThumbnail>
+              </div>
             );
           })
         ) : (
