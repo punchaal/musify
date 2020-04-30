@@ -1,30 +1,30 @@
-import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
-import TokenService from '../../services/token-service';
-import axios from 'axios';
-import config from '../../config';
+import React, { useState } from "react";
+import { useParams } from "react-router-dom";
+import TokenService from "../../services/token-service";
+import axios from "axios";
+import config from "../../config";
 import {
   TextField,
   Button,
   InputAdornment,
   makeStyles,
   Grid,
-} from '@material-ui/core';
-import Likes from './likes.component';
+} from "@material-ui/core";
+import Likes from "./likes.component";
 
 const useStyles = makeStyles((theme) => ({
   cover: {
     margin: theme.spacing(1),
-    width: '100%',
-    background: '#ffffff',
+    width: "100%",
+    background: "#ffffff",
   },
-  container: {
-    width: '100%',
+  cont: {
+    width: "100%",
   },
 }));
 export default function CommentSubmit(props) {
-  const classes = useStyles;
-  const [formData, setFormData] = useState({ comment: '' });
+  const classes = useStyles();
+  const [formData, setFormData] = useState({ comment: "" });
 
   const params = useParams();
   const { comment } = formData;
@@ -38,8 +38,8 @@ export default function CommentSubmit(props) {
       const token = TokenService.getAuthToken();
       const headers = {
         headers: {
-          'Content-Type': 'application/json',
-          'x-auth-token': token,
+          "Content-Type": "application/json",
+          "x-auth-token": token,
         },
       };
 
@@ -50,7 +50,7 @@ export default function CommentSubmit(props) {
         headers
       );
       props.commentsAction(comment.data);
-      setFormData({ comment: '' });
+      setFormData({ comment: "" });
     } catch (err) {
       console.error(err.message);
     }
@@ -58,21 +58,21 @@ export default function CommentSubmit(props) {
 
   return (
     <div className={classes.cover}>
-      <Grid container className={classes.container}>
+      <Grid container className={classes.cont}>
         <Likes post={props.post} likesAction={props.likesAction} />
-        <form className={classes.container}>
+        <form className={classes.cont}>
           <TextField
-            id='outlined-textarea'
-            label='Comment'
-            className={classes.container}
-            placeholder='Placeholder'
+            id="outlined-textarea"
+            label="Comment"
+            className={classes.cont}
+            placeholder="Placeholder"
             multiline
-            variant='outlined'
+            variant="outlined"
             value={comment}
             onChange={(e) => onChange(e)}
             InputProps={{
               endAdornment: (
-                <InputAdornment position='end'>
+                <InputAdornment position="end">
                   <Button onClick={(e) => onSubmit(e)}>Post</Button>
                 </InputAdornment>
               ),

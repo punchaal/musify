@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   makeStyles,
   Card,
@@ -6,7 +6,7 @@ import {
   CardContent,
   CardMedia,
   Typography,
-} from '@material-ui/core';
+} from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -15,39 +15,45 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(1),
   },
   overline: {
-    display: 'block',
-    textAlign: 'center',
-    color: '#9e9e9e',
-    letterSpacing: '2px',
+    display: "block",
+    textAlign: "center",
+    color: "#9e9e9e",
+    letterSpacing: "2px",
     fontSize: 14,
     marginTop: 12,
   },
   heading: {
-    textAlign: 'center',
+    textAlign: "center",
     fontSize: 25,
     lineHeight: 2,
     fontWeight: 300,
     fontFamily:
       // eslint-disable-next-line max-len
       '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
-    marginBottom: '0.72em',
-    '&:after': {
+    marginBottom: "0.72em",
+    "&:after": {
       content: '""',
       width: 24,
       height: 2,
-      backgroundColor: '#ddd',
-      display: 'block',
-      margin: '8px auto',
+      backgroundColor: "#ddd",
+      display: "block",
+      margin: "8px auto",
       borderRadius: 2,
     },
   },
   body: {
-    textAlign: 'center',
+    textAlign: "center",
     fontSize: 14,
-    color: '#222',
+    color: "#222",
     lineHeight: 1.75,
-    width: '88%',
-    margin: '0 auto',
+    width: "88%",
+    margin: "0 auto",
+  },
+  truncate: {
+    width: "200px",
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
   },
 }));
 
@@ -57,17 +63,21 @@ export default function MusicCard(props) {
     <Card className={classes.root}>
       <CardActionArea>
         <CardMedia
-          component='img'
-          alt='Contemplative Reptile'
-          height='200'
+          component="img"
+          alt="Contemplative Reptile"
+          height="200"
           image={props.song.image}
-          title='Contemplative Reptile'
+          title="Contemplative Reptile"
         />
         <CardContent>
-          <Typography gutterBottom align='center' className={classes.overline}>
+          <Typography gutterBottom align="center" className={classes.overline}>
             {props.song.artist_name}
           </Typography>
-          <Typography gutterBottom align='center' className={classes.heading}>
+          <Typography
+            gutterBottom
+            align="center"
+            className={`${classes.heading} ${classes.truncate}`}
+          >
             {props.song.song_name}
           </Typography>
         </CardContent>

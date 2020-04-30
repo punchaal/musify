@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
-import PropTypes from 'prop-types';
+import React, { useEffect, useState } from "react";
+import { useHistory, useLocation } from "react-router-dom";
+import PropTypes from "prop-types";
 import {
   makeStyles,
   Grid,
@@ -10,16 +10,16 @@ import {
   Typography,
   Box,
   Paper,
-} from '@material-ui/core';
-import DiscoverCard from '../components/discover/discover-card.component';
-import axios from 'axios';
-import config from '../config';
-import TokenService from '../services/token-service';
+} from "@material-ui/core";
+import DiscoverCard from "../components/discover/discover-card.component";
+import axios from "axios";
+import config from "../config";
+import TokenService from "../services/token-service";
 
 const useStyles = makeStyles((theme) => ({
   body: {
-    background: '#ffffff',
-    height: '100%',
+    background: "#ffffff",
+    height: "100%",
   },
   root: {
     flexGrow: 1,
@@ -27,7 +27,10 @@ const useStyles = makeStyles((theme) => ({
   },
   tabPanel: {
     margin: theme.spacing(5),
-    minHeight: '70vh',
+    minHeight: "70vh",
+    [theme.breakpoints.down("xs")]: {
+      margin: theme.spacing(0),
+    },
   },
 }));
 function TabPanel(props) {
@@ -35,7 +38,7 @@ function TabPanel(props) {
 
   return (
     <div
-      role='tabpanel'
+      role="tabpanel"
       hidden={value !== index}
       id={`wrapped-tabpanel-${index}`}
       aria-labelledby={`wrapped-tab-${index}`}
@@ -43,7 +46,7 @@ function TabPanel(props) {
     >
       {value === index && (
         <Box p={3}>
-          <Typography component={'span'} variant={'body2'}>
+          <Typography component={"span"} variant={"body2"}>
             {children}
           </Typography>
         </Box>
@@ -60,13 +63,13 @@ TabPanel.propTypes = {
 function a11yProps(index) {
   return {
     id: `wrapped-tab-${index}`,
-    'aria-controls': `wrapped-tabpanel-${index}`,
+    "aria-controls": `wrapped-tabpanel-${index}`,
   };
 }
 
 export default function DiscoverPage() {
   const classes = useStyles();
-  const [value, setValue] = React.useState('one');
+  const [value, setValue] = React.useState("one");
   const [loading, setLoading] = useState(false);
   const [popular, setPopular] = useState([]);
   const [following, setFollowing] = useState([]);
@@ -79,7 +82,7 @@ export default function DiscoverPage() {
         const token = TokenService.getAuthToken();
         const headers = {
           headers: {
-            'x-auth-token': token,
+            "x-auth-token": token,
           },
         };
         setLoading(true);
@@ -104,7 +107,7 @@ export default function DiscoverPage() {
         const token = TokenService.getAuthToken();
         const headers = {
           headers: {
-            'x-auth-token': token,
+            "x-auth-token": token,
           },
         };
         setLoading(true);
@@ -137,31 +140,31 @@ export default function DiscoverPage() {
   };
 
   return (
-    <Grid container component='main' className={classes.body}>
+    <Grid container component="main" className={classes.body}>
       <CssBaseline />
       <Paper square className={classes.root}>
         <Tabs
           value={value}
-          indicatorColor='primary'
-          textColor='primary'
+          indicatorColor="primary"
+          textColor="primary"
           onChange={handleChange}
-          aria-label='disabled tabs example'
+          aria-label="disabled tabs example"
           centered
         >
-          <Tab label='Following' value='one' />
-          <Tab label='Popular' value='two' />
+          <Tab label="Following" value="one" />
+          <Tab label="Popular" value="two" />
         </Tabs>
         <TabPanel
           value={value}
-          index='one'
-          {...a11yProps('one')}
+          index="one"
+          {...a11yProps("one")}
           className={classes.tabPanel}
         >
           <Grid
             container
-            direction='row'
-            justify='center'
-            alignItems='center'
+            direction="row"
+            justify="center"
+            alignItems="center"
             className={classes.searchResults}
           >
             {following.length > 0 &&
@@ -173,20 +176,20 @@ export default function DiscoverPage() {
                 );
               })}
             {following.length === 0 &&
-              ' You do not follow anyone. Please follow a user and check back here!'}
+              " You do not follow anyone. Please follow a user and check back here!"}
           </Grid>
         </TabPanel>
         <TabPanel
           value={value}
-          index='two'
-          {...a11yProps('two')}
+          index="two"
+          {...a11yProps("two")}
           className={classes.tabPanel}
         >
           <Grid
             container
-            direction='row'
-            justify='center'
-            alignItems='center'
+            direction="row"
+            justify="center"
+            alignItems="center"
             className={classes.searchResults}
           >
             {popular.length > 0 &&

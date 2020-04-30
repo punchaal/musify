@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   makeStyles,
   Card,
@@ -9,25 +9,28 @@ import {
   Grid,
   Avatar,
   Box,
-} from '@material-ui/core';
-import moment from 'moment';
-import Likes from '../post/likes.component';
+} from "@material-ui/core";
+import moment from "moment";
+import Likes from "../post/likes.component";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: 345,
     maxHeight: 460,
     margin: theme.spacing(1),
+    [theme.breakpoints.down("xs")]: {
+      width: "90vw",
+    },
   },
   description: {
-    display: 'block',
-    color: '#999',
+    display: "block",
+    color: "#999",
     fontSize: 14,
     marginBottom: 20,
   },
   overline: {
-    display: 'block',
-    color: '#9e9e9e',
+    display: "block",
+    color: "#9e9e9e",
     fontSize: 15,
     marginBottom: 10,
   },
@@ -41,10 +44,16 @@ const useStyles = makeStyles((theme) => ({
   },
   body: {
     fontSize: 14,
-    color: '#222',
+    color: "#222",
     lineHeight: 1.75,
-    width: '88%',
-    margin: '0 auto',
+    width: "88%",
+    margin: "0 auto",
+  },
+  truncate: {
+    width: "300px",
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
   },
 }));
 
@@ -64,11 +73,11 @@ export default function DiscoverCard(props) {
             </Grid>
             <Grid item sm={8}>
               <Box className={classes.content}>
-                <Typography component='h6' variant='h6'>
+                <Typography component="h6" variant="h6">
                   {props.post &&
                     `${props.post.first_name} ${props.post.last_name}`}
                 </Typography>
-                <Typography variant='caption' color='textSecondary'>
+                <Typography variant="caption" color="textSecondary">
                   {props.post && moment(props.post.date).fromNow()}
                 </Typography>
               </Box>
@@ -76,21 +85,21 @@ export default function DiscoverCard(props) {
           </Grid>
         </CardContent>
         <CardMedia
-          component='img'
-          alt='Song'
-          height='200'
+          component="img"
+          alt="Song"
+          height="200"
           image={props.post && props.post.song_image}
-          title='Song'
+          title="Song"
         />
         <CardContent>
-          <Typography className={classes.heading}>
+          <Typography className={`${classes.heading} ${classes.truncate}`}>
             {props.post && props.post.song_name}
           </Typography>
           <Typography className={classes.overline}>
             {props.post && props.post.artist_name}
           </Typography>
           <Likes post={props.post} />
-          <Typography className={classes.description}>
+          <Typography className={`${classes.description} ${classes.truncate}`}>
             {`${props.post && props.post.caption}`}
           </Typography>
         </CardContent>
