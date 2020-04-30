@@ -69,6 +69,7 @@ export default function DiscoverPage() {
   const [value, setValue] = React.useState('one');
   const [loading, setLoading] = useState(false);
   const [popular, setPopular] = useState([]);
+  const [following, setFollowing] = useState([]);
   let location = useLocation();
   const history = useHistory();
 
@@ -92,6 +93,31 @@ export default function DiscoverPage() {
         setPopular(posts.data);
       }
       getPopularPosts();
+    } catch (err) {
+      console.error(err.message);
+    } // eslint-disable-next-line
+  }, []);
+
+  useEffect(() => {
+    try {
+      async function getFollowingPosts() {
+        const token = TokenService.getAuthToken();
+        const headers = {
+          headers: {
+            'x-auth-token': token,
+          },
+        };
+        setLoading(true);
+
+        let posts = await axios.get(
+          `${config.API_ENDPOINT}/posts/following`,
+          headers
+        );
+        setLoading(false);
+
+        setFollowing(posts.data);
+      }
+      getFollowingPosts();
     } catch (err) {
       console.error(err.message);
     } // eslint-disable-next-line
@@ -138,10 +164,16 @@ export default function DiscoverPage() {
             alignItems='center'
             className={classes.searchResults}
           >
-            <DiscoverCard />
-            <DiscoverCard />
-            <DiscoverCard />
-            <DiscoverCard />
+            {following.length > 0 &&
+              following.map((post) => {
+                return (
+                  <div key={post._id} onClick={() => handleClick(post)}>
+                    <DiscoverCard post={post}></DiscoverCard>
+                  </div>
+                );
+              })}
+            {following.length === 0 &&
+              ' You do not follow anyone. Please follow a user and check back here!'}
           </Grid>
         </TabPanel>
         <TabPanel

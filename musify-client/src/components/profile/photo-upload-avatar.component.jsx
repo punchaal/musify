@@ -1,5 +1,4 @@
 import React, { useRef, useContext } from 'react';
-import { useHistory } from 'react-router-dom';
 import { makeStyles, Avatar, IconButton, Tooltip } from '@material-ui/core';
 import Axios from 'axios';
 import config from '../../config';
@@ -41,7 +40,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ProfileUploadAvatar() {
   const classes = useStyles();
-  const history = useHistory();
 
   const globalState = useContext(store);
   const { dispatch } = globalState;

@@ -49,6 +49,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function DiscoverCard(props) {
+  console.log(props.post);
   const classes = useStyles();
   return (
     <Card className={classes.root}>
