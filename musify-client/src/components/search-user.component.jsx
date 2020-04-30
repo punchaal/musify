@@ -30,6 +30,7 @@ export default function SearchUser() {
   const classes = useStyles();
   const history = useHistory();
   const [open, setOpen] = React.useState(false);
+  const [value, setValue] = React.useState('');
   const [options, setOptions] = React.useState([]);
   const endpoint = config.API_ENDPOINT;
   const loading = open && options.length === 0;
@@ -37,6 +38,7 @@ export default function SearchUser() {
   const handleChange = (event, value) => {
     if (value !== null) {
       history.push(`/profile/user/${value._id}`);
+      setValue('');
     }
   };
 
