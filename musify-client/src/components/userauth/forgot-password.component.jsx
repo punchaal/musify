@@ -62,7 +62,11 @@ export default function SignIn() {
       };
       const body = JSON.stringify(user);
 
-      await axios.post(`${endpoint}/forgotpass`, body, config);
+      await axios.post(
+        `https://cors-anywhere.herokuapp.com/${endpoint}/forgotpass`,
+        body,
+        config
+      );
       setSuccessMsg(true);
     } catch (err) {
       console.error(err.response.data);
