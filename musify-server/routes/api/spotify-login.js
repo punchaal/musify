@@ -28,8 +28,7 @@ router.get('/', (req, res) => {
   res.cookie(stateKey, state);
 
   // Request authorization
-  let scope =
-    'user-read-private user-read-email streaming user-read-playback-state user-modify-playback-state user-read-birthdate';
+  let scope = 'user-read-private user-read-email ';
   res.redirect(
     'https://accounts.spotify.com/authorize?' +
       querystring.stringify({
