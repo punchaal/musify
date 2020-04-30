@@ -29,7 +29,8 @@ const useStyles = makeStyles((theme) => ({
 export default function SpotifyConnect() {
   const classes = useStyles();
   const onClick = (e) => {
-    window.location = 'http://localhost:8000/api/spotify-login';
+    window.location =
+      'https://morning-cove-75807.herokuapp.com/api/spotify-login';
   };
   return (
     <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
