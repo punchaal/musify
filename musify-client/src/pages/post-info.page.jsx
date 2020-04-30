@@ -14,6 +14,7 @@ import CommentList from '../components/post/comment-list.component';
 import CommentSubmit from '../components/post/comment-submit.component';
 import PostDetails from '../components/post/post-details.component';
 import TokenService from '../services/token-service';
+import SpotifyEmbed from '../components/post/spotify-embed..component';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -114,17 +115,7 @@ export default function PostInfoPage() {
                     height='400px'
                     width='400px'
                   />
-                  <iframe
-                    src={`https://open.spotify.com/embed/track/${
-                      postDetails.uri && postDetails.uri.slice(14, 36)
-                    }`}
-                    width='400'
-                    height='80'
-                    frameBorder='0'
-                    allowtransparency='true'
-                    allow='encrypted-media'
-                    title='song'
-                  ></iframe>
+                  <SpotifyEmbed post={postDetails} />
                 </Grid>
 
                 <Grid item sm={6} className={classes.section}>
