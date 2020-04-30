@@ -36,6 +36,7 @@ export default function SearchUser() {
   const loading = open && options.length === 0;
 
   const handleChange = (event, value) => {
+    console.log(value);
     if (value !== null) {
       history.push(`/profile/user/${value._id}`);
       setValue("");
@@ -73,11 +74,11 @@ export default function SearchUser() {
 
   return (
     <Autocomplete
-      id="asynchronous-demo"
+      id="search-user"
       style={{ width: 300 }}
       className={classes.search}
       open={open}
-      inputValue={value}
+      // inputValue={value}
       onChange={(event, value) => handleChange(event, value)}
       onOpen={() => {
         setOpen(true);
