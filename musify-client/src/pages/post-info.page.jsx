@@ -143,5 +143,3 @@ export default function PostInfoPage() {
     </Grid>
   );
 }
-
-//Test

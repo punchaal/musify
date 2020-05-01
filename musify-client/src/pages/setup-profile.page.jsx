@@ -107,6 +107,9 @@ export default function ProfileInfo() {
         body,
         headers
       );
+
+      console.log(profile);
+
       const profileInfo = {
         profile_image: profile.data.profile_image,
         bio: profile.data.bio,

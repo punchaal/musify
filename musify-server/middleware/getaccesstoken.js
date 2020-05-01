@@ -33,9 +33,11 @@ module.exports = async function (req, res, next) {
           let access_token = body.access_token;
 
           client.setex(`${user._id}-access`, 3600, access_token);
+        } else {
+          console.log(response.statusCode);
         }
       });
-      console.log('Got a new access token!');
+
       next();
     } catch (err) {
       console.error(err);
