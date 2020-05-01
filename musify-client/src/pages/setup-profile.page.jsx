@@ -108,7 +108,9 @@ export default function ProfileInfo() {
         headers
       );
 
-      console.log(profile);
+      const route = profile.data.user
+        ? profile.data.user._id
+        : profile.data.user;
 
       const profileInfo = {
         profile_image: profile.data.profile_image,
@@ -120,7 +122,7 @@ export default function ProfileInfo() {
 
       //updating the globalstate with profile information
       await dispatch({ type: 'UPDATE', payload: profileInfo });
-      history.push(`/profile/user/${profileInfo.id}`);
+      history.push(`/profile/user/${route}`);
     } catch (err) {
       console.error(err.message);
       setError({ error: true, msg: err.message });
