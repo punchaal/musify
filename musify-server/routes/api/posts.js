@@ -315,7 +315,7 @@ router.post(
       await post.save();
 
       const commentsObject = {
-        ...post.comments,
+        ...newComment,
         first_name: profile.user.first_name,
         last_name: profile.user.last_name,
         profile_image: profile.profile_image,

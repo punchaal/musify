@@ -30,6 +30,8 @@ export default function CommentList(props) {
   const globalState = useContext(store);
   const classes = useStyles();
 
+  console.log(props);
+
   if (props.post.comments && props.post.comments.length > 0) {
     return (
       <List className={classes.root}>
