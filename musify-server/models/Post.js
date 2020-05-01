@@ -6,6 +6,10 @@ const PostSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'user',
   },
+  profile: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'profile',
+  },
   song_image: {
     type: String,
   },
@@ -13,15 +17,6 @@ const PostSchema = new mongoose.Schema({
     type: String,
   },
   artist_name: {
-    type: String,
-  },
-  first_name: {
-    type: String,
-  },
-  last_name: {
-    type: String,
-  },
-  profile_image: {
     type: String,
   },
   caption: {

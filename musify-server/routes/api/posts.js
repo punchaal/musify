@@ -28,6 +28,7 @@ router.post('/', auth, async (req, res) => {
       user: req.user.id,
       song_name: req.body.postDetails.song_name,
       artist_name: req.body.postDetails.artist_name,
+      profile: profile._id,
     });
 
     const posts = await newPost.save();
@@ -52,7 +53,15 @@ router.post('/', auth, async (req, res) => {
 
 router.get('/', [auth], async (req, res) => {
   try {
-    const posts = await Post.find().sort({ date: -1 });
+    const posts = await Post.find()
+      .sort({ date: -1 })
+      .populate('user', ['first_name', 'last_name'])
+      .populate('profile', ['profile_image']);
+
+    // const newPosts = posts.map((post) => post.user);
+
+    // const profiles = await Profile.find().where('user').in(newPosts);
+
     res.json(posts);
   } catch (err) {
     console.error(err.message);
@@ -288,22 +297,16 @@ router.post(
 
       const post = await Post.findById(req.params.id);
 
-      console.log(post);
-
       console.log(req.body);
       const newComment = {
         text: req.body.text,
-        first_name: profile.user.first_name,
-        last_name: profile.user.last_name,
-        profile_image: profile.profile_image,
         user: req.user.id,
       };
-
-      console.log(newComment.text);
 
       post.comments.unshift(newComment);
 
       await post.save();
+
       res.json(post.comments);
     } catch (err) {
       console.error(err.message);
