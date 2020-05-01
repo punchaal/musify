@@ -112,7 +112,6 @@ export default function ProfileInfo() {
         ? profile.data.user._id
         : profile.data.user;
 
-      console.log(route);
       const profileInfo = {
         profile_image: profile.data.profile_image,
         bio: profile.data.bio,
