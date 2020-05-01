@@ -34,33 +34,6 @@ const PostSchema = new mongoose.Schema({
       },
     },
   ],
-  comments: [
-    {
-      user: {
-        type: mongoose.Schema.ObjectId,
-        required: true,
-        ref: 'User',
-      },
-      text: {
-        type: String,
-        required: true,
-      },
-      first_name: {
-        type: String,
-      },
-      last_name: {
-        type: String,
-      },
-
-      profile_image: {
-        type: String,
-      },
-      date: {
-        type: Date,
-        default: Date.now,
-      },
-    },
-  ],
   date: {
     type: Date,
     default: Date.now,
