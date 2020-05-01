@@ -41,7 +41,9 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ProfileUser() {
   const classes = useStyles();
-  const [loading, setLoading] = useState(false);
+  const [profileLoading, setProfileLoading] = useState(false);
+  const [postLoading, setPostLoading] = useState(false);
+  const [authLoading, setAuthLoading] = useState(false);
   const [auth, setAuth] = useState({});
   let params = useParams();
   let location = useLocation();
@@ -71,10 +73,10 @@ export default function ProfileUser() {
             "x-auth-token": token,
           },
         };
-        setLoading(true);
+        setAuthLoading(true);
 
         let auth = await axios.get(`${config.API_ENDPOINT}/auth`, headers);
-        setLoading(false);
+        setAuthLoading(false);
 
         setAuth(auth.data);
       }
@@ -93,13 +95,13 @@ export default function ProfileUser() {
             "x-auth-token": token,
           },
         };
-        setLoading(true);
+        setProfileLoading(true);
 
         let profile = await axios.get(
           `${config.API_ENDPOINT}/profile/user/${params.userid}`,
           headers
         );
-        setLoading(false);
+        setProfileLoading(false);
 
         const profileInfo = {
           id: profile.data.user._id,
@@ -130,13 +132,13 @@ export default function ProfileUser() {
             "x-auth-token": token,
           },
         };
-        setLoading(true);
+        setPostLoading(true);
 
         let posts = await axios.get(
           `${config.API_ENDPOINT}/posts/user/${params.userid}`,
           headers
         );
-        setLoading(false);
+        setPostLoading(false);
 
         dispatchPosts({ type: "set", payload: posts.data });
       }
@@ -146,7 +148,7 @@ export default function ProfileUser() {
     } // eslint-disable-next-line
   }, [params.userid]);
 
-  if (loading) {
+  if (profileLoading) {
     return (
       <Grid
         container
@@ -201,7 +203,10 @@ export default function ProfileUser() {
           state.userPosts.map((value) => {
             return (
               <div key={value._id} onClick={() => handleClick(value)}>
-                <PostThumbnail post={value}></PostThumbnail>
+                <PostThumbnail
+                  post={value}
+                  loader={postLoading}
+                ></PostThumbnail>
               </div>
             );
           })
