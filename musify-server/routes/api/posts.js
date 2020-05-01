@@ -25,15 +25,19 @@ router.post('/', auth, async (req, res) => {
       song_image: req.body.postDetails.song_image,
       caption: req.body.postDetails.caption_text,
       uri: req.body.postDetails.uri,
-      first_name: profile.user.first_name,
-      last_name: profile.user.last_name,
-      profile_image: profile.profile_image,
       user: req.user.id,
       song_name: req.body.postDetails.song_name,
       artist_name: req.body.postDetails.artist_name,
     });
 
-    const post = await newPost.save();
+    const posts = await newPost.save();
+
+    const post = {
+      ...newPost,
+      first_name: profile.user.first_name,
+      last_name: profile.user.last_name,
+      profile_image: profile.profile_image,
+    };
 
     res.json(post);
   } catch (err) {
