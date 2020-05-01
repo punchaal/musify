@@ -35,6 +35,9 @@ router.post('/', auth, async (req, res) => {
 
   profileFields.user = req.user.id;
 
+  console.log(profile_image);
+  console.log(bio);
+
   if (profile_image) profileFields.profile_image = profile_image;
   if (bio) profileFields.bio = bio;
 
@@ -53,6 +56,7 @@ router.post('/', auth, async (req, res) => {
     //Create
     profile = new Profile(profileFields);
 
+    console.log(profile);
     await profile.save();
     res.json(profile);
   } catch (err) {
