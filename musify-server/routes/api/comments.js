@@ -54,7 +54,7 @@ router.post(
 // @access    Private
 
 router.get(
-  '/',
+  '/:id',
   [auth, [check('text', 'Text is required').not().isEmpty()]],
   async (req, res) => {
     try {
