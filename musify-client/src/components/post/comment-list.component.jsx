@@ -1,4 +1,7 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
+import config from '../../config';
 import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -7,6 +10,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 import { store } from '../../store/store.js';
+import TokenService from '../../services/token-service';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,23 +34,25 @@ export default function CommentList(props) {
   const globalState = useContext(store);
   const classes = useStyles();
 
-  console.log(props);
+  const params = useParams();
+  const commentList = props.comments;
+  console.log(commentList);
 
-  if (props.post.comments && props.post.comments.length > 0) {
+  if (commentList && commentList.length > 0) {
     return (
       <List className={classes.root}>
-        {props.post.comments.map((comment) => {
+        {commentList.map((comment) => {
           return (
             <div key={comment._id} className={classes.listItem}>
               <ListItem alignItems='flex-start' className={classes.listItem}>
                 <ListItemAvatar>
                   <Avatar
-                    alt='Remy Sharp'
-                    src={globalState.state.profile_image}
+                    alt='Post Picture'
+                    src={comment.profile.profile_image}
                   />
                 </ListItemAvatar>
                 <ListItemText
-                  primary={`${comment.first_name} ${comment.last_name}`}
+                  primary={`${comment.user.first_name} ${comment.user.last_name}`}
                   secondary={<React.Fragment>{comment.text}</React.Fragment>}
                 />
               </ListItem>

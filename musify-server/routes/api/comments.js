@@ -24,7 +24,7 @@ router.post(
     try {
       const profile = await Profile.findOne({
         user: req.user.id,
-      });
+      }).populate('user', ['first_name', 'last_name', '_id']);
 
       console.log(req.params.id);
 
@@ -38,10 +38,15 @@ router.post(
       const comments = await newComment.save();
 
       const commentsObject = {
-        comments,
-        first_name: profile.user.first_name,
-        last_name: profile.user.last_name,
-        profile_image: profile.profile_image,
+        date: comments.date,
+        post: comments.post,
+        text: comments.text,
+        profile: { profile_image: profile.profile_image, _id: profile._id },
+        user: {
+          first_name: profile.user.first_name,
+          last_name: profile.user.last_name,
+          _id: profile.user._id,
+        },
       };
 
       res.json(commentsObject);
