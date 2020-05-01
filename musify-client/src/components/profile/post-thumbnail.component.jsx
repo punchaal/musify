@@ -1,5 +1,6 @@
 import React from "react";
 import { makeStyles, Card, CardActionArea, CardMedia } from "@material-ui/core";
+import Skeleton from "@material-ui/lab/Skeleton";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -17,10 +18,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function PostThumbnail({ post }) {
+export default function PostThumbnail({ post, loader }) {
   const classes = useStyles();
-
-  return (
+  return loader ? (
+    <Skeleton variant="rect" className={classes.root} animation="wave" />
+  ) : (
     <Card className={classes.root}>
       <CardActionArea>
         <CardMedia
