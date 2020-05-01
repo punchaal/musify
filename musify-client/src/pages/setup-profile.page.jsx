@@ -108,10 +108,11 @@ export default function ProfileInfo() {
         headers
       );
 
-      const route = profile.data.user
+      const route = profile.data.user._id
         ? profile.data.user._id
         : profile.data.user;
 
+      console.log(route);
       const profileInfo = {
         profile_image: profile.data.profile_image,
         bio: profile.data.bio,
