@@ -18,8 +18,6 @@ router.post('/', auth, async (req, res) => {
       user: req.user.id,
     }).populate('user', ['first_name', 'last_name']);
 
-    console.log(profile);
-
     console.log(req.body);
     const newPost = new Post({
       song_image: req.body.postDetails.song_image,
@@ -81,6 +79,8 @@ router.get('/popular', [auth], async (req, res) => {
         likes: -1,
         date: -1,
       })
+      .populate('user', ['first_name', 'last_name'])
+      .populate('profile', ['profile_image'])
       .limit(45);
     res.json(posts);
   } catch (err) {
@@ -110,6 +110,8 @@ router.get('/following', [auth], async (req, res) => {
       .where('user')
       .in(followingArray)
       .sort({ date: -1 })
+      .populate('user', ['first_name', 'last_name'])
+      .populate('profile', ['profile_image'])
       .limit(45);
 
     res.json(posts);
@@ -126,9 +128,13 @@ router.get('/following', [auth], async (req, res) => {
 router.get('/user', [auth], async (req, res) => {
   try {
     let userPosts = [];
-    const posts = await Post.find().sort({ date: -1 });
+    const posts = await Post.find()
+      .sort({ date: -1 })
+      .populate('user', ['first_name', 'last_name'])
+      .populate('profile', ['profile_image']);
+
     posts.forEach((post) => {
-      if (post.user.toString() === req.user.id) {
+      if (post.user._id.toString() === req.user.id) {
         userPosts.push(post);
       }
     });
@@ -147,10 +153,12 @@ router.get('/user', [auth], async (req, res) => {
 router.get('/user/:userid', [auth], async (req, res) => {
   try {
     let userPosts = [];
-    console.log(req.params);
-    const posts = await Post.find().sort({ date: -1 });
+    const posts = await Post.find()
+      .sort({ date: -1 })
+      .populate('user', ['first_name', 'last_name'])
+      .populate('profile', ['profile_image']);
     posts.forEach((post) => {
-      if (post.user.toString() === req.params.userid) {
+      if (post.user._id.toString() === req.params.userid) {
         userPosts.push(post);
       }
     });
@@ -169,7 +177,9 @@ router.get('/user/:userid', [auth], async (req, res) => {
 router.get('/:id', [auth], async (req, res) => {
   console.log(req.params);
   try {
-    const post = await Post.findById(req.params.id);
+    const post = await Post.findById(req.params.id)
+      .populate('user', ['first_name', 'last_name'])
+      .populate('profile', ['profile_image']);
 
     if (!post) {
       return res.status(404).json({ msg: 'Post not found' });
@@ -251,9 +261,6 @@ router.put('/unlike/:id', auth, async (req, res) => {
 
     // Check if the post has already been liked
 
-    console.log(post);
-    console.log(req.user.id);
-
     if (
       post.likes.filter((like) => like.user.toString() === req.user.id)
         .length === 0
@@ -307,7 +314,14 @@ router.post(
 
       await post.save();
 
-      res.json(post.comments);
+      const commentsObject = {
+        ...post.comments,
+        first_name: profile.user.first_name,
+        last_name: profile.user.last_name,
+        profile_image: profile.profile_image,
+      };
+
+      res.json(commentsObject);
     } catch (err) {
       console.error(err.message);
       res.status(500).send('Server Error');
