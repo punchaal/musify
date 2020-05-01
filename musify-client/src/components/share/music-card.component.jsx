@@ -64,10 +64,10 @@ export default function MusicCard(props) {
       <CardActionArea>
         <CardMedia
           component="img"
-          alt="Contemplative Reptile"
+          alt="Song Album Image"
           height="200"
           image={props.song.image}
-          title="Contemplative Reptile"
+          title="Song Album Image"
         />
         <CardContent>
           <Typography gutterBottom align="center" className={classes.overline}>

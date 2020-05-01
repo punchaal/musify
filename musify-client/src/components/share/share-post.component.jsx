@@ -17,8 +17,9 @@ import config from "../../config";
 const useStyles = makeStyles((theme) => ({
   cover: {
     display: "flex",
-    margin: theme.spacing(2),
-    width: "auto",
+    margin: theme.spacing(1),
+    width: "100%",
+    paddingTop: theme.spacing(3),
   },
   avatar: {
     margin: theme.spacing(2, 2),
@@ -108,16 +109,15 @@ export default function SharePost(props) {
       direction="row"
       justify="center"
       alignItems="center"
-      spacing={3}
     >
-      <Grid container item sm={6} xs={12} spacing={2}>
+      <Grid container item sm={4} xs={12} spacing={0}>
         <Box
           display="flex"
           justifyContent="flex-start"
           boxShadow={3}
           width="100%"
-          m={3}
-          p={3}
+          m={2}
+          p={2}
         >
           <Box p={1}>
             <Avatar
@@ -148,8 +148,8 @@ export default function SharePost(props) {
           boxShadow={3}
           width="100%"
           flexDirection="column"
-          m={3}
-          p={3}
+          m={2}
+          p={2}
         >
           <Typography component="h5" variant="h5">
             Add Description:
@@ -167,19 +167,28 @@ export default function SharePost(props) {
           />
         </Box>
       </Grid>
-      <Grid container item sm={6} xs={12} spacing={2}>
+      <Grid container item sm={4} xs={12} spacing={0}>
         <Grid container direction="column" justify="center" alignItems="center">
           <SongPhotoUpload image={props.song.image} />
         </Grid>
       </Grid>
-      <Button
-        type="submit"
-        variant="contained"
-        color="primary"
-        onClick={() => onSubmit()}
+      <Grid
+        container
+        className={classes.cover}
+        direction="row"
+        justify="center"
+        alignItems="center"
+        spacing={2}
       >
-        Share Post
-      </Button>
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          onClick={() => onSubmit()}
+        >
+          Share Post
+        </Button>
+      </Grid>
     </Grid>
   );
 }
