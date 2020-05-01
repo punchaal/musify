@@ -107,17 +107,22 @@ export default function ProfileInfo() {
         body,
         headers
       );
-      console.log(profile);
+
+      const route = profile.data.user._id
+        ? profile.data.user._id
+        : profile.data.user;
+
       const profileInfo = {
         profile_image: profile.data.profile_image,
         bio: profile.data.bio,
-        user: profile.data.user,
+        first_name: profile.data.user.first_name,
+        last_name: profile.data.user.last_name,
+        id: profile.data.user._id,
       };
 
       //updating the globalstate with profile information
       await dispatch({ type: 'UPDATE', payload: profileInfo });
-      console.log(profileInfo.id);
-      history.push(`/profile/user/${profileInfo.user}`);
+      history.push(`/profile/user/${route}`);
     } catch (err) {
       console.error(err.message);
       setError({ error: true, msg: err.message });
