@@ -1,12 +1,5 @@
-import React from 'react';
-import {
-  makeStyles,
-  Card,
-  CardActionArea,
-  CardActions,
-  CardMedia,
-  Button,
-} from '@material-ui/core';
+import React from "react";
+import { makeStyles, Card, CardActionArea, CardMedia } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,18 +15,13 @@ export default function SongPhotoUpload(props) {
     <Card className={classes.root}>
       <CardActionArea>
         <CardMedia
-          component='img'
-          alt='Contemplative Reptile'
-          height='400'
+          component="img"
+          alt="Song Album Image"
+          height="400"
           image={props.image}
-          title='Contemplative Reptile'
+          title="Song Album Image"
         />
       </CardActionArea>
-      <CardActions>
-        <Button size='small' color='primary'>
-          Upload another picture
-        </Button>
-      </CardActions>
     </Card>
   );
 }
