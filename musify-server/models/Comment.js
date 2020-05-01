@@ -4,12 +4,12 @@ const CommentSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.ObjectId,
     required: true,
-    ref: 'User',
+    ref: 'user',
   },
   profile: {
     type: mongoose.Schema.ObjectId,
     required: true,
-    ref: 'Profile',
+    ref: 'profile',
   },
   post: {
     type: mongoose.Schema.ObjectId,
