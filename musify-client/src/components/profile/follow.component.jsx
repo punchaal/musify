@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 import config from "../../config";
 import { Box, Button, Grid } from "@material-ui/core";
@@ -111,7 +111,7 @@ export default function Follow(props) {
                 Unfollow
               </Button>
             </Box>
-            <Box>
+            {/* <Box>
               <Button
                 component={Link}
                 to="/message"
@@ -120,7 +120,7 @@ export default function Follow(props) {
               >
                 Message
               </Button>
-            </Box>
+            </Box> */}
           </Grid>
         );
       } else {
@@ -142,7 +142,7 @@ export default function Follow(props) {
                 Follow
               </Button>
             </Box>
-            <Box m={2}>
+            {/* <Box m={2}>
               <Button
                 component={Link}
                 to="/message"
@@ -151,7 +151,7 @@ export default function Follow(props) {
               >
                 Message
               </Button>
-            </Box>
+            </Box> */}
           </Grid>
         );
       }
@@ -174,7 +174,7 @@ export default function Follow(props) {
               Follow
             </Button>
           </Box>
-          <Box m={2}>
+          {/* <Box m={2}>
             <Button
               component={Link}
               to="/message"
@@ -183,7 +183,7 @@ export default function Follow(props) {
             >
               Message
             </Button>
-          </Box>
+          </Box> */}
         </Grid>
       );
     }
