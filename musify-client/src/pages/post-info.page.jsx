@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { useParams, useHistory } from "react-router-dom";
-import axios from "axios";
-import config from "../config";
+import React, { useState, useEffect } from 'react';
+import { useParams, useHistory } from 'react-router-dom';
+import axios from 'axios';
+import config from '../config';
 import {
   makeStyles,
   CssBaseline,
@@ -9,39 +9,39 @@ import {
   Backdrop,
   Modal,
   Fade,
-} from "@material-ui/core";
-import CommentList from "../components/post/comment-list.component";
-import CommentSubmit from "../components/post/comment-submit.component";
-import PostDetails from "../components/post/post-details.component";
-import TokenService from "../services/token-service";
-import SpotifyEmbed from "../components/post/spotify-embed..component";
-import Skeleton from "@material-ui/lab/Skeleton";
+} from '@material-ui/core';
+import CommentList from '../components/post/comment-list.component';
+import CommentSubmit from '../components/post/comment-submit.component';
+import PostDetails from '../components/post/post-details.component';
+import TokenService from '../services/token-service';
+import SpotifyEmbed from '../components/post/spotify-embed..component';
+import Skeleton from '@material-ui/lab/Skeleton';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: "flex",
-    background: "#ffffff",
+    display: 'flex',
+    background: '#ffffff',
   },
   paper: {
     backgroundColor: theme.palette.background.paper,
-    border: "1px solid #2BA375",
+    border: '1px solid #2BA375',
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
-    width: "auto",
-    maxWidth: "900px",
+    width: 'auto',
+    maxWidth: '900px',
   },
   modal: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    width: "auto",
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 'auto',
   },
   grow: {
     flexGrow: 1,
   },
   section: {
-    display: "flex",
-    flexDirection: "column",
+    display: 'flex',
+    flexDirection: 'column',
   },
 }));
 
@@ -52,6 +52,7 @@ export default function PostInfoPage() {
 
   const [openModal, setOpenModal] = useState(true);
   const [postDetails, setPostDetails] = useState({});
+  const [postComments, setPostComments] = useState([]);
   const [imgLoading, setImgLoading] = useState(false);
 
   const handleClose = (e) => {
@@ -68,7 +69,7 @@ export default function PostInfoPage() {
         const token = TokenService.getAuthToken();
         const headers = {
           headers: {
-            "x-auth-token": token,
+            'x-auth-token': token,
           },
         };
 
@@ -87,8 +88,34 @@ export default function PostInfoPage() {
     // eslint-disable-next-line
   }, []);
 
-  const changeComments = (newComments) => {
-    setPostDetails({ ...postDetails, comments: newComments });
+  //get post comments
+  useEffect(() => {
+    //Get the post information
+    try {
+      async function getComments() {
+        const token = TokenService.getAuthToken();
+        const headers = {
+          headers: {
+            'x-auth-token': token,
+          },
+        };
+
+        let comments = await axios.get(
+          `${config.API_ENDPOINT}/comments/${params.id}`,
+          headers
+        );
+        setPostComments(comments.data);
+        //setImgLoading(false);
+      }
+      getComments();
+    } catch (err) {
+      console.error(err.message);
+    }
+    // eslint-disable-next-line
+  }, []);
+
+  const changeComments = (newComment) => {
+    setPostComments([newComment, ...postComments]);
   };
 
   const changeLikes = (newLike) => {
@@ -96,7 +123,7 @@ export default function PostInfoPage() {
   };
 
   return (
-    <Grid container component="main" className={classes.root}>
+    <Grid container component='main' className={classes.root}>
       <CssBaseline />
       <div>
         <Modal
@@ -111,21 +138,21 @@ export default function PostInfoPage() {
         >
           <Fade in={openModal}>
             <div className={classes.paper}>
-              <Grid container direction="row" className={classes.marginBox}>
+              <Grid container direction='row' className={classes.marginBox}>
                 <Grid item sm={6}>
                   {imgLoading ? (
                     <Skeleton
-                      variant="rect"
+                      variant='rect'
                       width={400}
                       height={400}
-                      animation="wave"
+                      animation='wave'
                     />
                   ) : (
                     <img
                       src={postDetails.song_image}
-                      alt="song-cover"
-                      height="400px"
-                      width="400px"
+                      alt='song-cover'
+                      height='400px'
+                      width='400px'
                     />
                   )}
                   <SpotifyEmbed post={postDetails} />
@@ -134,10 +161,10 @@ export default function PostInfoPage() {
                 <Grid item sm={6} className={classes.section}>
                   <PostDetails post={postDetails} />
                   <CommentList
-                    post={postDetails}
+                    comments={postComments}
                     style={{
-                      maxHeight: "100%",
-                      overflow: "auto",
+                      maxHeight: '100%',
+                      overflow: 'auto',
                     }}
                   />
                   <p className={classes.grow}></p>
@@ -145,7 +172,7 @@ export default function PostInfoPage() {
                     post={postDetails}
                     commentsAction={changeComments}
                     likesAction={changeLikes}
-                    style={{ alignSelf: "bottom" }}
+                    style={{ alignSelf: 'bottom' }}
                   />
                 </Grid>
               </Grid>

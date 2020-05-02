@@ -1,8 +1,7 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { makeStyles, Box, Grid, Typography } from '@material-ui/core';
 import Avatar from '@material-ui/core/Avatar';
 import moment from 'moment';
-import { store } from '../../store/store.js';
 
 const useStyles = makeStyles((theme) => ({
   cover: {
@@ -21,20 +20,21 @@ const useStyles = makeStyles((theme) => ({
 
 export default function PostDetails(props) {
   const classes = useStyles();
-  const globalState = useContext(store);
 
   return (
     <Grid container className={classes.cover}>
       <Grid item sm={2}>
         <Avatar
           className={classes.avatar}
-          src={globalState.state.profile_image}
+          src={props.post.profile && props.post.profile.profile_image}
         />
       </Grid>
       <Grid item sm={9}>
         <Box className={classes.content}>
           <Typography component='h5' variant='h5'>
-            {`${props.post.first_name} ${props.post.last_name}`}
+            {`${props.post.user && props.post.user.first_name} ${
+              props.post.user && props.post.user.last_name
+            }`}
           </Typography>
           <Typography variant='subtitle1' color='textSecondary'>
             {props.post.caption}

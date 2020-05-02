@@ -153,16 +153,10 @@ router.put('/user/follow/:userid', [auth], async (req, res) => {
     }).populate('user', ['first_name', 'last_name']);
 
     const newFollower = {
-      first_name: follower.user.first_name,
-      last_name: follower.user.last_name,
-      profile_image: follower.profile_image,
       user: req.user.id,
     };
 
     const newFollowing = {
-      first_name: following.user.first_name,
-      last_name: following.user.last_name,
-      profile_image: following.profile_image,
       user: req.params.userid,
     };
 

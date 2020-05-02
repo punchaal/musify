@@ -3,7 +3,6 @@ const router = express.Router();
 const moment = require('moment');
 
 const auth = require('../../middleware/auth');
-const { check, validationResult } = require('express-validator');
 
 const Post = require('../../models/Post');
 const Profile = require('../../models/Profile');
@@ -18,22 +17,25 @@ router.post('/', auth, async (req, res) => {
       user: req.user.id,
     }).populate('user', ['first_name', 'last_name']);
 
-    console.log(profile);
-
     console.log(req.body);
     const newPost = new Post({
       song_image: req.body.postDetails.song_image,
       caption: req.body.postDetails.caption_text,
       uri: req.body.postDetails.uri,
-      first_name: profile.user.first_name,
-      last_name: profile.user.last_name,
-      profile_image: profile.profile_image,
       user: req.user.id,
       song_name: req.body.postDetails.song_name,
       artist_name: req.body.postDetails.artist_name,
+      profile: profile._id,
     });
 
-    const post = await newPost.save();
+    const posts = await newPost.save();
+
+    const post = {
+      ...newPost,
+      first_name: profile.user.first_name,
+      last_name: profile.user.last_name,
+      profile_image: profile.profile_image,
+    };
 
     res.json(post);
   } catch (err) {
@@ -48,7 +50,15 @@ router.post('/', auth, async (req, res) => {
 
 router.get('/', [auth], async (req, res) => {
   try {
-    const posts = await Post.find().sort({ date: -1 });
+    const posts = await Post.find()
+      .sort({ date: -1 })
+      .populate('user', ['first_name', 'last_name'])
+      .populate('profile', ['profile_image']);
+
+    // const newPosts = posts.map((post) => post.user);
+
+    // const profiles = await Profile.find().where('user').in(newPosts);
+
     res.json(posts);
   } catch (err) {
     console.error(err.message);
@@ -68,6 +78,8 @@ router.get('/popular', [auth], async (req, res) => {
         likes: -1,
         date: -1,
       })
+      .populate('user', ['first_name', 'last_name'])
+      .populate('profile', ['profile_image'])
       .limit(45);
     res.json(posts);
   } catch (err) {
@@ -97,6 +109,8 @@ router.get('/following', [auth], async (req, res) => {
       .where('user')
       .in(followingArray)
       .sort({ date: -1 })
+      .populate('user', ['first_name', 'last_name'])
+      .populate('profile', ['profile_image'])
       .limit(45);
 
     res.json(posts);
@@ -113,9 +127,13 @@ router.get('/following', [auth], async (req, res) => {
 router.get('/user', [auth], async (req, res) => {
   try {
     let userPosts = [];
-    const posts = await Post.find().sort({ date: -1 });
+    const posts = await Post.find()
+      .sort({ date: -1 })
+      .populate('user', ['first_name', 'last_name'])
+      .populate('profile', ['profile_image']);
+
     posts.forEach((post) => {
-      if (post.user.toString() === req.user.id) {
+      if (post.user._id.toString() === req.user.id) {
         userPosts.push(post);
       }
     });
@@ -134,10 +152,12 @@ router.get('/user', [auth], async (req, res) => {
 router.get('/user/:userid', [auth], async (req, res) => {
   try {
     let userPosts = [];
-    console.log(req.params);
-    const posts = await Post.find().sort({ date: -1 });
+    const posts = await Post.find()
+      .sort({ date: -1 })
+      .populate('user', ['first_name', 'last_name'])
+      .populate('profile', ['profile_image']);
     posts.forEach((post) => {
-      if (post.user.toString() === req.params.userid) {
+      if (post.user._id.toString() === req.params.userid) {
         userPosts.push(post);
       }
     });
@@ -156,7 +176,9 @@ router.get('/user/:userid', [auth], async (req, res) => {
 router.get('/:id', [auth], async (req, res) => {
   console.log(req.params);
   try {
-    const post = await Post.findById(req.params.id);
+    const post = await Post.findById(req.params.id)
+      .populate('user', ['first_name', 'last_name'])
+      .populate('profile', ['profile_image']);
 
     if (!post) {
       return res.status(404).json({ msg: 'Post not found' });
@@ -238,9 +260,6 @@ router.put('/unlike/:id', auth, async (req, res) => {
 
     // Check if the post has already been liked
 
-    console.log(post);
-    console.log(req.user.id);
-
     if (
       post.likes.filter((like) => like.user.toString() === req.user.id)
         .length === 0
@@ -259,91 +278,6 @@ router.put('/unlike/:id', auth, async (req, res) => {
     await post.save();
 
     res.json(post.likes);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server Error');
-  }
-});
-
-// @route     POST api/posts/comment/:id/
-// @desc      Comment on a post
-// @access    Private
-
-router.post(
-  '/comment/:id',
-  [auth, [check('text', 'Text is required').not().isEmpty()]],
-  async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-    try {
-      const profile = await Profile.findOne({
-        user: req.user.id,
-      }).populate('user', ['first_name', 'last_name']);
-
-      const post = await Post.findById(req.params.id);
-
-      console.log(post);
-
-      console.log(req.body);
-      const newComment = {
-        text: req.body.text,
-        first_name: profile.user.first_name,
-        last_name: profile.user.last_name,
-        profile_image: profile.profile_image,
-        user: req.user.id,
-      };
-
-      console.log(newComment.text);
-
-      post.comments.unshift(newComment);
-
-      await post.save();
-      res.json(post.comments);
-    } catch (err) {
-      console.error(err.message);
-      res.status(500).send('Server Error');
-    }
-  }
-);
-
-// @route     POST api/posts/comment/:id/:comment_id
-// @desc      Delete comment
-// @access    Private
-
-router.delete('comment/:id/:comment_id', auth, async (req, res) => {
-  try {
-    const post = await Post.findById(req.params.id);
-
-    //Pull out comment
-
-    const comment = post.comments.find(
-      (comment) => comment.id === req.params.comment_id
-    );
-
-    //Make sure comment exists
-    if (!comment) {
-      return res.status(404).json({ msg: 'Comment does not exist' });
-    }
-
-    //Check user
-
-    if (comment.user.toString() !== req.user.id) {
-      return res.status(401).json({ msg: 'User not authorized' });
-    }
-
-    //Remove index
-
-    const removeIndex = post.comments
-      .map((comment) => comment.user.toString())
-      .indexOf(req.user.id);
-
-    post.comments.splice(removeIndex, 1);
-
-    await post.save();
-
-    res.json(post.comments);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
