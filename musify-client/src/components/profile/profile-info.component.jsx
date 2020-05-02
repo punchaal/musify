@@ -1,4 +1,5 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import {
   makeStyles,
   Box,
@@ -6,14 +7,17 @@ import {
   Typography,
   Avatar,
   Link,
-} from "@material-ui/core";
-import { store } from "../../store/store.js";
-import ProfileUploadAvatar from "./photo-upload-avatar.component";
-import FollowersList from "./followers-list.component";
+} from '@material-ui/core';
+import { store } from '../../store/store.js';
+import ProfileUploadAvatar from './photo-upload-avatar.component';
+import FollowersList from './followers-list.component';
+import axios from 'axios';
+import config from '../../config';
+import TokenService from '../../services/token-service';
 
 const useStyles = makeStyles((theme) => ({
   cover: {
-    display: "flex",
+    display: 'flex',
     margin: theme.spacing(1),
   },
   content: {
@@ -22,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
   large: {
     width: theme.spacing(20),
     height: theme.spacing(20),
-    [theme.breakpoints.down("md")]: {
+    [theme.breakpoints.down('md')]: {
       width: theme.spacing(15),
       height: theme.spacing(15),
     },
@@ -35,25 +39,48 @@ export default function ProfileInfo(props) {
   //getting the global state for user info
   const globalState = useContext(store);
 
-  const followersArray = globalState.state.followers;
-  const followingArray = globalState.state.following;
-
   //for the dialog followers and following
+  const params = useParams();
   const [open, setOpen] = React.useState(false);
-  const [selectedLink, setSelectedLink] = React.useState("");
-  const [profilesList, setProfilesList] = React.useState(followingArray);
+  const [selectedLink, setSelectedLink] = React.useState('');
+  const [profilesList, setProfilesList] = React.useState('');
+
+  useEffect(() => {
+    try {
+      async function getList() {
+        const token = TokenService.getAuthToken();
+        const headers = {
+          headers: {
+            'x-auth-token': token,
+          },
+        };
+
+        let list = await axios.get(
+          `${config.API_ENDPOINT}/profile/follow/${params.userid}`,
+          headers
+        );
+
+        console.log(list);
+
+        setProfilesList(list);
+      }
+      getList();
+    } catch (err) {
+      console.error(err.message);
+    } // eslint-disable-next-line
+  }, []);
 
   //open the dialog
   const handleFollowingClickOpen = () => {
     setOpen(true);
-    setSelectedLink("Following");
-    setProfilesList(followingArray);
+    setSelectedLink('Following');
+    setProfilesList(profilesList.following);
   };
 
   const handleFollowerClickOpen = () => {
     setOpen(true);
-    setSelectedLink("Followers");
-    setProfilesList(followersArray);
+    setSelectedLink('Followers');
+    setProfilesList(profilesList.followers);
   };
 
   //close the dialog
@@ -75,29 +102,29 @@ export default function ProfileInfo(props) {
       </Grid>
       <Grid item sm={9}>
         <Box className={classes.content}>
-          <Typography component="h5" variant="h5">
+          <Typography component='h5' variant='h5'>
             {`${globalState.state.first_name} ${globalState.state.last_name}`}
           </Typography>
-          <Typography variant="subtitle1" color="textSecondary">
+          <Typography variant='subtitle1' color='textSecondary'>
             {globalState.state.bio}
           </Typography>
         </Box>
-        <Typography variant="subtitle2" color="textSecondary">
-          <Grid container direction="row">
-            <Box fontWeight="fontWeightBold" m={2}>
-              {followersArray && followersArray.length > 0 ? (
+        <Typography variant='subtitle2' color='textSecondary'>
+          <Grid container direction='row'>
+            <Box fontWeight='fontWeightBold' m={2}>
+              {profilesList.followers && profilesList.followers.length > 0 ? (
                 <Link onClick={handleFollowerClickOpen}>
-                  {`${followersArray.length} Followers`}
+                  {`${profilesList.followers.length} Followers`}
                 </Link>
               ) : (
                 `0 Followers`
               )}
             </Box>
-            <Box fontWeight="fontWeightBold" m={2}>
-              {followingArray && followingArray.length > 0 ? (
+            <Box fontWeight='fontWeightBold' m={2}>
+              {profilesList.following && profilesList.following.length > 0 ? (
                 <Link
                   onClick={handleFollowingClickOpen}
-                >{`${followingArray.length} Following`}</Link>
+                >{`${profilesList.following.length} Following`}</Link>
               ) : (
                 `0 Following`
               )}

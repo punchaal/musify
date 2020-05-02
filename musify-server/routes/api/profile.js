@@ -172,6 +172,45 @@ router.put('/user/follow/:userid', [auth], async (req, res) => {
   }
 });
 
+// @route    GET api/profile/user/follow
+// @desc     Get all followers and following
+// @acess    Private
+
+router.get('/follow/:id', [auth], async (req, res) => {
+  try {
+    const profile = await Profile.findOne({
+      user: req.params.id,
+    });
+
+    // Get all followers for the user
+
+    const followers = await Promise.all(
+      profile.followers.map(async (users) => {
+        const test = await Profile.findOne({ user: users.user })
+          .select('profile_image')
+          .populate('user', ['first_name', 'last_name']);
+
+        return test;
+      })
+    );
+
+    const following = await Promise.all(
+      profile.following.map(async (users) => {
+        const test = await Profile.findOne({ user: users.user })
+          .select('profile_image')
+          .populate('user', ['first_name', 'last_name']);
+
+        return test;
+      })
+    );
+
+    res.json({ followers: followers, following: following });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
 // @route    DELETE api/profile/user/unfollow/:userid
 // @desc     Remove a follower
 // @acess    Private
