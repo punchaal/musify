@@ -1,8 +1,7 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { makeStyles, Box, Grid, Typography } from '@material-ui/core';
 import Avatar from '@material-ui/core/Avatar';
 import moment from 'moment';
-import { store } from '../../store/store.js';
 
 const useStyles = makeStyles((theme) => ({
   cover: {
@@ -21,9 +20,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function PostDetails(props) {
   const classes = useStyles();
-  const globalState = useContext(store);
-
-  console.log(props.post.profile);
 
   return (
     <Grid container className={classes.cover}>

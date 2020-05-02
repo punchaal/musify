@@ -1,41 +1,41 @@
-import React, { useEffect, useContext, useState, useReducer } from "react";
-import { useLocation, useParams, useHistory } from "react-router-dom";
-import axios from "axios";
-import config from "../../config";
-import { makeStyles, CssBaseline, Grid } from "@material-ui/core";
-import ProfileInfo from "./profile-info.component";
-import PostThumbnail from "./post-thumbnail.component";
-import TokenService from "../../services/token-service";
-import { store } from "../../store/store.js";
-import EditBio from "./edit-bio.component";
-import Loader from "../../assets/bars.gif";
-import Follow from "./follow.component";
+import React, { useEffect, useContext, useState, useReducer } from 'react';
+import { useLocation, useParams, useHistory } from 'react-router-dom';
+import axios from 'axios';
+import config from '../../config';
+import { makeStyles, CssBaseline, Grid } from '@material-ui/core';
+import ProfileInfo from './profile-info.component';
+import PostThumbnail from './post-thumbnail.component';
+import TokenService from '../../services/token-service';
+import { store } from '../../store/store.js';
+import EditBio from './edit-bio.component';
+import Loader from '../../assets/bars.gif';
+import Follow from './follow.component';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: "flex",
-    background: "#ffffff",
+    display: 'flex',
+    background: '#ffffff',
   },
   marginBox: {
     margin: theme.spacing(1),
     flexGrow: 1,
   },
   modal: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   paper: {
     backgroundColor: theme.palette.background.paper,
-    border: "1px solid #2BA375",
+    border: '1px solid #2BA375',
     boxShadow: theme.shadows[5],
     padding: theme.spacing(1, 1, 1),
   },
   loading: {
-    height: "100vh",
-    width: "100vw",
-    alignItems: "center",
-    justifyContent: "center",
+    height: '100vh',
+    width: '100vw',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 }));
 
@@ -43,6 +43,7 @@ export default function ProfileUser() {
   const classes = useStyles();
   const [profileLoading, setProfileLoading] = useState(false);
   const [postLoading, setPostLoading] = useState(false);
+  // eslint-disable-next-line
   const [authLoading, setAuthLoading] = useState(false);
   const [auth, setAuth] = useState({});
   let params = useParams();
@@ -53,7 +54,7 @@ export default function ProfileUser() {
   const [state, dispatchPosts] = useReducer(reducer, initialState);
   function reducer(state, action) {
     switch (action.type) {
-      case "set":
+      case 'set':
         return { userPosts: action.payload };
       default:
         throw new Error();
@@ -70,7 +71,7 @@ export default function ProfileUser() {
         const token = TokenService.getAuthToken();
         const headers = {
           headers: {
-            "x-auth-token": token,
+            'x-auth-token': token,
           },
         };
         setAuthLoading(true);
@@ -92,7 +93,7 @@ export default function ProfileUser() {
         const token = TokenService.getAuthToken();
         const headers = {
           headers: {
-            "x-auth-token": token,
+            'x-auth-token': token,
           },
         };
         setProfileLoading(true);
@@ -114,7 +115,7 @@ export default function ProfileUser() {
         };
 
         //updating the globalstate with profile information
-        dispatch({ type: "UPDATE", payload: profileInfo });
+        dispatch({ type: 'UPDATE', payload: profileInfo });
       }
       getProfile();
     } catch (err) {
@@ -129,7 +130,7 @@ export default function ProfileUser() {
         const token = TokenService.getAuthToken();
         const headers = {
           headers: {
-            "x-auth-token": token,
+            'x-auth-token': token,
           },
         };
         setPostLoading(true);
@@ -140,7 +141,7 @@ export default function ProfileUser() {
         );
         setPostLoading(false);
 
-        dispatchPosts({ type: "set", payload: posts.data });
+        dispatchPosts({ type: 'set', payload: posts.data });
       }
       getPosts();
     } catch (err) {
@@ -152,12 +153,12 @@ export default function ProfileUser() {
     return (
       <Grid
         container
-        direction="row"
-        justify="center"
-        alignItems="center"
+        direction='row'
+        justify='center'
+        alignItems='center'
         className={classes.loading}
       >
-        <img src={Loader} alt="... Loading" />
+        <img src={Loader} alt='... Loading' />
       </Grid>
     );
   }
@@ -171,13 +172,13 @@ export default function ProfileUser() {
   };
 
   return (
-    <Grid container component="main" className={classes.root}>
+    <Grid container component='main' className={classes.root}>
       <CssBaseline />
       <Grid
         container
-        direction="row"
-        justify="center"
-        alignItems="center"
+        direction='row'
+        justify='center'
+        alignItems='center'
         className={classes.marginBox}
       >
         <Grid item sm={7}>
@@ -194,9 +195,9 @@ export default function ProfileUser() {
 
       <Grid
         container
-        direction="row"
-        justify="center"
-        alignItems="center"
+        direction='row'
+        justify='center'
+        alignItems='center'
         className={classes.marginBox}
       >
         {state.userPosts.length > 0 ? (

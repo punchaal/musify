@@ -7,7 +7,6 @@ const { check, validationResult } = require('express-validator');
 const Post = require('../../models/Post');
 const Profile = require('../../models/Profile');
 const Comment = require('../../models/Comment');
-const User = require('../../models/User');
 
 // @route     POST api/posts/comment/:id/
 // @desc      Comment on a post
@@ -38,6 +37,7 @@ router.post(
       const comments = await newComment.save();
 
       const commentsObject = {
+        _id: comments._id,
         date: comments.date,
         post: comments.post,
         text: comments.text,

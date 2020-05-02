@@ -1,7 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import axios from 'axios';
-import config from '../../config';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -9,8 +6,6 @@ import Divider from '@material-ui/core/Divider';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
-import { store } from '../../store/store.js';
-import TokenService from '../../services/token-service';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,12 +26,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function CommentList(props) {
-  const globalState = useContext(store);
   const classes = useStyles();
 
-  const params = useParams();
   const commentList = props.comments;
-  console.log(commentList);
 
   if (commentList && commentList.length > 0) {
     return (

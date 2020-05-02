@@ -91,7 +91,6 @@ export default function PostInfoPage() {
   //get post comments
   useEffect(() => {
     //Get the post information
-    console.log('inside useeffect');
     try {
       async function getComments() {
         const token = TokenService.getAuthToken();
@@ -105,7 +104,6 @@ export default function PostInfoPage() {
           `${config.API_ENDPOINT}/comments/${params.id}`,
           headers
         );
-        console.log(comments);
         setPostComments(comments.data);
         //setImgLoading(false);
       }
@@ -117,9 +115,7 @@ export default function PostInfoPage() {
   }, []);
 
   const changeComments = (newComment) => {
-    console.log(newComment);
-    setPostComments([...postComments, newComment]);
-    console.log(postComments);
+    setPostComments([newComment, ...postComments]);
   };
 
   const changeLikes = (newLike) => {

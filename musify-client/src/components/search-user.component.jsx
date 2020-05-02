@@ -30,6 +30,7 @@ export default function SearchUser() {
   const classes = useStyles();
   const history = useHistory();
   const [open, setOpen] = React.useState(false);
+  // eslint-disable-next-line
   const [value, setValue] = React.useState('');
   const [options, setOptions] = React.useState([]);
   const endpoint = config.API_ENDPOINT;
