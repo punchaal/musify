@@ -57,8 +57,7 @@ export default function PostInfoPage() {
 
   const handleClose = (e) => {
     setOpenModal(false);
-    e.stopPropagation();
-    history.goBack();
+    history.push(history.location.state.background.pathname);
   };
 
   useEffect(() => {
