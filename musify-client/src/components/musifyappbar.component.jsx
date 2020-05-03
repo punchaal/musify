@@ -160,9 +160,9 @@ export default function MusifyAppBar() {
       <MenuItem component={Link} to='/discover'>
         Discover
       </MenuItem>
-      <MenuItem component={Link} to='/message'>
+      {/* <MenuItem component={Link} to='/message'>
         Messages
-      </MenuItem>
+      </MenuItem> */}
       <MenuItem onClick={handleLogOut}>
         <p>Logout</p>
       </MenuItem>
@@ -236,10 +236,10 @@ export default function MusifyAppBar() {
               {' '}
               Discover
             </Button>
-            <Button component={Link} to='/message'>
+            {/* <Button component={Link} to='/message'>
               {' '}
               Messages
-            </Button>
+            </Button> */}
 
             <IconButton
               edge='end'

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import {
   makeStyles,
@@ -39,15 +39,16 @@ export default function ProfileInfo(props) {
   //getting the global state for user info
   const globalState = useContext(store);
 
-  const [followersArray, setFollowersArray] = React.useState([]);
-  const [followingArray, setFollowingArray] = React.useState([]);
+  const [followersArray, setFollowersArray] = useState([]);
+  const [followingArray, setFollowingArray] = useState([]);
   //for the dialog followers and following
   const params = useParams();
   const [open, setOpen] = React.useState(false);
-  const [selectedLink, setSelectedLink] = React.useState('');
-  const [profilesList, setProfilesList] = React.useState([]);
+  const [selectedLink, setSelectedLink] = useState('');
+  const [profilesList, setProfilesList] = useState([]);
 
   useEffect(() => {
+    let mounted = true;
     try {
       async function getList() {
         const token = TokenService.getAuthToken();
@@ -62,14 +63,17 @@ export default function ProfileInfo(props) {
           headers
         );
         console.log(list);
-        setFollowersArray(list.data.followers);
-        setFollowingArray(list.data.following);
+        if (mounted) {
+          setFollowersArray(list.data.followers);
+          setFollowingArray(list.data.following);
+        }
       }
 
       getList();
     } catch (err) {
       console.error(err.message);
     }
+    return () => (mounted = false);
   }, []);
 
   //open the dialog

@@ -32,6 +32,7 @@ export default function Following(props) {
   const [following, setFollowing] = useState([]);
 
   const handleClick = (post) => {
+    console.log(history);
     history.push({
       pathname: `/post/${post._id}`,
       //Setting background in the location state
