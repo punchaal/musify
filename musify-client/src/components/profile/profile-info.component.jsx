@@ -120,7 +120,7 @@ export default function ProfileInfo(props) {
             <Box fontWeight='fontWeightBold' m={2}>
               {followersArray && followersArray.length > 0 ? (
                 <Link onClick={handleFollowerClickOpen}>
-                  {`${followersArray.length} Followers`}
+                  {`${globalState.state.followers.length} Followers`}
                 </Link>
               ) : (
                 `0 Followers`
