@@ -68,8 +68,8 @@ router.get(
     try {
       const comments = await Comment.find({ post: req.params.id })
         .populate('user', ['first_name', 'last_name'])
-        .populate('profile', ['profile_image'])
-        .sort({ date: -1 });
+        .populate('profile', ['profile_image']);
+      // .sort({ date: -1 });
 
       res.json(comments);
     } catch (err) {
