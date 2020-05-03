@@ -29,7 +29,7 @@ export default function FollowersList(props) {
 
   const handleListItemClick = (value) => {
     console.log(value._id);
-    history.push(`/profile/user/${value.user}`);
+    history.push(`/profile/user/${value.user._id}`);
     onClose(value);
   };
 
@@ -46,7 +46,7 @@ export default function FollowersList(props) {
             <ListItem
               button
               onClick={() => handleListItemClick(profile)}
-              key={profile._id}
+              key={profile.user._id}
             >
               <ListItemAvatar>
                 <Avatar
@@ -55,7 +55,7 @@ export default function FollowersList(props) {
                 />
               </ListItemAvatar>
               <ListItemText
-                primary={`${profile.first_name} ${profile.last_name}`}
+                primary={`${profile.user.first_name} ${profile.user.last_name}`}
               />
             </ListItem>
           ))}

@@ -39,11 +39,13 @@ export default function ProfileInfo(props) {
   //getting the global state for user info
   const globalState = useContext(store);
 
+  const [followersArray, setFollowersArray] = React.useState([]);
+  const [followingArray, setFollowingArray] = React.useState([]);
   //for the dialog followers and following
   const params = useParams();
   const [open, setOpen] = React.useState(false);
   const [selectedLink, setSelectedLink] = React.useState('');
-  const [profilesList, setProfilesList] = React.useState('');
+  const [profilesList, setProfilesList] = React.useState([]);
 
   useEffect(() => {
     try {
@@ -59,28 +61,28 @@ export default function ProfileInfo(props) {
           `${config.API_ENDPOINT}/profile/follow/${params.userid}`,
           headers
         );
-
         console.log(list);
-
-        setProfilesList(list);
+        setFollowersArray(list.data.followers);
+        setFollowingArray(list.data.following);
       }
+
       getList();
     } catch (err) {
       console.error(err.message);
-    } // eslint-disable-next-line
+    }
   }, []);
 
   //open the dialog
   const handleFollowingClickOpen = () => {
     setOpen(true);
     setSelectedLink('Following');
-    setProfilesList(profilesList.following);
+    setProfilesList(followingArray);
   };
 
   const handleFollowerClickOpen = () => {
     setOpen(true);
     setSelectedLink('Followers');
-    setProfilesList(profilesList.followers);
+    setProfilesList(followersArray);
   };
 
   //close the dialog
@@ -112,19 +114,19 @@ export default function ProfileInfo(props) {
         <Typography variant='subtitle2' color='textSecondary'>
           <Grid container direction='row'>
             <Box fontWeight='fontWeightBold' m={2}>
-              {profilesList.followers && profilesList.followers.length > 0 ? (
+              {followersArray && followersArray.length > 0 ? (
                 <Link onClick={handleFollowerClickOpen}>
-                  {`${profilesList.followers.length} Followers`}
+                  {`${followersArray.length} Followers`}
                 </Link>
               ) : (
                 `0 Followers`
               )}
             </Box>
             <Box fontWeight='fontWeightBold' m={2}>
-              {profilesList.following && profilesList.following.length > 0 ? (
+              {followingArray && followingArray.length > 0 ? (
                 <Link
                   onClick={handleFollowingClickOpen}
-                >{`${profilesList.following.length} Following`}</Link>
+                >{`${followingArray.length} Following`}</Link>
               ) : (
                 `0 Following`
               )}
