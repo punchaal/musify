@@ -72,7 +72,7 @@ router.get('/', [auth], async (req, res) => {
 
 router.get('/popular', [auth], async (req, res) => {
   try {
-    let start = moment().subtract(1, 'days').toDate();
+    let start = moment().subtract(7, 'days').toDate();
     const posts = await Post.find({ date: { $gte: start } })
       .sort({
         likes: -1,
