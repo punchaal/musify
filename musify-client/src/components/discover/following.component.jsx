@@ -1,6 +1,6 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
-import { Grid, makeStyles } from '@material-ui/core';
+import { Grid, makeStyles, CircularProgress } from '@material-ui/core';
 import DiscoverCard from './discover-card.component';
 import axios from 'axios';
 import config from '../../config';
@@ -30,6 +30,7 @@ export default function Following(props) {
   const location = useLocation();
 
   const [following, setFollowing] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const handleClick = (post) => {
     console.log(history);
@@ -50,12 +51,15 @@ export default function Following(props) {
           },
         };
 
+        setLoading(true);
+
         let posts = await axios.get(
           `${config.API_ENDPOINT}/posts/following`,
           headers
         );
 
         setFollowing(posts.data);
+        setLoading(false);
       }
       getFollowingPosts();
     } catch (err) {
@@ -72,16 +76,20 @@ export default function Following(props) {
         alignItems='center'
         className={classes.searchResults}
       >
-        {following.length > 0 &&
+        {loading ? (
+          <CircularProgress />
+        ) : following.length === 0 ? (
+          ' You do not follow anyone. Please follow a user and check back here!'
+        ) : (
+          following.length > 0 &&
           following.map((post) => {
             return (
               <div key={post._id} onClick={() => handleClick(post)}>
                 <DiscoverCard post={post}></DiscoverCard>
               </div>
             );
-          })}
-        {following.length === 0 &&
-          ' You do not follow anyone. Please follow a user and check back here!'}
+          })
+        )}
       </Grid>
     </Fragment>
   );

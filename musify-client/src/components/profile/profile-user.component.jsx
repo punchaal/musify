@@ -2,13 +2,17 @@ import React, { useEffect, useContext, useState, useReducer } from 'react';
 import { useLocation, useParams, useHistory } from 'react-router-dom';
 import axios from 'axios';
 import config from '../../config';
-import { makeStyles, CssBaseline, Grid } from '@material-ui/core';
+import {
+  makeStyles,
+  CssBaseline,
+  Grid,
+  CircularProgress,
+} from '@material-ui/core';
 import ProfileInfo from './profile-info.component';
 import PostThumbnail from './post-thumbnail.component';
 import TokenService from '../../services/token-service';
 import { store } from '../../store/store.js';
 import EditBio from './edit-bio.component';
-import Loader from '../../assets/bars.gif';
 import Follow from './follow.component';
 
 const useStyles = makeStyles((theme) => ({
@@ -77,9 +81,9 @@ export default function ProfileUser() {
         setAuthLoading(true);
 
         let auth = await axios.get(`${config.API_ENDPOINT}/auth`, headers);
-        setAuthLoading(false);
 
         setAuth(auth.data);
+        setAuthLoading(false);
       }
       getAuth();
     } catch (err) {
@@ -158,7 +162,7 @@ export default function ProfileUser() {
         alignItems='center'
         className={classes.loading}
       >
-        <img src={Loader} alt='... Loading' />
+        <CircularProgress />
       </Grid>
     );
   }
