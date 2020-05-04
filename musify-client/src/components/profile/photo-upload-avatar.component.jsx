@@ -59,12 +59,16 @@ export default function ProfileUploadAvatar() {
     };
     const res = await Axios.post(`${endpoint}/upload-pic/add`, image, headers);
 
+    console.log(res);
+
     const profileInfo = {
       id: res.data.user._id,
       profile_image: res.data.profile_image,
       bio: res.data.bio,
       first_name: res.data.user.first_name,
       last_name: res.data.user.last_name,
+      followers: res.data.followers,
+      following: res.data.following,
     };
     //updating the globalstate with profile information
     dispatch({ type: 'UPDATE', payload: profileInfo });
