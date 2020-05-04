@@ -1,4 +1,4 @@
-# Musify APP
+# Musify App
 
 A social media app that will allow users to share their musical tastes with their friends and colleagues using spotify's API.
 
@@ -11,7 +11,15 @@ do so natively there isn't a great application that would make it more streamlin
 
 ## Screenshots
 
+![Profile Page](/musify-client/src/assets/Screenshot/ProfilePage.png)
+
+![Discover Page](/musify-client/src/assets/Screenshot/DiscoverPage.png)
+
+![Share Page](/musify-client/src/assets/Screenshot/SearchTracks.png)
+
 ##### Home Screen:
+
+![Home Screen](/musify-client/src/assets/Screenshot/HomePage.png)
 
 ## Built-With
 
@@ -28,5 +36,7 @@ do so natively there isn't a great application that would make it more streamlin
 Pratik Panchal
 
 ## Demo
+
+[Live Demo](https://musify.now.sh)
 
 ## Known Bugs/Issues
