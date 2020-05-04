@@ -74,7 +74,7 @@ export default function ProfileInfo(props) {
       console.error(err.message);
     }
     return () => (mounted = false);
-  }, []);
+  }, [params.userid]);
 
   //open the dialog
   const handleFollowingClickOpen = () => {
@@ -130,7 +130,7 @@ export default function ProfileInfo(props) {
               {followingArray && followingArray.length > 0 ? (
                 <Link
                   onClick={handleFollowingClickOpen}
-                >{`${followingArray.length} Following`}</Link>
+                >{`${globalState.state.following.length} Following`}</Link>
               ) : (
                 `0 Following`
               )}
