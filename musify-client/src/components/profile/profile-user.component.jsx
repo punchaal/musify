@@ -189,10 +189,10 @@ export default function ProfileUser() {
           <ProfileInfo auth={auth} />
         </Grid>
         <Grid item sm={2}>
-          {auth._id === globalState.state.id ? (
+          {auth._id && auth._id === globalState.state.id ? (
             <EditBio />
           ) : (
-            <Follow auth={auth} />
+            auth._id && <Follow auth={auth} />
           )}
         </Grid>
       </Grid>

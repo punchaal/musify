@@ -1,5 +1,6 @@
 import React from 'react';
 import { makeStyles, Grid, CssBaseline } from '@material-ui/core';
+import io from 'socket.io-client';
 
 const useStyles = makeStyles((theme) => ({
   root: {
