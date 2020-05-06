@@ -192,7 +192,7 @@ export default function ProfileUser() {
           {auth._id === globalState.state.id ? (
             <EditBio />
           ) : (
-            <Follow auth={auth} />
+            auth._id && <Follow auth={auth} />
           )}
         </Grid>
       </Grid>
