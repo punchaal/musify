@@ -73,22 +73,43 @@ router.get('/', [auth], async (req, res) => {
 router.get('/popular', [auth], async (req, res) => {
   try {
     let start = moment().subtract(7, 'days').toDate();
-    const posts = await Post.find({ date: { $gte: start } })
-      .sort({
-        likes: -1,
-        date: -1,
-      })
-      .populate('user', ['first_name', 'last_name'])
-      .populate('profile', ['profile_image'])
-      .limit(45);
-    res.json(posts);
+    const aggregate = await Post.aggregate([
+      {
+        $match: { date: { $gte: start } },
+      },
+      {
+        $addFields: { likes_count: { $size: { $ifNull: ['$likes', []] } } },
+      },
+      { $sort: { likes_count: -1 } },
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'user',
+          foreignField: '_id',
+          as: 'user',
+        },
+      },
+      {
+        $lookup: {
+          from: 'profiles',
+          localField: 'profile',
+          foreignField: '_id',
+          as: 'profiles',
+        },
+      },
+      { $limit: 45 },
+    ])
+      .unwind('user')
+      .unwind('profiles');
+
+    res.json(aggregate);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
   }
 });
 
-// @route     GET api/posts/popular
+// @route     GET api/posts/following
 // @desc      Get all posts a user follows sorted by time
 // @access    Private
 
