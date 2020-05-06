@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
-import { makeStyles, Grid } from '@material-ui/core';
+import { makeStyles, Grid, CircularProgress } from '@material-ui/core';
 import axios from 'axios';
 import config from '../../config';
 import TokenService from '../../services/token-service';
@@ -30,6 +30,7 @@ export default function Popular() {
   const location = useLocation();
 
   const [popular, setPopular] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const handleClick = (post) => {
     console.log(post);
@@ -50,10 +51,15 @@ export default function Popular() {
           },
         };
 
+        setLoading(true);
+
         let posts = await axios.get(
           `${config.API_ENDPOINT}/posts/popular`,
           headers
         );
+
+        setLoading(false);
+
         setPopular(posts.data);
       }
       getPopularPosts();
@@ -70,14 +76,18 @@ export default function Popular() {
         alignItems='center'
         className={classes.searchResults}
       >
-        {popular.length > 0 &&
+        {loading ? (
+          <CircularProgress />
+        ) : (
+          popular.length > 0 &&
           popular.map((post) => {
             return (
               <div key={post._id} onClick={() => handleClick(post)}>
                 <DiscoverCard post={post}></DiscoverCard>
               </div>
             );
-          })}
+          })
+        )}
       </Grid>
     </Fragment>
   );

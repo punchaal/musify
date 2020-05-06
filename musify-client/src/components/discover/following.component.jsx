@@ -57,9 +57,9 @@ export default function Following(props) {
           `${config.API_ENDPOINT}/posts/following`,
           headers
         );
+        setLoading(false);
 
         setFollowing(posts.data);
-        setLoading(false);
       }
       getFollowingPosts();
     } catch (err) {
