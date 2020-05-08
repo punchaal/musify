@@ -67,7 +67,11 @@ export default function DiscoverCard(props) {
             <Grid item sm={2}>
               <Avatar
                 className={classes.avatar}
-                src={props.post && props.post.profile.profile_image}
+                src={
+                  props.post.profiles
+                    ? props.post.profiles.profile_image
+                    : props.post && props.post.profile.profile_image
+                }
               />
             </Grid>
             <Grid item sm={8}>

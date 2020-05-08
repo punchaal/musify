@@ -62,7 +62,6 @@ export default function ProfileInfo(props) {
           `${config.API_ENDPOINT}/profile/follow/${params.userid}`,
           headers
         );
-        console.log(list);
         if (mounted) {
           setFollowersArray(list.data.followers);
           setFollowingArray(list.data.following);
