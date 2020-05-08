@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useMemo, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { makeStyles, Grid, CircularProgress } from '@material-ui/core';
 import axios from 'axios';
@@ -41,7 +41,7 @@ export default function Popular() {
     });
   };
 
-  useEffect(() => {
+  useMemo(() => {
     try {
       async function getPopularPosts() {
         const token = TokenService.getAuthToken();

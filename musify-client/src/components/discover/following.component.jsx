@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { Fragment, useState, useMemo } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { Grid, makeStyles, CircularProgress } from '@material-ui/core';
 import DiscoverCard from './discover-card.component';
@@ -41,7 +41,7 @@ export default function Following(props) {
     });
   };
 
-  useEffect(() => {
+  useMemo(() => {
     try {
       async function getFollowingPosts() {
         const token = TokenService.getAuthToken();
