@@ -72,6 +72,7 @@ export default function EditBio() {
       );
 
       const profileInfo = {
+        id: profile.data.user._id,
         profile_image: profile.data.profile_image,
         bio: profile.data.bio,
         first_name: profile.data.user.first_name,
