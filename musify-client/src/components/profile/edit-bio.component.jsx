@@ -76,8 +76,8 @@ export default function EditBio() {
         bio: profile.data.bio,
         first_name: profile.data.user.first_name,
         last_name: profile.data.user.last_name,
-        followers: res.data.followers,
-        following: res.data.following,
+        followers: profile.data.followers,
+        following: profile.data.following,
       };
 
       //updating the globalstate with profile information
