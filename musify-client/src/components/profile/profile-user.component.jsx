@@ -1,5 +1,6 @@
 import React, { useEffect, useContext, useState, useReducer } from 'react';
 import { useLocation, useParams, useHistory } from 'react-router-dom';
+import LazyLoad from 'react-lazyload';
 import axios from 'axios';
 import config from '../../config';
 import {
@@ -207,12 +208,12 @@ export default function ProfileUser() {
         {state.userPosts.length > 0 ? (
           state.userPosts.map((value) => {
             return (
-              <div key={value._id} onClick={() => handleClick(value)}>
+              <LazyLoad key={value._id} onClick={() => handleClick(value)}>
                 <PostThumbnail
                   post={value}
                   loader={postLoading}
                 ></PostThumbnail>
-              </div>
+              </LazyLoad>
             );
           })
         ) : (

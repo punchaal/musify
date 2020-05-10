@@ -1,5 +1,6 @@
 import React, { Fragment, useState, useMemo } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
+import LazyLoad from 'react-lazyload';
 import { Grid, makeStyles, CircularProgress } from '@material-ui/core';
 import DiscoverCard from './discover-card.component';
 import axios from 'axios';
@@ -84,9 +85,9 @@ export default function Following(props) {
           following.length > 0 &&
           following.map((post) => {
             return (
-              <div key={post._id} onClick={() => handleClick(post)}>
+              <LazyLoad key={post._id} onClick={() => handleClick(post)}>
                 <DiscoverCard post={post}></DiscoverCard>
-              </div>
+              </LazyLoad>
             );
           })
         )}
