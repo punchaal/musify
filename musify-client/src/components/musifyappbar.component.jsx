@@ -160,7 +160,10 @@ export default function MusifyAppBar() {
       <MenuItem component={Link} to='/discover'>
         Discover
       </MenuItem>
-      <MenuItem component={Link} to='/message'>
+      <MenuItem
+        component={Link}
+        to={{ pathname: '/message', state: { auth: auth } }}
+      >
         Messages
       </MenuItem>
       <MenuItem onClick={handleLogOut}>
@@ -236,7 +239,10 @@ export default function MusifyAppBar() {
               {' '}
               Discover
             </Button>
-            <Button component={Link} to='/message'>
+            <Button
+              component={Link}
+              to={{ pathname: '/message', state: { auth: auth } }}
+            >
               {' '}
               Messages
             </Button>

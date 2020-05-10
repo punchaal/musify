@@ -1,5 +1,6 @@
 import React from 'react';
 import { makeStyles, Grid, CssBaseline } from '@material-ui/core';
+import MessageBox from '../components/messages/message-submit.component';
 import io from 'socket.io-client';
 
 const useStyles = makeStyles((theme) => ({
@@ -25,7 +26,7 @@ export default function MessagePage() {
         alignItems='center'
         className={classes.marginBox}
       >
-        Helloooo lets messageeee
+        <MessageBox />
       </Grid>
     </Grid>
   );

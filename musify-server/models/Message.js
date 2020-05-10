@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
 
-const PostSchema = new mongoose.Schema({
-  sender: {
+const MessageSchema = new mongoose.Schema({
+  conversationId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'user',
+    ref: 'conversation',
   },
-  receiver: {
+  sender: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'user',
   },
@@ -18,4 +18,4 @@ const PostSchema = new mongoose.Schema({
   },
 });
 
-module.exports = Message = mongoose.model('message', PostSchema);
+module.exports = Message = mongoose.model('message', MessageSchema);

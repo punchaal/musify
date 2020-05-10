@@ -34,6 +34,7 @@ export default function Following(props) {
 
   const handleClick = (post) => {
     console.log(history);
+    console.log(location);
     history.push({
       pathname: `/post/${post._id}`,
       //Setting background in the location state
