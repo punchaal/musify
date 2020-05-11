@@ -8,6 +8,7 @@ import SetupProfilePage from './pages/setup-profile.page';
 import PrivateRoute from './utils/PrivateRoute';
 import { StateProvider } from './store/store.js';
 import PostInfoPage from './pages/post-info.page';
+import DiscoverPage from './pages/discover.page';
 
 const theme = createMuiTheme({
   palette: {
@@ -28,6 +29,7 @@ function App() {
   let location = useLocation();
 
   let background = location.state && location.state.background;
+  console.log(background);
   return (
     <StateProvider>
       <MuiThemeProvider theme={theme}>
@@ -39,9 +41,10 @@ function App() {
           />
           <Route path='/reset' component={LandingPage} />
           <PrivateRoute
-            path={['/profile/user/:userid', '/share', '/discover', '/message']}
+            path={['/profile/user/:userid', '/share', '/message']}
             component={ProfilePage}
           />
+          <PrivateRoute path='/discover' component={DiscoverPage} />
           <PrivateRoute path='/setup-profile' component={SetupProfilePage} />
           <PrivateRoute path='/post/:id' component={PostInfoPage} />
         </Switch>

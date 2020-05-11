@@ -34,7 +34,6 @@ export default function Following(props) {
   const [loading, setLoading] = useState(false);
 
   const handleClick = (post) => {
-    console.log(history);
     history.push({
       pathname: `/post/${post._id}`,
       //Setting background in the location state
@@ -85,9 +84,11 @@ export default function Following(props) {
           following.length > 0 &&
           following.map((post) => {
             return (
-              <LazyLoad key={post._id} onClick={() => handleClick(post)}>
-                <DiscoverCard post={post}></DiscoverCard>
-              </LazyLoad>
+              <div key={post._id} onClick={() => handleClick(post)}>
+                <LazyLoad>
+                  <DiscoverCard post={post}></DiscoverCard>
+                </LazyLoad>
+              </div>
             );
           })
         )}

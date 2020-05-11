@@ -83,9 +83,11 @@ export default function Popular() {
           popular.length > 0 &&
           popular.map((post) => {
             return (
-              <LazyLoad key={post._id} onClick={() => handleClick(post)}>
-                <DiscoverCard post={post}></DiscoverCard>
-              </LazyLoad>
+              <div key={post._id} onClick={() => handleClick(post)}>
+                <LazyLoad>
+                  <DiscoverCard post={post}></DiscoverCard>
+                </LazyLoad>
+              </div>
             );
           })
         )}

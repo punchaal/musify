@@ -208,11 +208,13 @@ export default function ProfileUser() {
         {state.userPosts.length > 0 ? (
           state.userPosts.map((value) => {
             return (
-              <LazyLoad key={value._id} onClick={() => handleClick(value)}>
-                <PostThumbnail
-                  post={value}
-                  loader={postLoading}
-                ></PostThumbnail>
+              <LazyLoad key={value._id}>
+                <div onClick={() => handleClick(value)}>
+                  <PostThumbnail
+                    post={value}
+                    loader={postLoading}
+                  ></PostThumbnail>
+                </div>
               </LazyLoad>
             );
           })
