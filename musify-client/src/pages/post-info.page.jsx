@@ -114,7 +114,7 @@ export default function PostInfoPage() {
   }, []);
 
   const changeComments = (newComment) => {
-    setPostComments([newComment, ...postComments]);
+    setPostComments([...postComments, newComment]);
   };
 
   const changeLikes = (newLike) => {

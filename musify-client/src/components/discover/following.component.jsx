@@ -1,5 +1,6 @@
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { Fragment, useState, useMemo } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
+import LazyLoad from 'react-lazyload';
 import { Grid, makeStyles, CircularProgress } from '@material-ui/core';
 import DiscoverCard from './discover-card.component';
 import axios from 'axios';
@@ -33,8 +34,6 @@ export default function Following(props) {
   const [loading, setLoading] = useState(false);
 
   const handleClick = (post) => {
-    console.log(history);
-    console.log(location);
     history.push({
       pathname: `/post/${post._id}`,
       //Setting background in the location state
@@ -42,7 +41,7 @@ export default function Following(props) {
     });
   };
 
-  useEffect(() => {
+  useMemo(() => {
     try {
       async function getFollowingPosts() {
         const token = TokenService.getAuthToken();
@@ -86,7 +85,9 @@ export default function Following(props) {
           following.map((post) => {
             return (
               <div key={post._id} onClick={() => handleClick(post)}>
-                <DiscoverCard post={post}></DiscoverCard>
+                <LazyLoad>
+                  <DiscoverCard post={post}></DiscoverCard>
+                </LazyLoad>
               </div>
             );
           })

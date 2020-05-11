@@ -72,10 +72,13 @@ export default function EditBio() {
       );
 
       const profileInfo = {
+        id: profile.data.user._id,
         profile_image: profile.data.profile_image,
         bio: profile.data.bio,
         first_name: profile.data.user.first_name,
         last_name: profile.data.user.last_name,
+        followers: profile.data.followers,
+        following: profile.data.following,
       };
 
       //updating the globalstate with profile information

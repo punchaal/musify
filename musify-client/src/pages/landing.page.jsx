@@ -1,5 +1,6 @@
 import React from 'react';
 import { makeStyles, CssBaseline, Grid } from '@material-ui/core';
+import LazyLoad from 'react-lazyload';
 import BackgroundImage from '../assets/bg-main.jpg';
 import SignIn from '../components/userauth/signin.component';
 import SignUp from '../components/userauth/signup.component';
@@ -31,7 +32,9 @@ export default function LandingPage() {
   return (
     <Grid container component='main' className={classes.root}>
       <CssBaseline />
-      <Grid item xs={false} sm={4} md={7} className={classes.image} />
+      <LazyLoad>
+        <Grid item xs={false} sm={4} md={7} className={classes.image} />
+      </LazyLoad>
       {history.location.pathname === '/signup' ? (
         <SignUp />
       ) : history.location.pathname === '/forgot-password' ? (

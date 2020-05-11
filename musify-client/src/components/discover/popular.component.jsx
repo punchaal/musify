@@ -1,5 +1,6 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useMemo, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
+import LazyLoad from 'react-lazyload';
 import { makeStyles, Grid, CircularProgress } from '@material-ui/core';
 import axios from 'axios';
 import config from '../../config';
@@ -41,7 +42,7 @@ export default function Popular() {
     });
   };
 
-  useEffect(() => {
+  useMemo(() => {
     try {
       async function getPopularPosts() {
         const token = TokenService.getAuthToken();
@@ -83,7 +84,9 @@ export default function Popular() {
           popular.map((post) => {
             return (
               <div key={post._id} onClick={() => handleClick(post)}>
-                <DiscoverCard post={post}></DiscoverCard>
+                <LazyLoad>
+                  <DiscoverCard post={post}></DiscoverCard>
+                </LazyLoad>
               </div>
             );
           })

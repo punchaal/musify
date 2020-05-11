@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import {
   makeStyles,
@@ -12,6 +12,7 @@ import {
 } from '@material-ui/core';
 import Following from '../components/discover/following.component';
 import Popular from '../components/discover/popular.component';
+import MusifyAppBar from '../components/musifyappbar.component';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -75,37 +76,40 @@ export default function DiscoverPage() {
   };
 
   return (
-    <Grid container component='main' className={classes.body}>
-      <CssBaseline />
-      <Paper square className={classes.root}>
-        <Tabs
-          value={value}
-          indicatorColor='primary'
-          textColor='primary'
-          onChange={handleChange}
-          aria-label='disabled tabs example'
-          centered
-        >
-          <Tab label='Following' value='one' />
-          <Tab label='Popular' value='two' />
-        </Tabs>
-        <TabPanel
-          value={value}
-          index='one'
-          {...a11yProps('one')}
-          className={classes.tabPanel}
-        >
-          <Following />
-        </TabPanel>
-        <TabPanel
-          value={value}
-          index='two'
-          {...a11yProps('two')}
-          className={classes.tabPanel}
-        >
-          <Popular />
-        </TabPanel>
-      </Paper>
-    </Grid>
+    <Fragment>
+      <MusifyAppBar />
+      <Grid container component='main' className={classes.body}>
+        <CssBaseline />
+        <Paper square className={classes.root}>
+          <Tabs
+            value={value}
+            indicatorColor='primary'
+            textColor='primary'
+            onChange={handleChange}
+            aria-label='disabled tabs example'
+            centered
+          >
+            <Tab label='Following' value='one' />
+            <Tab label='Popular' value='two' />
+          </Tabs>
+          <TabPanel
+            value={value}
+            index='one'
+            {...a11yProps('one')}
+            className={classes.tabPanel}
+          >
+            <Following />
+          </TabPanel>
+          <TabPanel
+            value={value}
+            index='two'
+            {...a11yProps('two')}
+            className={classes.tabPanel}
+          >
+            <Popular />
+          </TabPanel>
+        </Paper>
+      </Grid>
+    </Fragment>
   );
 }

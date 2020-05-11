@@ -97,7 +97,7 @@ router.get('/popular', [auth], async (req, res) => {
           as: 'profiles',
         },
       },
-      { $limit: 45 },
+      // { $limit: 45 },
     ])
       .unwind('user')
       .unwind('profiles');
@@ -131,8 +131,8 @@ router.get('/following', [auth], async (req, res) => {
       .in(followingArray)
       .sort({ date: -1 })
       .populate('user', ['first_name', 'last_name'])
-      .populate('profile', ['profile_image'])
-      .limit(45);
+      .populate('profile', ['profile_image']);
+    // .limit(45);
 
     res.json(posts);
   } catch (err) {
