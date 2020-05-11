@@ -1,5 +1,5 @@
 import Axios from 'axios';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import config from '../config';
 import TextField from '@material-ui/core/TextField';
@@ -43,7 +43,7 @@ export default function SearchUser() {
     }
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     let active = true;
 
     if (!loading) {
@@ -52,8 +52,6 @@ export default function SearchUser() {
 
     (async () => {
       const response = await Axios.get(`${endpoint}/profile`);
-
-      console.log(response);
 
       const users = response.data;
       console.log(users);
@@ -81,7 +79,6 @@ export default function SearchUser() {
       style={{ width: 300 }}
       className={classes.search}
       open={open}
-      // inputValue={value}
       onChange={(event, value) => handleChange(event, value)}
       onOpen={() => {
         setOpen(true);
