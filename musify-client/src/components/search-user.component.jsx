@@ -54,7 +54,6 @@ export default function SearchUser() {
       const response = await Axios.get(`${endpoint}/profile`);
 
       const users = response.data;
-      console.log(users);
 
       if (active) {
         setOptions(users.map((user) => user.user));

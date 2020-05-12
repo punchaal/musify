@@ -61,6 +61,8 @@ export default function Popular() {
 
         setLoading(false);
 
+        console.log(posts.data);
+
         setPopular(posts.data);
       }
       getPopularPosts();
@@ -83,11 +85,16 @@ export default function Popular() {
           popular.length > 0 &&
           popular.map((post) => {
             return (
-              <div key={post._id} onClick={() => handleClick(post)}>
-                <LazyLoad>
+              <LazyLoad
+                key={post._id}
+                height={100}
+                offset={[-100, 100]}
+                placeholder={<CircularProgress />}
+              >
+                <div key={post._id} onClick={() => handleClick(post)}>
                   <DiscoverCard post={post}></DiscoverCard>
-                </LazyLoad>
-              </div>
+                </div>
+              </LazyLoad>
             );
           })
         )}

@@ -29,7 +29,6 @@ function App() {
   let location = useLocation();
 
   let background = location.state && location.state.background;
-  console.log(background);
   return (
     <StateProvider>
       <MuiThemeProvider theme={theme}>

@@ -72,7 +72,7 @@ router.get('/', [auth], async (req, res) => {
 
 router.get('/popular', [auth], async (req, res) => {
   try {
-    let start = moment().subtract(7, 'days').toDate();
+    let start = moment().subtract(30, 'days').toDate();
     const aggregate = await Post.aggregate([
       {
         $match: { date: { $gte: start } },
