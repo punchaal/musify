@@ -29,7 +29,7 @@
     "mongoose": "^5.9.7",
     "morgan": "^1.10.0",
     "multer": "^1.4.2",
-    "nodemailer": "^6.4.6",
+    "nodemailer": "^6.4.16",
     "querystring": "^0.2.0",
     "redis": "^3.0.2",
     "request": "^2.88.2"
